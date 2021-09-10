@@ -400,6 +400,8 @@
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.timer1 = new System.Timers.Timer();
+            this.loadExtraShow = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VappNumeric)).BeginInit();
@@ -1605,6 +1607,8 @@
             // tabPage5
             // 
             this.tabPage5.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tabPage5.Controls.Add(this.label38);
+            this.tabPage5.Controls.Add(this.loadExtraShow);
             this.tabPage5.Controls.Add(this.selectedHeater);
             this.tabPage5.Controls.Add(this.groupBox22);
             this.tabPage5.Controls.Add(this.groupBox21);
@@ -4568,6 +4572,24 @@
             this.timer1.SynchronizingObject = this;
             this.timer1.Elapsed += new System.Timers.ElapsedEventHandler(this.timer1_Elapsed);
             // 
+            // loadExtraShow
+            // 
+            this.loadExtraShow.Enabled = false;
+            this.loadExtraShow.Location = new System.Drawing.Point(72, 161);
+            this.loadExtraShow.Name = "loadExtraShow";
+            this.loadExtraShow.ReadOnly = true;
+            this.loadExtraShow.Size = new System.Drawing.Size(57, 20);
+            this.loadExtraShow.TabIndex = 57;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(14, 164);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(57, 13);
+            this.label38.TabIndex = 58;
+            this.label38.Text = "Live Load:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5068,6 +5090,8 @@
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.CheckBox actAppOnly;
         private System.Windows.Forms.CheckBox isMcuAdc;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.TextBox loadExtraShow;
     }
 }
 

@@ -139,6 +139,15 @@ namespace UC45_User_Interface
             comboBox2.SelectedIndex = 1;
             chart1.MouseWheel += chart1_MouseWheel;
             pathsave = Properties.Settings.Default["PathtoSave"].ToString();
+            if (!pathsave.Contains(DateTime.Today.ToString("dd-MM-yyyy")))
+            {
+                string zaman = @"\" + DateTime.Today.ToString("dd-MM-yyyy");
+                pathsave = pathsave.Remove(pathsave.Length - 12);
+                pathsave += zaman;
+                Directory.CreateDirectory(pathsave);
+                Properties.Settings.Default["PathtoSave"] = pathsave;
+                Properties.Settings.Default.Save();
+            }
             g1.Text = Properties.Settings.Default["GageCo"].ToString();
             textBox17.Text = Properties.Settings.Default["Piezo"].ToString();
             textBox1.Text = Properties.Settings.Default["Vapp"].ToString();
@@ -2114,7 +2123,6 @@ namespace UC45_User_Interface
                         Tdms_Saver("Calibration");
                         await Task.Delay(timer2.Interval);
                     }
-                    fileopen = pathtemp + @"\Calibration";
                     timer2.Start();
                     if (motorDrive.Checked && emCounter % 2 != 0)
                     {
@@ -2125,7 +2133,7 @@ namespace UC45_User_Interface
                         Send("DOIT!_00","");
                     }
                     expfin = 0;
-                    File.WriteAllText(pathtemp + zaman + "_ExperimentLog.txt", Experimentlog(zaman));
+                    File.WriteAllText(fileopen +zaman+ "_ExperimentLog.txt", Experimentlog(zaman));
                     while (expfin==0 && emCounter % 2 != 0)
                     {
                         await Task.Delay(10);
@@ -2377,7 +2385,7 @@ namespace UC45_User_Interface
             chart1.Enabled = false;
             tim2i = 0;
             graphcount++;
-            File.WriteAllText(pathtemp + zaman + "_ExperimentLog.txt", Experimentlog(zaman));
+            File.WriteAllText(fileopen + zaman +"_ExperimentLog.txt", Experimentlog(zaman));
             if (rateNumeric.Value <= 10000)
             {
                 timer4.Interval = Convert.ToUInt16(10000 / rateNumeric.Value);
@@ -2436,7 +2444,7 @@ namespace UC45_User_Interface
                 }
                 else
                 {
-                    speedsend = 10000 * speedApp / kp;
+                    speedsend = speedApp / (5*kp); // SPEED SEND IS INCREMENT GIVEN AS 200MS STEPS; so divided by 5 to send exact number.
                     if (speedsend > 500000)
                     {
                         speedsend = 500000;
@@ -2488,31 +2496,23 @@ namespace UC45_User_Interface
                 {
                     if (emCounter % 2 != 0)
                     {
-                        expfin = 0;
-                        if ((autoApp.Checked&&i==0)||retState==1)
+                        apfin = 0;
+                        if ((autoApp.Checked&&i==0)||(retState==1&&autoApp.Checked))
                         {
-                            fileopen = pathtemp + @"\Step" + (i + 1) + "_Approach";
                             approaching = 1;
                             if ((btn9 == 1 ||loadExt))
                             {
-                                plotstop = 1;
-                                timer2.Stop();
                                 Tdms_Saver("Step " + (i + 1) + " Approach");
-                                await Task.Delay(timer2.Interval);
                                 timer2.Start();
-                                plotstop = 0;
                             }
-                            if (retState==0)
-                            {
-                               // Send("APFIN", "");
-                            }//without load control option--back to before position && MCU controlled only motor/only actuator states also should be set
+                            fileopen = pathtemp + "\\Step" + (i + 1) + "_Approach";
                             if (checkBox15.Checked)
                             {
                                 await AutoConAsync(pressure, tempthres, gradthres, forward);
                             }
                             else
                             {
-                                while (expfin == 0 && emCounter % 2 != 0)
+                                while (apfin == 0 && emCounter % 2 != 0)
                                 {
                                     await Task.Delay(10);
                                     try
@@ -2532,9 +2532,16 @@ namespace UC45_User_Interface
                                         connection = comread;
                                     }
                                 }
+                                if (runningTask != null)
+                                {
+                                    timer2.Stop();
+                                    await Task.Delay(timer2.Interval);
+                                    runningTask = null;
+                                    myTask.Dispose();
+                                }
                                 if (emCounter % 2 != 0)
                                 {
-                                    Send("REFIN", "");
+                                    Send("APFIN", "");
                                 }
                             }
                             timer3.Stop();
@@ -2543,17 +2550,11 @@ namespace UC45_User_Interface
                         }
                         if (((depth[i] != "0.000000" && depth[i] != "0") || (duration[i] != "0.000000" && duration[i] != "0")) && (btn9 == 1 || loadExt))
                         {
-                            timer2.Stop();
-                            if (runningTask != null)
-                            {
-                                runningTask = null;
-                                myTask.Dispose();
-                            }
                             Tdms_Saver("Step " + (i + 1) + " Indentation");
-                            fileopen = pathtemp + @"\Step" + (i + 1) + "_Indentation";
+                            fileopen = pathtemp + "\\Step" + (i + 1) + "_Indentation";
                             timer2.Start();
                         }
-                        expfin = 0;
+                        infin = 0;
                         if (checkBox15.Checked)
                         {
                             await Task.Delay(timer2.Interval);
@@ -2561,7 +2562,7 @@ namespace UC45_User_Interface
                         }
                         else
                         {
-                            while (expfin == 0 && emCounter % 2 != 0)
+                            while (infin == 0 && emCounter % 2 != 0)
                             {
                                 await Task.Delay(10);
                                 try
@@ -2602,20 +2603,18 @@ namespace UC45_User_Interface
                         }
                         if ((btn9 == 1 || loadExt) && amplitude[i] != "0.000000" && amplitude[i] != "0" && emCounter % 2 != 0)
                         {
-                            timer2.Stop();
                             Tdms_Saver("Step " + (i + 1) + " Oscillation");
-                            await Task.Delay(timer2.Interval);
                             timer2.Start();
-                            fileopen = pathtemp + @"\Step" + (i + 1) + "_Oscillation";
+                            fileopen = pathtemp + "\\Step" + (i + 1) + "_Oscillation";
                         }
-                        expfin = 0;
+                        osfin = 0;
                         if (checkBox15.Checked)
                         {
                             await OscillationAsync(amplitude[i], frequency[i], interval[i], box5[i], box11[i]);
                         }
                         else
                         {
-                            while (expfin == 0 && emCounter % 2 != 0)
+                            while (osfin == 0 && emCounter % 2 != 0)
                             {
                                 await Task.Delay(10);
                                 try
@@ -2639,6 +2638,13 @@ namespace UC45_User_Interface
                                     connection = comread;
                                 }
                             }
+                            if (runningTask != null)
+                            {
+                                timer2.Stop();
+                                await Task.Delay(timer2.Interval);
+                                runningTask = null;
+                                myTask.Dispose();
+                            }
                             if (emCounter % 2 != 0)
                             {
                                 Send("OSFIN", "");
@@ -2656,24 +2662,20 @@ namespace UC45_User_Interface
                         if (retStep[i] == 1)
                         {
                             retState = 1;
-                            fileopen = pathtemp + @"\Step" + (i + 1) + "_Retract";
                             if ((btn9 == 1 || loadExt))
                             {
-                                plotstop = 1;
-                                timer2.Stop();
                                 Tdms_Saver("Step " + (i + 1) + " Retract");
-                                await Task.Delay(timer2.Interval);
                                 timer2.Start();
-                                plotstop = 0;
                             }
-                            expfin = 0;
+                            fileopen = pathtemp + "\\Step" + (i + 1) + "_Retract";
+                            refin = 0;
                             if (checkBox15.Checked)
                             {
                                 await AutoConAsync(pressure, tempthres, tempthres, !forward);
                             }
                             else
                             {
-                                while (expfin == 0 && emCounter % 2 != 0)
+                                while (refin == 0 && emCounter % 2 != 0)
                                 {
                                     await Task.Delay(10);
                                     try
@@ -2688,6 +2690,13 @@ namespace UC45_User_Interface
                                         label11.Text = ex.Message;
                                         connection = comread;
                                     }
+                                }
+                                if (runningTask != null)
+                                {
+                                    timer2.Stop();
+                                    await Task.Delay(timer2.Interval);
+                                    runningTask = null;
+                                    myTask.Dispose();
                                 }
                                 if (emCounter % 2 != 0)
                                 {
@@ -2711,12 +2720,23 @@ namespace UC45_User_Interface
                         syc++;
                         if (syc == 100)
                         {
-                            Send("Repet", "");
+                            //Send("Repet", "");
                             syc = 0;
                         }
                     }
                 }
             }
+            if (btn9 == 1)
+            {
+                runningTask = null;
+                myTask.Dispose();
+            }
+            await Task.Delay(timer2.Interval);
+            timer2.Stop();
+            timer5.Stop();
+            timer4.Stop();
+            timer4i = 0;
+            timer5i = 0;
             progressBar1.Value = 100;
             depth.RemoveRange(0, depth.Count);
             speed.RemoveRange(0, speed.Count);
@@ -2748,17 +2768,6 @@ namespace UC45_User_Interface
             comboBox2.SelectedIndex = 1;
             Task.WaitAll();
             fin = true;
-            progressBar1.Value = 0;
-            if (btn9 == 1)
-            {
-                runningTask = null;
-                myTask.Dispose();
-            }
-            timer2.Stop();
-            timer5.Stop();
-            timer4.Stop();
-            timer4i = 0;
-            timer5i = 0;
             tb1.RemoveRange(0, tb1.Count);
             tb10.RemoveRange(0, tb10.Count);
             emCounter = 1;
@@ -2767,6 +2776,7 @@ namespace UC45_User_Interface
             stopExp.Enabled = false;
             executeExp.Enabled = false;
             chart1.Enabled = true;
+            progressBar1.Value = 0;
         }
         double holdposition = 0;
         int expresscon = -1;
@@ -2779,6 +2789,10 @@ namespace UC45_User_Interface
         string lastwords = "";
         int heatlow = 0;
         int retState = 0;
+        int refin = 0;
+        int apfin = 0;
+        int osfin = 0;
+        int infin = 0;
         private void serialPort2_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             comread = "";
@@ -2834,26 +2848,48 @@ namespace UC45_User_Interface
                             connection = ex.Message;
                         }
                     }
+                    else if (jsBox.Checked && comread.Contains("MSP"))
+                    {
+                        spedmode = Convert.ToInt16(comread[3].ToString());
+                        jspass = 1;
+                        timer6.Start();
+                    }
                     else if (comread.Contains("Finished") || comread.Contains("Retfin") || comread.Contains("Complete"))
                     {
-                        expfin = 1;
-                        repsay++;
-                        if (repsay > 5)
+                        if (comread.Contains("Osc"))
                         {
-                            serialPort2.Write(lastwords);
-                            repsay = 0;
+                            osfin = 1;
+                        }
+                        else if (comread.Contains("Ind"))
+                        {
+                            infin = 1;
+                        }
+                        else if (comread.Contains("Ret"))
+                        {
+                            refin = 1;
+                        }
+                        else if (comread.Contains("App"))
+                        {
+                            apfin = 1;
+                        }
+                        else if (comread.Contains("Exp"))
+                        {
+                            expfin = 1;
                         }
                     }
-                    else if (comread.Contains("APP") || comread.Contains("Exe") || comread.Contains("Retract") || comread.Contains("?"))
+                    else if (comread.Contains("APP") || comread.Contains("Exe") || comread.Contains("?"))
                     {
                         appret = 1;
-                        repsay++;
-                        if (repsay > 5)
-                        {
-                            serialPort2.Write(lastwords);
-                            repsay = 0;
-                        }
-                    }//Not_Approached ; OutRange states..
+                    }
+                    else if (comread.Contains("Not_App") || comread.Contains("OutRan"))
+                    {
+                        //Not_Approached ; OutRange states..
+                        groupBox5.Enabled = true;
+                        executeExp.Enabled = false;
+                        emCounter = 0;
+                        texts = "";
+                        textexp.Clear();
+                    }
                     else if (comread.Contains("UPMOT"))
                     {
                         receive = "UPMOT";
@@ -2920,7 +2956,7 @@ namespace UC45_User_Interface
                                 {
                                     maxload = loadd.Last();
                                 }
-                                if(deney!=-1 && deney != 0)
+                                if (deney != -1 && deney != 0)
                                 {
                                     File.AppendAllText(fileopen + "_Load.txt", loadd.Last().ToString() + Environment.NewLine);
                                 }
@@ -2947,15 +2983,15 @@ namespace UC45_User_Interface
                         catch (Exception ex)
                         {
                             connection = ex.Message;
-                            if (repsay < 3)
-                            {
-                                Send("Repet", "");
-                                repsay++;
-                            }
-                            else
-                            {
-                                repsay = 0;
-                            }
+                            //if (repsay < 3)
+                            //{
+                            //    Send("Repet", "");
+                            //    repsay++;
+                            //}
+                            //else
+                            //{
+                            //    repsay = 0;
+                            //}
                         }
                     }
                     else if (comread.Contains("PM"))
@@ -3004,6 +3040,7 @@ namespace UC45_User_Interface
                             if (feed == 1 || autopass == 1)
                             {
                                 pass = 1;
+                                timer6.Start();
                             }
                             if (jsBox.Checked)
                             {
@@ -3012,20 +3049,20 @@ namespace UC45_User_Interface
                                 timer6.Start();
                             }
                             abq = "";
-                            repsay = 0; 
+                            repsay = 0;
                         }
                         catch (Exception ex)
                         {
                             connection = ex.Message;
-                            if (repsay < 3)
-                            {
-                                Send("Repet", "");
-                                repsay++;
-                            }
-                            else
-                            {
-                                repsay = 0;
-                            }
+                            //if (repsay < 3)
+                            //{
+                            //    Send("Repet", "");
+                            //    repsay++;
+                            //}
+                            //else
+                            //{
+                            //    repsay = 0;
+                            //}
                         }
                     }
                     else if (comread.Contains("LM"))
@@ -3056,15 +3093,15 @@ namespace UC45_User_Interface
                         catch (Exception ex)
                         {
                             connection = ex.Message;
-                            if (repsay < 5)
-                            {
-                                Send("Repet", "");
-                                repsay++;
-                            }
-                            else
-                            {
-                                repsay = 0;
-                            }
+                            //if (repsay < 5)
+                            //{
+                            //    Send("Repet", "");
+                            //    repsay++;
+                            //}
+                            //else
+                            //{
+                            //    repsay = 0;
+                            //}
                         }
                         abq = "";
                         if (hxcom == 1)
@@ -3072,7 +3109,7 @@ namespace UC45_User_Interface
                             pass = 1;
                             timer6.Start();
                         }
-                        
+
                     }
                     else if (comread.Contains("R5"))
                     {
@@ -3101,7 +3138,7 @@ namespace UC45_User_Interface
                             comread = "";
                             tim1say = 0;
                         }
-                        
+
                         else
                         {
                             Send("Z0000", "");
@@ -3159,7 +3196,14 @@ namespace UC45_User_Interface
                             tim1say = 0;
                             comread = "";
                         }
-                        
+                        else if (exppass == -2)
+                        {
+                            repsay++;
+                            if (repsay == 1)
+                            {
+                                MessageBox.Show("Ready to Go! Click 'Execute' when you ready.");
+                            }
+                        }
                         else
                         {
                             Send("Z0000", "");
@@ -3167,7 +3211,7 @@ namespace UC45_User_Interface
                     }
                     else if ((comread.Contains("+") || comread.Contains("-")))
                     {
-                        if (xymotor == 1 || jsBox.Checked)
+                        if (xymotor == 1 || jsBox.Checked||deney==1)
                         {
                             pass = 1;
                             timer6.Start();
@@ -3271,12 +3315,12 @@ namespace UC45_User_Interface
                                     }
                                     else
                                     {
-                                        Send("Repet", "");
+                                        //Send("Repet", "");
                                     }
                                 }
                                 catch (Exception ex)
                                 {
-                                    Send("Repet", "");
+                                    //Send("Repet", "");
                                 }
 
                             }
@@ -3341,7 +3385,7 @@ namespace UC45_User_Interface
                                 }
                                 catch (Exception ex)
                                 {
-                                    Send("CDAT2", "");
+                                    //Send("CDAT2", "");
                                 }
                             }
                         }
@@ -3749,7 +3793,7 @@ namespace UC45_User_Interface
                     {
                         if(loadd.Last()<33000000 && loadd.Last() > -33000000)
                         {
-                            chart1.Series[chtype.Count].Points.AddXY(tim2tim, loadd.Last());
+                            chart1.Series[chart1.Series.Count-2].Points.AddXY(tim2tim, loadd.Last());
                             chartptcnt++;
                         }
                     }
@@ -3776,7 +3820,7 @@ namespace UC45_User_Interface
                     }
                     catch { }
                 }
-                else if (motorApp.Checked && approaching == 1)
+                else if (motorApp.Checked && approaching == 2)
                 {
                     try
                     {
@@ -4688,6 +4732,7 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                 };
                 buton4.Click += (ssender, e) =>
                 {
+                    chart1.Enabled = true;
                     if (cursorcount % 2 == 0)
                     {
                         chart1.ChartAreas[0].CursorY.AxisType = AxisType.Secondary;
@@ -5426,10 +5471,7 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
             emCounter = 0;
             texts = "";
             textexp.Clear();
-            if (approaching != 1)
-            {
-                Send("Z0000", "");
-            }
+            Send("Z0000", "");
         }
 
         private void button7_Click_2(object sender, EventArgs e)
@@ -5626,10 +5668,10 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
             string zaman = @"\" + DateTime.Today.ToString("dd-MM-yyyy");
             folderBrowserDialog1.ShowDialog();
             pathsave = folderBrowserDialog1.SelectedPath;
-            Properties.Settings.Default["PathtoSave"] = pathsave;
-            Properties.Settings.Default.Save();
             Directory.CreateDirectory(pathsave + zaman);
             pathsave = pathsave + zaman;
+            Properties.Settings.Default["PathtoSave"] = pathsave;
+            Properties.Settings.Default.Save();
         }
         public string pathtemp = "";
         private void directorset(string now)
@@ -5742,6 +5784,7 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
         {
             if (plug % 2 == 0)
             {
+                nocon = 0;
                 emCounter = 1;
                 button12.Text = "Secure Unplug";
                 label11.Text = "Searching Connection..";
@@ -5771,10 +5814,11 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
         {
             try
             {
-                if (loadExt)
+                if (!useGagePress.Checked)
                 {
-                        pressShow.Text = loadd.Last().ToString();
-                        loadcellData.Text = loadd.Last().ToString();
+                    pressShow.Text = loadd.Last().ToString();
+                    loadcellData.Text = loadd.Last().ToString();
+                    loadExtraShow.Text = loadd.Last().ToString();
                 }
                 else if (useGagePress.Checked)
                 {
@@ -6162,10 +6206,7 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                     }
                     btn9 = 1;
                 }
-                if (deney != 3)
-                {
-                    myTask.ConfigureLogging(fileopentdms, TdmsLoggingOperation.OpenOrCreate, LoggingMode.LogAndRead, group);
-                }
+                myTask.ConfigureLogging(fileopentdms, TdmsLoggingOperation.OpenOrCreate, LoggingMode.LogAndRead, group);
                 myTask.Timing.ConfigureSampleClock("", Convert.ToDouble(rateNumeric.Value),
 SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                 myTask.Control(TaskAction.Verify);
@@ -6200,7 +6241,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             if (loadExt||loadLive.Checked)
             {
                 chart1.Series.Add("External"+ group + "_" + graphcount);
-                chart1.Series[chtype.Count()].ChartType = SeriesChartType.FastPoint;
+                chart1.Series.Last().ChartType = SeriesChartType.FastPoint;
             }
             if (saveExt.Checked)
             {
@@ -6438,6 +6479,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
         {
             texts = "";
             automot = 0;
+            approaching = 0;
             stopMot.Enabled = false;
             groupBox19.Enabled = true;
             emCounter = 0;
@@ -6653,7 +6695,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                 {
                     string zaman = "\\" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss");
                     directorset(zaman);
-                    fileopen = fileopen + "\\Preview";
+                    fileopen = pathtemp + "\\Preview";
                     deney = 3;
                     Tdms_Saver("Preview");
                     showData.Text = "Stop";
@@ -6667,12 +6709,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             else
             {
                 timer2.Stop();
-                if (btn9 == 1)
-                {
-                    runningTask = null;
-                    myTask.Dispose();
-                }
-                loadLive.Checked = false;
+                //loadLive.Checked = false;
                 stopButton.Enabled = false;
                 startButton.Enabled = true;
                 deney = -1;
@@ -6680,6 +6717,12 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                 showData.Text = "Show Preview";
                 showbut = 0;
                 tabControl1.SelectedIndex = 4;
+                Thread.Sleep(timer2.Interval);
+                if (btn9 == 1)
+                {
+                    runningTask = null;
+                    myTask.Dispose();
+                }
             }
 
         }
@@ -7352,7 +7395,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
 }
-
+        int jspass = 0;
         private void timer6_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (isConnected)
@@ -7377,12 +7420,18 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
         "Connection to Device", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
                     InitialCommandsAsync(result);
                 }
+                else if (jspass == 1)
+                {
+                    timer6.Stop();
+                    jspass = 0;
+                    micstepBox.SelectedIndex = spedmode;
+                }
                 else if(approaching==2&& pass == 1)
                 {
                     pass = 0;
-                    Send("STFIN", "");
                     if (receive == "UPMOT")
                     {
+                        Send("STFIN", "");
                         connection = "";
                         receive = "";
                         MessageBox.Show("Motor at Home Position!", "Auto Land", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -7452,13 +7501,15 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                 }
                 else if (pass == 1 && exppass == -1 && plug % 2 == 1)
                 {
-                    exppass = 0;
+                    repsay = 0;
+                    exppass = -2;
                     executeExp.Enabled = true;
                     timer6.Stop();
                     label11.Text = comread;
                 }
                 else if (pass == 1 && feed == 1)
                 {
+                    timer6.Stop();
                     pass = 0;
                     motpos = abqi * stepinc*(Math.Pow(2,spedmode-5));
                     motorPos.Text = Convert.ToString(motpos / 1000000);
@@ -7466,11 +7517,10 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     Properties.Settings.Default["motpos"] = motorPos.Text;
                     Properties.Settings.Default.Save();
                     //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
-                    timer6.Stop();
                     feed = 0;
                     Send("FBFIN", "");
                 }
-                else if (pass == 1 && (xymotor == 1||jsBox.Checked))
+                else if (pass == 1 && (xymotor == 1||jsBox.Checked || deney==1))
                 {
                     pass = 0;
                     string reccon="";
@@ -7623,7 +7673,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     }
                     else if (microsayac == 12 && plug % 2 == 1)
                     {
-                        Send("Repet", "");
+                        //Send("Repet", "");
                         microsayac = 0;
                         rep++;
                     }
@@ -8059,7 +8109,14 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             else if (btn7say == 2)
             {
                 button7.Text = "Control: Displacement";
-                Send("43200", "");
+                if (isMcuAdc.Checked)//use ADC --strain gage via MCU
+                {
+                    Send("43210", "");
+                }
+                else
+                {
+                    Send("43220", "");
+                }
                 label14.Text = "Depth (um)";
                 label15.Text = "Speed (um/s)";
                 exptype = 2;
