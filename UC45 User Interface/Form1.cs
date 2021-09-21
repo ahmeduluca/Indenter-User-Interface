@@ -41,9 +41,9 @@ namespace UC45_User_Interface
         Boolean isConnected = false;
         public string vapplied = "";
         double kp = Convert.ToDouble(Properties.Settings.Default["Piezo"]);
-        double vnull = Convert.ToDouble(Properties.Settings.Default["Vmax"]) * 20;
-        double vmin = Convert.ToDouble(Properties.Settings.Default["Vmin"]) * 20;
-        double vmax = Convert.ToDouble(Properties.Settings.Default["Vmax"]) * 20;
+        double vnull = Convert.ToDouble(Properties.Settings.Default["Vmax"]);
+        double vmin = Convert.ToDouble(Properties.Settings.Default["Vmin"]);
+        double vmax = Convert.ToDouble(Properties.Settings.Default["Vmax"]);
         double zrange = (Convert.ToDouble(Properties.Settings.Default["Vmax"]) -
             Convert.ToDouble(Properties.Settings.Default["Vmin"])) * 20 * Convert.ToDouble(Properties.Settings.Default["Piezo"]);
         /*
@@ -90,6 +90,7 @@ namespace UC45_User_Interface
         //    base.Dispose(disposing);
         //}
         int daqprob = 0;
+        List<double> datas = new List<double>();
         private void AnalogInCallback(IAsyncResult ar)
         {
             try
@@ -97,13 +98,12 @@ namespace UC45_User_Interface
                 if (runningTask != null && runningTask == ar.AsyncState)
                 {
                     data = analogInReader.EndReadWaveform(ar);
-                    dataR = data;
+                    for (int i = 0; i < data.Length; i++)
+                    {
+                        datas[i] = data[i].Samples.Last().Value;
+                    }
                     analogInReader.BeginMemoryOptimizedReadWaveform(10,
                         myAsyncCallback, runningTask, data);
-                    if (deney == 3 && timer2.Enabled == false)
-                    {
-                        timer2.Start();
-                    }
                 }
             }
             catch(DaqException exception)
@@ -142,7 +142,7 @@ namespace UC45_User_Interface
             if (!pathsave.Contains(DateTime.Today.ToString("dd-MM-yyyy")))
             {
                 string zaman = @"\" + DateTime.Today.ToString("dd-MM-yyyy");
-                pathsave = pathsave.Remove(pathsave.Length - 12);
+                pathsave = pathsave.Remove(pathsave.Length - 11);
                 pathsave += zaman;
                 Directory.CreateDirectory(pathsave);
                 Properties.Settings.Default["PathtoSave"] = pathsave;
@@ -347,12 +347,9 @@ namespace UC45_User_Interface
                     voltageplus = true;
                 }
                 vapplied = textBox1.Text;
-                if (textBox1.Text != "")
-                    vol = Convert.ToDouble(vapplied) * 20;
                 if (!textBox10.Enabled && textBox1.Text != "" && resulttextform == DialogResult.Ignore)
                 {
-                    textBox10.Text = ((vnull - vol) * kp).ToString();
-                    textBox1.Select((int)stpos + 1, 0);
+                    textBox10.Text = ((vnull - Convert.ToDouble(vapplied))*20 * kp).ToString();
                 }
                 else if (!textBox10.Enabled && textBox1.Text != "" && resulttextform == DialogResult.Ignore)
                 {
@@ -621,11 +618,11 @@ namespace UC45_User_Interface
             {
                 textBox8.Text = labelVmax.Text;
                 Send(labelVmax.Text, "M");
-                vmax = Convert.ToDouble(textBox8.Text) * 20;
-                zrange = kp * (vnull - vmin);
+                vmax = Convert.ToDouble(textBox8.Text);
+                zrange = kp *20* (vnull - vmin);
                 Properties.Settings.Default["Vmax"] = textBox8.Text;
                 Properties.Settings.Default.Save();
-                textBox1.Text = TextFormat(textBox1.Text, "Vapp", vmin / 20, vmax / 20);
+                textBox1.Text = TextFormat(textBox1.Text, "Vapp", vmin, vmax);
                 //verticalProgressBar1.Value = Convert.ToInt16(200 * (Convert.ToDouble(textBox1.Text) + 1) / 17);
             }
         }
@@ -640,11 +637,11 @@ namespace UC45_User_Interface
             {
                 textBox9.Text = labelVmin.Text;
                 Send(labelVmin.Text, "N");
-                vmin = Convert.ToDouble(textBox9.Text) * 20;
-                zrange = kp * (vnull - vmin);
+                vmin = Convert.ToDouble(textBox9.Text);
+                zrange = kp *20* (vnull - vmin);
                 Properties.Settings.Default["Vmin"] = textBox9.Text;
                 Properties.Settings.Default.Save();
-                textBox1.Text = TextFormat(textBox1.Text, "Vapp", vmin / 20, vmax / 20);
+                textBox1.Text = TextFormat(textBox1.Text, "Vapp", vmin, vmax);
             }
         }
         string sendz;
@@ -658,12 +655,12 @@ namespace UC45_User_Interface
             {
                 try
                 {
-                    labelZ.Text = TextFormat(textBox10.Text, "Z", (vmin - (vmax - vnull) + 20) * kp, (vnull - vmin) * kp);
+                    labelZ.Text = TextFormat(textBox10.Text, "Z", (vmin - (vmax - vnull) + 1) *20* kp, (vnull - vmin) *20* kp);
                     textBox10.Text = labelZ.Text;
                     if ( zrange >= Convert.ToDouble(textBox10.Text))//hysteresis on/off-> cb8.
                     {
-                        sendz = ((vnull - Convert.ToDouble(textBox10.Text) / kp) / 20).ToString();
-                        textBox1.Text = TextFormat(sendz, "Vapp", vmin / 20, vnull / 20);
+                        sendz = ((vnull*20 - Convert.ToDouble(textBox10.Text) / kp) / 20).ToString();
+                        textBox1.Text = TextFormat(sendz, "Vapp", vmin, vnull);
                     }
                     else
                     {
@@ -695,7 +692,7 @@ namespace UC45_User_Interface
             {
                 try
                 {
-                    labelVapp.Text = TextFormat(textBox1.Text, "Vapp", vmin / 20, vnull / 20);
+                    labelVapp.Text = TextFormat(textBox1.Text, "Vapp", vmin, vnull);
                     textBox1.Text = labelVapp.Text;
                    // verticalProgressBar1.Value = Convert.ToInt16(200 * (Convert.ToDouble(textBox1.Text) + 1) / 17);
                     clickinc = 0;
@@ -848,7 +845,7 @@ namespace UC45_User_Interface
                 if (!textBox1.Enabled&& resulttextform == DialogResult.Ignore && zrange >= Convert.ToDouble(textBox10.Text))
                 {
                     //textBox1.Text = TextFormat(((vnull - (Convert.ToDouble(textBox10.Text) / kp)) / 20).ToString(), "Vapp", vmin/20,vmax/20);
-                    textBox1.Text = ((vnull - (Convert.ToDouble(textBox10.Text) / kp)) / 20).ToString();
+                    textBox1.Text = ((vnull*20 - (Convert.ToDouble(textBox10.Text) / kp)) / 20).ToString();
                 }
                 else if (!textBox1.Enabled&& resulttextform == DialogResult.Ignore)
                 {
@@ -1412,11 +1409,11 @@ namespace UC45_User_Interface
             else if (e.KeyChar == (char)13)
             {
                 kp = Convert.ToDouble(textBox17.Text);
-                zrange = kp * (vnull - vmin);
+                zrange = kp * 20 *(vnull - vmin);
                 textBox17.Text = labelPiezo.Text;
                 Properties.Settings.Default["Piezo"] = textBox17.Text;
                 Properties.Settings.Default.Save();
-                textBox10.Text = TextFormat(((vnull - vol) * kp).ToString(), "Z", (vmin - (vmax - vnull) + 20) * kp, (vnull - vmin) * kp);
+                textBox10.Text = TextFormat(((vnull - vol) *20* kp).ToString(), "Z", (vmin - (vmax - vnull) + 1) *20* kp, (vnull - vmin) * 20 *kp);
             }
         }
 
@@ -2018,13 +2015,13 @@ namespace UC45_User_Interface
                 {
                     timer4.Interval = Convert.ToUInt16(10000 / rateNumeric.Value);
                     timer5.Interval = Convert.ToUInt16(10000 / rateNumeric.Value);
-                    timer2.Interval = 50;
+                    timer2.Interval = 100;
                 }
                 else
                 {
-                    timer4.Interval = 1;
-                    timer5.Interval = 1;
-                    timer2.Interval = 1;
+                    timer4.Interval = 100;
+                    timer5.Interval = 100;
+                    timer2.Interval = 100;
                 }
                 chart1.Enabled = false;
                 if (!checkBox15.Checked)
@@ -2134,6 +2131,7 @@ namespace UC45_User_Interface
                     }
                     expfin = 0;
                     File.WriteAllText(fileopen +zaman+ "_ExperimentLog.txt", Experimentlog(zaman));
+                    fileopen = pathtemp + "\\Calibration";
                     while (expfin==0 && emCounter % 2 != 0)
                     {
                         await Task.Delay(10);
@@ -2142,16 +2140,13 @@ namespace UC45_User_Interface
                             motorPos.Text = Convert.ToString(motpos / 1000000);
                             //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                         }
-                        else if (!motorDrive.Checked)
-                        {
-                                textBox1.Text = receive;
-                        }
                         else
                         {
-                            connection = comread;
+                            textBox1.Text = Convert.ToString(vol);
                         }
                     }
                     Properties.Settings.Default["motpos"] = motorPos.Text;
+                    Properties.Settings.Default["Vapp"] = textBox1.Text;
                     Properties.Settings.Default.Save();
                 }
                 else if (checkBox15.Checked && emCounter % 2 != 0)
@@ -2390,13 +2385,13 @@ namespace UC45_User_Interface
             {
                 timer4.Interval = Convert.ToUInt16(10000 / rateNumeric.Value);
                 timer5.Interval = Convert.ToUInt16(10000 / rateNumeric.Value);
-                timer2.Interval = 50;
+                timer2.Interval = 100;
             }
             else
             {
-                timer4.Interval = 1;
-                timer5.Interval = 1;
-                timer2.Interval = 1;
+                timer4.Interval = 100;
+                timer5.Interval = 100;
+                timer2.Interval = 100;
             }
             if (!checkBox15.Checked)//stm32 ile kullanmak için
             {
@@ -2471,7 +2466,6 @@ namespace UC45_User_Interface
                 }
             }
             motpos0 = motpos;
-            motpos = 0;//!!
             zpos0 = zpos;
             int syc = 0;
             maxtemp = 0;
@@ -2503,6 +2497,7 @@ namespace UC45_User_Interface
                             if ((btn9 == 1 ||loadExt))
                             {
                                 Tdms_Saver("Step " + (i + 1) + " Approach");
+                                await Task.Delay(timer2.Interval);
                                 timer2.Start();
                             }
                             fileopen = pathtemp + "\\Step" + (i + 1) + "_Approach";
@@ -2518,13 +2513,7 @@ namespace UC45_User_Interface
                                     try
                                     {
                                         motorPos.Text = Convert.ToString(motpos / 1000000);
-                                        textBox1.Text = receive;
-                                        if (deney != -1 && deney != 0)
-                                        {
-                                            File.AppendAllText(fileopen + "_Actuator_Position.txt", (zpos - zpos0).ToString() + Environment.NewLine);
-                                            File.AppendAllText(fileopen + "_Motor_Position.txt", ((motpos - motpos0) / 1000).ToString() + Environment.NewLine);
-
-                                        }
+                                        textBox1.Text = Convert.ToString(vol);
                                     }
                                     catch (Exception ex)
                                     {
@@ -2551,6 +2540,7 @@ namespace UC45_User_Interface
                         if (((depth[i] != "0.000000" && depth[i] != "0") || (duration[i] != "0.000000" && duration[i] != "0")) && (btn9 == 1 || loadExt))
                         {
                             Tdms_Saver("Step " + (i + 1) + " Indentation");
+                            await Task.Delay(timer2.Interval);
                             fileopen = pathtemp + "\\Step" + (i + 1) + "_Indentation";
                             timer2.Start();
                         }
@@ -2570,15 +2560,11 @@ namespace UC45_User_Interface
                                     if (motorDrive.Checked)
                                     {
                                         motorPos.Text = Convert.ToString(motpos / 1000000);
-                                        File.AppendAllText(fileopen + "_Motor_Position.txt", ((motpos - motpos0) / 1000).ToString() + Environment.NewLine);
-
                                         //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                                     }
                                     else if (!motorDrive.Checked)
                                     {
-                                        textBox1.Text = receive;
-                                        File.AppendAllText(fileopen + "_Actuator_Position.txt", (zpos - zpos0).ToString() + Environment.NewLine);
-                                    
+                                        textBox1.Text = Convert.ToString(vol);
                                     }
                                 }
                                 catch (Exception ex)
@@ -2599,11 +2585,13 @@ namespace UC45_User_Interface
                                 Send("INFIN", "");
                             }
                             Properties.Settings.Default["motpos"] = motorPos.Text;
+                            Properties.Settings.Default["Vapp"] = textBox1.Text;
                             Properties.Settings.Default.Save();
                         }
                         if ((btn9 == 1 || loadExt) && amplitude[i] != "0.000000" && amplitude[i] != "0" && emCounter % 2 != 0)
                         {
                             Tdms_Saver("Step " + (i + 1) + " Oscillation");
+                            await Task.Delay(timer2.Interval);
                             timer2.Start();
                             fileopen = pathtemp + "\\Step" + (i + 1) + "_Oscillation";
                         }
@@ -2623,13 +2611,10 @@ namespace UC45_User_Interface
                                     {
                                         motorPos.Text = Convert.ToString(motpos / 1000000);
                                         //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
-                                        File.AppendAllText(fileopen + "_Motor_Position.txt", ((motpos - motpos0) / 1000).ToString() + Environment.NewLine);
-
                                     }
                                     else if (!motorDrive.Checked)
                                     {
-                                        textBox1.Text = receive;
-                                        File.AppendAllText(fileopen + "_Actuator_Position.txt", (zpos - zpos0).ToString() + Environment.NewLine);
+                                        textBox1.Text = Convert.ToString(vol);
                                     }
                                 }
                                 catch (Exception ex)
@@ -2649,6 +2634,7 @@ namespace UC45_User_Interface
                             {
                                 Send("OSFIN", "");
                             }
+                            Properties.Settings.Default["Vapp"] = textBox1.Text;
                             Properties.Settings.Default["motpos"] = motorPos.Text;
                             Properties.Settings.Default.Save();
                         }
@@ -2665,6 +2651,7 @@ namespace UC45_User_Interface
                             if ((btn9 == 1 || loadExt))
                             {
                                 Tdms_Saver("Step " + (i + 1) + " Retract");
+                                await Task.Delay(timer2.Interval);
                                 timer2.Start();
                             }
                             fileopen = pathtemp + "\\Step" + (i + 1) + "_Retract";
@@ -2681,9 +2668,7 @@ namespace UC45_User_Interface
                                     try
                                     {
                                         motorPos.Text = Convert.ToString(motpos / 1000000);
-                                        File.AppendAllText(fileopen + "_Motor_Position.txt", ((motpos - motpos0) / 1000).ToString() + Environment.NewLine);
-                                        textBox1.Text = receive;
-                                        File.AppendAllText(fileopen + "_Actuator_Position.txt", (zpos - zpos0).ToString() + Environment.NewLine);
+                                        textBox1.Text = Convert.ToString(vol);
                                     }
                                     catch (Exception ex)
                                     {
@@ -2705,7 +2690,9 @@ namespace UC45_User_Interface
                                 }
                             }
                         }
-                        progressBar1.Value = (i + 1) * 100 / (comboBox2.Items.Count - 1);
+                        Properties.Settings.Default["Vapp"] = textBox1.Text;
+                        Properties.Settings.Default["motpos"] = motorPos.Text;
+                        Properties.Settings.Default.Save();
                     }
                     else
                     {
@@ -2872,7 +2859,7 @@ namespace UC45_User_Interface
                         {
                             apfin = 1;
                         }
-                        else if (comread.Contains("Exp"))
+                        else if (comread.Contains("Exp")|| comread.Contains("Cal"))
                         {
                             expfin = 1;
                         }
@@ -2976,6 +2963,10 @@ namespace UC45_User_Interface
                             if (nbyt >= 7)
                             {
                                 receive = Convert.ToString(vol);
+                                if (deney != -1 && deney != 0)
+                                {
+                                    File.AppendAllText(fileopen + "_Actuator_Voltage.txt", receive + Environment.NewLine);
+                                }
                             }
                             comsay = 0;
                             repsay = 0;
@@ -3015,7 +3006,14 @@ namespace UC45_User_Interface
                                 motpos = motpos + abqi * stepinc / 2;
                                 abqi = 0;
                             }
-                            receive = abq;
+                            if (deney != 2 || deney != 1)
+                            {
+                                receive = abq;
+                            }
+                            else
+                            {
+                                File.AppendAllText(fileopen + "_Motor_Position.txt", abq + Environment.NewLine);
+                            }
                             abq = "";
                             if (comread.Contains("LM"))
                             {
@@ -3700,12 +3698,13 @@ namespace UC45_User_Interface
                     analogInReader.BeginReadWaveform(samplePerchannel, myAsyncCallback, runningTask);
                     if (rateNumeric.Value <= 10000)
                     {
-                        timer2.Interval = 50;
+                        timer2.Interval = 100;
                     }
                     else
                     {
-                        timer2.Interval = 1;
+                        timer2.Interval = 100;
                     }
+                    datas.Insert(0, 0);
                     timer2.Start();
                 }
                 catch (DaqException exception)
@@ -3748,7 +3747,7 @@ namespace UC45_User_Interface
         private void timer2_Tick(object sender, EventArgs e)
         {
             tim2tim = tim2i * timer2.Interval/1000.0;
-            if (chartptcnt > 10000)
+            if (chartptcnt > 200)
             {
                 for (int i = 0; i < chart1.Series.Count; i++)
                 {
@@ -3756,30 +3755,29 @@ namespace UC45_User_Interface
                 }
                 chartptcnt = 0;
             }
-            if (deney == 0 && data != null)
+            if (deney == 0 && datas != null)
             {
-                TestBox.Text=dataR[0].GetScaledData().Average().ToString();
+                TestBox.Text=datas[0].ToString();
             }
-            else if (deney != -1 && dataR != null)
+            else if (deney != -1 && datas != null)
             {
-                for (int i = 0; i < dataR.Count(); i++)
+                for (int i = 0; i < datas.Count(); i++)
                 {
                     if (temperChan == phychannel[i])
                     {
-                        tempshow.Text = dataR[i].GetScaledData().Average().ToString(); 
-                        if(maxtemp< dataR[i].GetScaledData().Average())
+                        tempshow.Text = datas[i].ToString();
+                        if (maxtemp < datas[i])
                         {
-                            maxtemp = dataR[i].GetScaledData().Average();
+                            maxtemp = datas[i];
                         }
                     }
                     else if (voltagechannel == phychannel[i])
                     {
-                        gageShow.Text = dataR[i].GetScaledData().Average().ToString();
+                        gageShow.Text = datas[i].ToString();
                     }
                     if (plotstop == 0)
                     {
-                        chart1.Series[kan + 1 - dataR.Count() + i].Points.AddXY(tim2tim,
-        dataR[i].GetScaledData().Average());
+                        chart1.Series[kan + 1 - datas.Count() + i].Points.AddXY(tim2tim,datas[i]);
                         chartptcnt++;
                     }
                 }
@@ -5590,18 +5588,18 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
         {
             if (znull % 2 == 0)
             {
-                vnull = Convert.ToDouble(vapplied) * 20;
-                zrange = kp * (vnull - vmin);
+                vnull = Convert.ToDouble(vapplied);
+                zrange = kp * 20*(vnull - vmin);
                 button10.Text = "Null";
-                textBox10.Text = TextFormat(((vnull - vol) * kp).ToString(), "Z", 0, (vnull - vmin) * kp);
+                textBox10.Text = TextFormat(((vnull - vol) *20* kp).ToString(), "Z", 0, (vnull - vmin) *20* kp);
                 znull++;
             }
             else
             {
                 button10.Text = "Set Max";
                 vnull = vmax;
-                zrange = kp * (vnull - vmin);
-                textBox10.Text = TextFormat(((vnull - vol) * kp).ToString(), "Z", (vmin - (vmax - vnull) + 20) * kp, (vnull - vmin) * kp);
+                zrange = kp *20* (vnull - vmin);
+                textBox10.Text = TextFormat(((vnull - vol) *20* kp).ToString(), "Z", (vmin - (vmax - vnull) + 1) *20* kp, (vnull - vmin)*20 * kp);
                 znull++;
             }
 
@@ -5925,12 +5923,12 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                 if (zCount % 2 != 0)
                 {
                     divideresult = (decimal)(Convert.ToDouble(VappNumeric.Value) / 1000.0);
-                    textBox10.Text = TextFormat(divideresult.ToString(), "Z", 0, (vnull - vmin) * kp);
+                    textBox10.Text = TextFormat(divideresult.ToString(), "Z", 0, (vnull - vmin) *20* kp);
                 }
                 else
                 {
                     divideresult = (decimal)(Convert.ToDouble(VappNumeric.Value) / 1000000.0);
-                    textBox1.Text = TextFormat(divideresult.ToString(), "Vapp", vmin / 20, vnull / 20);
+                    textBox1.Text = TextFormat(divideresult.ToString(), "Vapp", vmin, vnull);
                 }
                 labelVapp.Text = textBox1.Text;
                 Send(labelVapp.Text, "W");
@@ -6042,6 +6040,7 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
         {
             if (btn9 == 1)
             {
+                datas.RemoveRange(0, datas.Count());
                 myTask = new NationalInstruments.DAQmx.Task();
                 List<AIChannel> aIChannels = new List<AIChannel>();
                 for (int i = 0; i < chtype.Count; i++)
@@ -6219,6 +6218,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     chart1.Series.Add(kanal);
                     kan = chart1.Series.IndexOf(kanal);
                     chart1.Series[kan].ChartType = SeriesChartType.FastPoint;
+                    datas.Insert(j,0);
                     if (chtype[j] == 1 || chtype[j] == 2)
                     {
                         chart1.Series[kan].YAxisType = AxisType.Secondary;
