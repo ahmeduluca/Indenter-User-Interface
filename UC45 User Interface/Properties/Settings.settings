@@ -125,5 +125,14 @@
     <Setting Name="yenc" Type="System.String" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
+    <Setting Name="tipName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Cone</Value>
+    </Setting>
+    <Setting Name="sampleName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Fused Silica</Value>
+    </Setting>
+    <Setting Name="procedureName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1 Location Depth Sweep</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

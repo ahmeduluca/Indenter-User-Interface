@@ -514,5 +514,41 @@ namespace UC45_User_Interface.Properties {
                 this["yenc"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Cone")]
+        public string tipName {
+            get {
+                return ((string)(this["tipName"]));
+            }
+            set {
+                this["tipName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Fused Silica")]
+        public string sampleName {
+            get {
+                return ((string)(this["sampleName"]));
+            }
+            set {
+                this["sampleName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1 Location Depth Sweep")]
+        public string procedureName {
+            get {
+                return ((string)(this["procedureName"]));
+            }
+            set {
+                this["procedureName"] = value;
+            }
+        }
     }
 }

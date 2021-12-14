@@ -106,7 +106,7 @@ namespace UC45_User_Interface
                         myAsyncCallback, runningTask, data);
                 }
             }
-            catch(DaqException exception)
+            catch (DaqException exception)
             {
                 analogInReader.EndReadWaveform(ar);
                 timer2.Stop();
@@ -179,7 +179,7 @@ namespace UC45_User_Interface
             threadPitch.Text = Properties.Settings.Default["pitch"].ToString();
             motpos = Convert.ToDouble(motorPos.Text) * 1000000;
             motmax = Convert.ToDouble(motorMax.Text) * 1000000;
-            motspeed = Convert.ToDouble(stepSpeed.Text) ;
+            motspeed = Convert.ToDouble(stepSpeed.Text);
             stepang = Convert.ToDouble(stepAng.Text);
             micstepBox.SelectedIndex = Convert.ToInt16(Properties.Settings.Default["micros"].ToString());
             micstep = Convert.ToInt16(micstepBox.SelectedItem);
@@ -194,6 +194,9 @@ namespace UC45_User_Interface
             xinc = Convert.ToDouble(xTour.Text);
             yinc = Convert.ToDouble(yTour.Text);
             selectedHeater.SelectedIndex = 0;
+            tipName.Text = Properties.Settings.Default["tipName"].ToString();
+            sampleName.Text = Properties.Settings.Default["sampleName"].ToString();
+            procedureName.Text = Properties.Settings.Default["procedureName"].ToString();
             if (Properties.Settings.Default["Mode"].ToString() == "1")
             {
                 checkBox10.Checked = true;
@@ -244,6 +247,7 @@ namespace UC45_User_Interface
         }
         string texts = "";
         bool sending = false;
+        string directMes = "";
         private void Send(string text, string prefix)
         {
             sending = true;
@@ -254,6 +258,7 @@ namespace UC45_User_Interface
                 temp = temp.Insert(text.Length, "E");
                 temp = prefix.Insert(prefix.Length, temp);
                 int length = temp.Length;
+                directMes = temp;
                 id = $"5{length:D2}00";
                 char[] buffer = new char[id.Length];
                 for (int i = 0; i < id.Length; i++)
@@ -264,7 +269,7 @@ namespace UC45_User_Interface
                 texts = temp;
                 directpass = 1;
             }
-            else if (isConnected && prefix == ""&&serialPort2.IsOpen)
+            else if (isConnected && prefix == "" && serialPort2.IsOpen)
             {
                 serialPort2.Write(temp);
                 lastwords = temp;
@@ -349,7 +354,7 @@ namespace UC45_User_Interface
                 vapplied = textBox1.Text;
                 if (!textBox10.Enabled && textBox1.Text != "" && resulttextform == DialogResult.Ignore)
                 {
-                    textBox10.Text = ((vnull - Convert.ToDouble(vapplied))*20 * kp).ToString();
+                    textBox10.Text = ((vnull - Convert.ToDouble(vapplied)) * 20 * kp).ToString();
                 }
                 else if (!textBox10.Enabled && textBox1.Text != "" && resulttextform == DialogResult.Ignore)
                 {
@@ -619,7 +624,7 @@ namespace UC45_User_Interface
                 textBox8.Text = labelVmax.Text;
                 Send(labelVmax.Text, "M");
                 vmax = Convert.ToDouble(textBox8.Text);
-                zrange = kp *20* (vnull - vmin);
+                zrange = kp * 20 * (vnull - vmin);
                 Properties.Settings.Default["Vmax"] = textBox8.Text;
                 Properties.Settings.Default.Save();
                 textBox1.Text = TextFormat(textBox1.Text, "Vapp", vmin, vmax);
@@ -638,7 +643,7 @@ namespace UC45_User_Interface
                 textBox9.Text = labelVmin.Text;
                 Send(labelVmin.Text, "N");
                 vmin = Convert.ToDouble(textBox9.Text);
-                zrange = kp *20* (vnull - vmin);
+                zrange = kp * 20 * (vnull - vmin);
                 Properties.Settings.Default["Vmin"] = textBox9.Text;
                 Properties.Settings.Default.Save();
                 textBox1.Text = TextFormat(textBox1.Text, "Vapp", vmin, vmax);
@@ -655,11 +660,11 @@ namespace UC45_User_Interface
             {
                 try
                 {
-                    labelZ.Text = TextFormat(textBox10.Text, "Z", (vmin - (vmax - vnull) + 1) *20* kp, (vnull - vmin) *20* kp);
+                    labelZ.Text = TextFormat(textBox10.Text, "Z", (vmin - (vmax - vnull) + 1) * 20 * kp, (vnull - vmin) * 20 * kp);
                     textBox10.Text = labelZ.Text;
-                    if ( zrange >= Convert.ToDouble(textBox10.Text))//hysteresis on/off-> cb8.
+                    if (zrange >= Convert.ToDouble(textBox10.Text))//hysteresis on/off-> cb8.
                     {
-                        sendz = ((vnull*20 - Convert.ToDouble(textBox10.Text) / kp) / 20).ToString();
+                        sendz = ((vnull * 20 - Convert.ToDouble(textBox10.Text) / kp) / 20).ToString();
                         textBox1.Text = TextFormat(sendz, "Vapp", vmin, vnull);
                     }
                     else
@@ -694,7 +699,7 @@ namespace UC45_User_Interface
                 {
                     labelVapp.Text = TextFormat(textBox1.Text, "Vapp", vmin, vnull);
                     textBox1.Text = labelVapp.Text;
-                   // verticalProgressBar1.Value = Convert.ToInt16(200 * (Convert.ToDouble(textBox1.Text) + 1) / 17);
+                    // verticalProgressBar1.Value = Convert.ToInt16(200 * (Convert.ToDouble(textBox1.Text) + 1) / 17);
                     clickinc = 0;
                     Send(labelVapp.Text, "W");
                     labelZ.Text = textBox10.Text;
@@ -842,12 +847,12 @@ namespace UC45_User_Interface
                     zplus = false;
                 }
                 zpos = Convert.ToDouble(textBox10.Text);
-                if (!textBox1.Enabled&& resulttextform == DialogResult.Ignore && zrange >= Convert.ToDouble(textBox10.Text))
+                if (!textBox1.Enabled && resulttextform == DialogResult.Ignore && zrange >= Convert.ToDouble(textBox10.Text))
                 {
                     //textBox1.Text = TextFormat(((vnull - (Convert.ToDouble(textBox10.Text) / kp)) / 20).ToString(), "Vapp", vmin/20,vmax/20);
-                    textBox1.Text = ((vnull*20 - (Convert.ToDouble(textBox10.Text) / kp)) / 20).ToString();
+                    textBox1.Text = ((vnull * 20 - (Convert.ToDouble(textBox10.Text) / kp)) / 20).ToString();
                 }
-                else if (!textBox1.Enabled&& resulttextform == DialogResult.Ignore)
+                else if (!textBox1.Enabled && resulttextform == DialogResult.Ignore)
                 {
                     if (zplus)
                     {
@@ -885,17 +890,17 @@ namespace UC45_User_Interface
                     textBox12.Text = speed[comboBox2.SelectedIndex - 1];
                     indXpst.Text = Xpos[comboBox2.SelectedIndex - 1];
                     indYpst.Text = Ypos[comboBox2.SelectedIndex - 1];
-                    dtRamp.Text=dTemp[comboBox2.SelectedIndex - 1];
-                    dtSpeed.Text=dTspeed[comboBox2.SelectedIndex - 1];
-                    dtAmp.Text=dTamp[comboBox2.SelectedIndex - 1];
-                    dtF.Text=dTfreq[comboBox2.SelectedIndex - 1];
-                    dtPhase.Text=dTlag[comboBox2.SelectedIndex - 1];
-                    retractStep.Checked= Convert.ToBoolean(retStep[comboBox2.SelectedIndex - 1]);
+                    dtRamp.Text = dTemp[comboBox2.SelectedIndex - 1];
+                    dtSpeed.Text = dTspeed[comboBox2.SelectedIndex - 1];
+                    dtAmp.Text = dTamp[comboBox2.SelectedIndex - 1];
+                    dtF.Text = dTfreq[comboBox2.SelectedIndex - 1];
+                    dtPhase.Text = dTlag[comboBox2.SelectedIndex - 1];
+                    retractStep.Checked = Convert.ToBoolean(retStep[comboBox2.SelectedIndex - 1]);
                     holdDur.Text = retHold[comboBox2.SelectedIndex - 1];
                     holdPercent.Value = holdAt[comboBox2.SelectedIndex - 1];
-                    for(int i=0; i < 3; i++)
+                    for (int i = 0; i < 3; i++)
                     {
-                        if(i == dTwhen[comboBox2.SelectedIndex - 1])
+                        if (i == dTwhen[comboBox2.SelectedIndex - 1])
                         {
                             giveWhile.SetItemChecked(dTwhen[comboBox2.SelectedIndex - 1], true);
                         }
@@ -1006,12 +1011,15 @@ namespace UC45_User_Interface
         bool tempcon = false;
         private string Experimentlog(string now)
         {
-            string format="";
+            string format = "";
             try
             {
                 // DATE TIME & Medium Temperature and Humidity
                 format = "Indentation Experiment" + " " + now + Environment.NewLine +
                     "(DHT11 DATA) Medium Temperature: " + humTemp.Text + " Celcius - Medium Relative Humidity: %" + relHum.Text + Environment.NewLine;
+
+                //Tip & Sample Info
+                format = format + "Tip: " + tipName.Text + "  Sample: " + sampleName.Text + "\t Experiment Procedure: " + procedureName.Text + Environment.NewLine;
 
                 //BALANCE &DEVIATION &VIB CHECK
                 format = format + "\nBalance of Indenter: " + Environment.NewLine + "Trapezoid Screw Holder (Head) (phi, theta) :" + balance[0, 0].ToString() + ", "
@@ -1024,11 +1032,11 @@ namespace UC45_User_Interface
                 //STEP MOTOR
                 format = format + $"\nStep Motor Position:{motorPos.Text} mm\nParameters:" + Environment.NewLine + "Stepper Angle: " + stepAng.Text + " Thread Pitch Length: "
                     + threadPitch.Text + Environment.NewLine + "Driver Micro Step(*256 movement resolution): " + micstepBox.SelectedItem.ToString() + Environment.NewLine +
-                    "Calculated Step Control: " + stepIncbox.Text +" nm"+ Environment.NewLine;
+                    "Calculated Step Control: " + stepIncbox.Text + " nm" + Environment.NewLine;
 
                 //XYMOTOR 
                 format = format + "\nXY Motor Settings: (KT180 DC)" + Environment.NewLine + "X Position (mm): " + xkon.ToString() + "; Y Position (mm): " + ykon.ToString() +
-                    Environment.NewLine + "X Encoder Coefficient: (um/#) " + xinc.ToString() + "; Y Encoder Coefficient: (um/#) " + yinc.ToString()+Environment.NewLine;
+                    Environment.NewLine + "X Encoder Coefficient: (um/#) " + xinc.ToString() + "; Y Encoder Coefficient: (um/#) " + yinc.ToString() + Environment.NewLine;
 
                 //ACTUATOR
                 format = format + "\nActuator APA60S parameters:" + Environment.NewLine + "Piezo Constant: " + kp.ToString() +
@@ -1046,7 +1054,7 @@ namespace UC45_User_Interface
                 {
                     if (activeHeat[i] || duty[i] != 0)
                     {
-                        format = format + "\n Heater Properties: Internal Heater used via MCU channel " + (i+1).ToString() + Environment.NewLine + "Heater Duty Cycle (f:1kHz) %: " +
+                        format = format + "\n Heater Properties: Internal Heater used via MCU channel " + (i + 1).ToString() + Environment.NewLine + "Heater Duty Cycle (f:1kHz) %: " +
                             duty[i].ToString() + " for holding at T: " + setTemper[i] + Environment.NewLine;
                         if (activeHeat[i])
                         {
@@ -1056,7 +1064,7 @@ namespace UC45_User_Interface
                             format = isBand[i] ? (format + "Band Interval: " + bandInter[i].ToString()) : (format);
                             format = format + $"\nProportional Gain: {proGains[i]:0.00} applied within Error larger than Sensor Deviation: {heaterSensorDev[i]:0.00}\n";
                             format = format + $"Heater to sensor thermal mass dependent time constant given: {heatTime[i] / 10.0:0.00} seconds.\n";
-                            format = (slopeHeat[i] != null) ? (format + "T = %Duty "+slopeHeat[i].ToString("0.000") + " + "+cnstHeat[i].ToString("0.000")) : (format);
+                            format = (slopeHeat[i] != null) ? (format + "T = %Duty " + slopeHeat[i].ToString("0.000") + " + " + cnstHeat[i].ToString("0.000")) : (format);
                         }
 
                     }
@@ -1230,147 +1238,160 @@ namespace UC45_User_Interface
             textexp = new List<string>();
             int osctype = 0;
             int st = depth.Count;
-            if (autoApp.Checked && loadExt)
+            DialogResult result = DialogResult.No;
+            result = MessageBox.Show("Are experiment settings ready?", "Set Experiment", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            if (st > 0 && result == DialogResult.Yes)
             {
-                Send($"401{st:D2}", "");
-            }
-            else if (autoApp.Checked)
-            {
-                Send($"402{st:D2}", "");
+                if (autoApp.Checked && loadExt)
+                {
+                    Send($"401{st:D2}", "");
+                }
+                else if (autoApp.Checked)
+                {
+                    Send($"402{st:D2}", "");
+                }
+                else
+                {
+                    Send($"400{st:D2}", "");
+                }
+                for (int i = 0; i < depth.Count; i++)
+                {
+                    if (box5[i])
+                    {
+                        osctype = 1;
+                    }
+                    else if (box11[i])
+                    {
+                        osctype = 2;
+                    }
+                    else
+                    {
+                        osctype = 0;
+                    }
+                    var dtov = 0.0;
+                    if (depth[i] != "")
+                    {
+                        if (motorDrive.Checked)
+                        {
+                            dirind = Math.Sign(Convert.ToDouble(depth[i]));
+                            if (btn7say == 0)//Piezo Voltage  Control
+                            {
+                                dtov = Math.Abs(Convert.ToDouble(depth[i]) * 1000 / stepinc);
+                            }
+                            else if (btn7say == 1)//Force Control
+                            {
+                                dtov = Convert.ToDouble(depth[i]) * 1000;
+                            }
+                            else if (btn7say == 2)//Depth Control
+                            {
+                                dtov = Math.Abs(Convert.ToDouble(depth[i]) * 1000 / stepinc);
+                            }
+                        }
+                        else
+                        {
+                            dirind = Math.Sign(Convert.ToDouble(depth[i]));
+                            if (btn7say == 0)//Piezo Voltage  Control
+                            {
+                                dtov = Math.Abs((Convert.ToDouble(depth[i]) / (kp * 20)) * 1000000);
+                            }
+                            else if (btn7say == 1)//Force Control
+                            {
+                                dtov = Convert.ToDouble(depth[i]) * 1000;
+                            }
+                            else if (btn7say == 2)
+                            {//Displacement Control
+                                dtov = Math.Abs((Convert.ToDouble(depth[i]) / (kp * 20)) * 1000000);
+                            }
+                        }
+                        if (dirind == -1)
+                        {
+                            dirind = 2;
+                        }
+                    }
+                    var depthsend = string.Format("{0:000000000}|0", dtov);
+                    var stov = 0.0;
+                    if (speed[i] != "")
+                    {
+                        if (motorDrive.Checked && Convert.ToDouble(speed[i]) != 0)
+                        {
+                            stov = 1000 * (Math.Abs(Convert.ToDouble(depth[i])) / Convert.ToDouble(speed[i])) / dtov;
+                        }
+                        else
+                        {
+                            stov = (Convert.ToDouble(speed[i]) / (kp * 20)) * 1000000;
+                        }
+                    }
+                    var speedsend = string.Format("{0:000000000}|0", stov);
+                    var xsend = Xpos[i].Contains("-") ? (string.Format("{0:D8}|0", Convert.ToInt16(Convert.ToDouble(Xpos[i]) / xinc)))
+                        : (string.Format("{0:D9}|0", Convert.ToInt16(Convert.ToDouble(Xpos[i]) / xinc)));
+                    var ysend = Ypos[i].Contains("-") ? (string.Format("{0:D8}|0", Convert.ToInt16(Convert.ToDouble(Ypos[i]) / yinc)))
+                        : (string.Format("{0:D9}|0", Convert.ToInt16(Convert.ToDouble(Ypos[i]) / yinc)));
+                    var dtsend = string.Format("{0:00000}|0", Convert.ToDouble(dTemp[i]) * 100);
+                    var dthiz = string.Format("{0:00000}|0", Convert.ToDouble(dTspeed[i]) * 1000);
+                    var dtgen = string.Format("{0:00000}|0", Convert.ToDouble(dTamp[i]) * 100);
+                    var dtper = string.Format("{0:00000}|0", Convert.ToDouble(dTfreq[i]) * 100);
+                    var dtfaz = string.Format("{0:00000}|0", Convert.ToDouble(dTlag[i]) * 100);
+                    var durasend = "000000000|0";
+                    if (duration[i] != "")
+                    {
+                        durasend = string.Format("{0:000000000}|0", Convert.ToDouble(duration[i]) * 1000);
+                    }
+                    var atov = (Convert.ToDouble(amplitude[i]) / (kp * 20)) * 1000000;
+                    if (motorDrive.Checked)
+                    {
+                        atov = Convert.ToDouble(amplitude[i]) * 1000 / stepinc;
+                    }
+                    var ampsend = string.Format("{0:000000000}|0", atov);
+                    var freqsend = "000000000|0";
+                    if (Convert.ToDouble(frequency[i]) > 0)
+                    {
+                        if (motorDrive.Checked)
+                        {
+                            freqsend = string.Format("{0:000000000}|0", 1000000 / Convert.ToDouble(frequency[i]));
+                        }
+                        else
+                        {
+                            freqsend = string.Format("{0:000000000}|0", 1000 / Convert.ToDouble(frequency[i]));
+                        }
+                    }
+                    var intsend = string.Format("{0:000000000}|0", Convert.ToDouble(interval[i]) * 1000);
+                    if (motorDrive.Checked)
+                    {
+                        intsend = string.Format("{0:000000000}|0", Convert.ToDouble(interval[i]) * Convert.ToDouble(frequency[i]));
+                    }
+                    var removeHold = Convert.ToDouble(retHold[i]) * 1000;
+                    if (removeHold > 999999)
+                    {
+                        removeHold = 10;
+                    }
+                    var removalHoldSend = string.Format("{0:000000}|0", removeHold);
+                    var removeHoldPercent = string.Format("{0:000}|0", holdAt[i]);
+                    textexp.Insert(i, $"{i + 1:D2}" + "|" + dirind + depthsend + speedsend + durasend +
+                         osctype + "|0" + ampsend + freqsend + intsend + xsend + ysend + dtsend + dthiz + dtgen + dtper + dtfaz + dTwhen[i] +
+                         "|0" + retStep[i] + "|0" + removalHoldSend + removeHoldPercent);
+                    if (textexp[i].Length == 149)
+                    {
+                        startexp = 1;
+                        continue;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Program Error!");
+                        exppass = 0;
+                        startexp = 0;
+                        textexp.Clear();
+                        break;
+                    }
+                }
+                if (startexp == 1)
+                {
+                    exppass = 1;
+                }
             }
             else
             {
-                Send($"400{st:D2}", "");
-            }
-            for (int i = 0; i < depth.Count; i++)
-            {
-                if (box5[i])
-                {
-                    osctype = 1;
-                }
-                else if (box11[i])
-                {
-                    osctype = 2;
-                }
-                else
-                {
-                    osctype = 0;
-                }
-                var dtov = 0.0;
-                if (depth[i] != "")
-                {
-                    if (motorDrive.Checked)
-                    {
-                        dirind = Math.Sign(Convert.ToDouble(depth[i]));
-                        if(btn7say  == 0)//Piezo Voltage  Control
-                        {
-                            dtov = Math.Abs(Convert.ToDouble(depth[i]) * 1000 / stepinc);
-                        }
-                        else if(btn7say == 1)//Force Control
-                        {
-                            dtov = Convert.ToDouble(depth[i]) * 1000;
-                        }
-                        else if (btn7say == 2)//Depth Control
-                        {
-                            dtov = Math.Abs(Convert.ToDouble(depth[i]) * 1000 / stepinc);
-                        }
-                    }
-                    else
-                    {
-                        dirind = Math.Sign(Convert.ToDouble(depth[i]));
-                        if (btn7say == 0)//Piezo Voltage  Control
-                        {
-                            dtov = Math.Abs((Convert.ToDouble(depth[i]) / (kp * 20)) * 1000000);
-                        }
-                        else if (btn7say == 1)//Force Control
-                        {
-                            dtov = Convert.ToDouble(depth[i]) * 1000;
-                        }
-                        else if (btn7say == 2)
-                        {//Displacement Control
-                            dtov = Math.Abs((Convert.ToDouble(depth[i]) / (kp * 20)) * 1000000);
-                        }
-                    }
-                    if (dirind == -1)
-                    {
-                        dirind = 2;
-                    }
-                }
-                var depthsend = string.Format("{0:000000000}|0", dtov);
-                var stov = 0.0;
-                if (speed[i] != "")
-                {
-                    if (motorDrive.Checked&&Convert.ToDouble(speed[i])!=0)
-                    {
-                        stov = 1000*(Math.Abs(Convert.ToDouble(depth[i])) / Convert.ToDouble(speed[i])) / dtov;
-                    }
-                    else
-                    {
-                        stov = (Convert.ToDouble(speed[i]) / (kp * 20)) * 1000000;
-                    }
-                }
-                var speedsend = string.Format("{0:000000000}|0", stov);
-                var xsend = Xpos[i].Contains("-") ? (string.Format("{0:D8}|0", Convert.ToInt16(Convert.ToDouble(Xpos[i]) / xinc)))
-                    :(string.Format("{0:D9}|0", Convert.ToInt16(Convert.ToDouble(Xpos[i]) /xinc)));
-                var ysend = Ypos[i].Contains("-") ? (string.Format("{0:D8}|0", Convert.ToInt16(Convert.ToDouble(Ypos[i]) / yinc)))
-                    : (string.Format("{0:D9}|0", Convert.ToInt16(Convert.ToDouble(Ypos[i]) / yinc)));
-                var dtsend = string.Format("{0:00000}|0", Convert.ToDouble(dTemp[i]) * 100);
-                var dthiz = string.Format("{0:00000}|0", Convert.ToDouble(dTspeed[i]) * 1000);
-                var dtgen = string.Format("{0:00000}|0", Convert.ToDouble(dTamp[i]) * 100);
-                var dtper = string.Format("{0:00000}|0", Convert.ToDouble(dTfreq[i]) * 100);
-                var dtfaz = string.Format("{0:00000}|0", Convert.ToDouble(dTlag[i]) * 100);
-                var durasend = "000000000|0";
-                if (duration[i] != "")
-                {
-                    durasend = string.Format("{0:000000000}|0", Convert.ToDouble(duration[i]) * 1000);
-                }
-                var atov = (Convert.ToDouble(amplitude[i]) / (kp * 20)) * 1000000;
-                if (motorDrive.Checked)
-                {
-                    atov = Convert.ToDouble(amplitude[i]) * 1000 / stepinc;
-                }
-                var ampsend = string.Format("{0:000000000}|0", atov);
-                var freqsend = "000000000|0";
-                if (Convert.ToDouble(frequency[i]) > 0)
-                {
-                    if (motorDrive.Checked)
-                    {
-                        freqsend = string.Format("{0:000000000}|0", 1000000 / Convert.ToDouble(frequency[i]));
-                    }
-                    else
-                    {
-                        freqsend = string.Format("{0:000000000}|0", 1000 / Convert.ToDouble(frequency[i]));
-                    }
-                }
-                var intsend = string.Format("{0:000000000}|0", Convert.ToDouble(interval[i]) * 1000);
-                if (motorDrive.Checked)
-                {
-                    intsend = string.Format("{0:000000000}|0", Convert.ToDouble(interval[i]) * Convert.ToDouble(frequency[i]));
-                }
-                var removeHold = Convert.ToDouble(retHold[i])*1000;
-                if (removeHold > 999999)
-                {
-                    removeHold = 10;
-                }
-                var removalHoldSend = string.Format("{0:000000}|0",removeHold);
-                var removeHoldPercent = string.Format("{0:000}|0", holdAt[i]);
-                textexp.Insert(i, $"{i + 1:D2}" + "|" + dirind + depthsend + speedsend + durasend +
-                     osctype + "|0" + ampsend + freqsend + intsend + xsend + ysend + dtsend + dthiz + dtgen + dtper + dtfaz + dTwhen[i] + 
-                     "|0" + retStep[i] + "|0"+removalHoldSend+removeHoldPercent);
-                if (textexp[i].Length == 149)
-                {
-                    exppass = 1;
-                    startexp = 1;
-                    continue;
-                }
-                else
-                {
-                    MessageBox.Show("Program Error!");
-                    exppass = 0;
-                    startexp = 0;
-                    textexp.Clear();
-                    break;
-                }
+                startexp = 0;
+                exppass = 0;
             }
         }
         List<string> depth = new List<string>();
@@ -1409,11 +1430,11 @@ namespace UC45_User_Interface
             else if (e.KeyChar == (char)13)
             {
                 kp = Convert.ToDouble(textBox17.Text);
-                zrange = kp * 20 *(vnull - vmin);
+                zrange = kp * 20 * (vnull - vmin);
                 textBox17.Text = labelPiezo.Text;
                 Properties.Settings.Default["Piezo"] = textBox17.Text;
                 Properties.Settings.Default.Save();
-                textBox10.Text = TextFormat(((vnull - vol) *20* kp).ToString(), "Z", (vmin - (vmax - vnull) + 1) *20* kp, (vnull - vmin) * 20 *kp);
+                textBox10.Text = TextFormat(((vnull - vol) * 20 * kp).ToString(), "Z", (vmin - (vmax - vnull) + 1) * 20 * kp, (vnull - vmin) * 20 * kp);
             }
         }
 
@@ -1871,7 +1892,7 @@ namespace UC45_User_Interface
                 totaldepth = textBox20.Text;
                 if (motorDrive.Checked)
                 {
-                    textBox21.Text = Convert.ToString((int)(Convert.ToDouble(textBox20.Text)*1000 / stepinc));
+                    textBox21.Text = Convert.ToString((int)(Convert.ToDouble(textBox20.Text) * 1000 / stepinc));
                     labelSteps.Text = textBox21.Text;
                     steps = textBox21.Text;
                 }
@@ -1880,7 +1901,7 @@ namespace UC45_User_Interface
 
         private void textBox20_TextChanged(object sender, EventArgs e)
         {
-            labelCalDepth.Text = TextFormat(textBox20.Text, "",0,8000000);
+            labelCalDepth.Text = TextFormat(textBox20.Text, "", 0, 8000000);
         }
 
         private void textBox21_TextChanged(object sender, EventArgs e)
@@ -1918,7 +1939,7 @@ namespace UC45_User_Interface
             }
             else if (e.KeyChar == (char)13)
             {
-               textBox22.Text = labelCalTime.Text;
+                textBox22.Text = labelCalTime.Text;
                 caltime = textBox22.Text;
             }
         }
@@ -2035,12 +2056,12 @@ namespace UC45_User_Interface
                     var steps = string.Format("{0:000000000}|0", Convert.ToInt16(textBox21.Text));
                     var intervalcal = 0.0;
                     var intersend = "";
-                    var calhold = string.Format("{0:000000}|0",calHoldDur);
+                    var calhold = string.Format("{0:000000}|0", calHoldDur);
                     DialogResult result = DialogResult.None;
                     try
                     {
                         intervalcal = Convert.ToDouble(textBox22.Text) * 1000;
-                        if (intervalcal >= 0.0002&&motorDrive.Checked && emCounter % 2 != 0)
+                        if (intervalcal >= 0.0002 && motorDrive.Checked && emCounter % 2 != 0)
                         {
                             intersend = string.Format("{0:000000000}|0", intervalcal);
                             tb22 = (int)intervalcal;
@@ -2111,11 +2132,11 @@ namespace UC45_User_Interface
                 zpos0 = zpos;
                 if (!checkBox15.Checked)
                 {
-                    while (appret==0&& emCounter % 2 != 0)
+                    while (appret == 0 && emCounter % 2 != 0)
                     {
                         await Task.Delay(50);
                     }
-                    if (btn9 == 1||loadExt)
+                    if (btn9 == 1 || loadExt)
                     {
                         Tdms_Saver("Calibration");
                         await Task.Delay(timer2.Interval);
@@ -2123,16 +2144,17 @@ namespace UC45_User_Interface
                     timer2.Start();
                     if (motorDrive.Checked && emCounter % 2 != 0)
                     {
-                        Send("DOIT!100","");
+                        Send("DOIT!100", "");
                     }
                     else if (emCounter % 2 != 0)
                     {
-                        Send("DOIT!_00","");
+                        Send("DOIT!_00", "");
                     }
                     expfin = 0;
-                    File.WriteAllText(fileopen +zaman+ "_ExperimentLog.txt", Experimentlog(zaman));
+                    File.WriteAllText(fileopen + zaman + "_ExperimentLog.txt", Experimentlog(zaman));
+                    explogPath = fileopen + zaman + "_ExperimentLog.txt";
                     fileopen = pathtemp + "\\Calibration";
-                    while (expfin==0 && emCounter % 2 != 0)
+                    while (expfin == 0 && emCounter % 2 != 0)
                     {
                         await Task.Delay(10);
                         if (motorDrive.Checked)
@@ -2153,7 +2175,7 @@ namespace UC45_User_Interface
                 {
                     await CalibrationAsync(textBox20.Text, textBox21.Text, textBox22.Text);
                 }
-                if ( emCounter % 2 != 0)
+                if (emCounter % 2 != 0)
                 {
                     Send("CLFIN", "");
                 }
@@ -2353,9 +2375,10 @@ namespace UC45_User_Interface
         bool forward = true;
         double zexp = 0;
         public static bool fin = false;
-        double zpos0=0;
+        double zpos0 = 0;
         int expfin = 0;
-        int appret=0;
+        int appret = 0;
+        string explogPath = "";
         private async void ExecuteExp_ClickAsync(object sender, EventArgs e)
         {
             if (deney == 3)
@@ -2380,7 +2403,8 @@ namespace UC45_User_Interface
             chart1.Enabled = false;
             tim2i = 0;
             graphcount++;
-            File.WriteAllText(fileopen + zaman +"_ExperimentLog.txt", Experimentlog(zaman));
+            File.WriteAllText(fileopen + zaman + "_ExperimentLog.txt", Experimentlog(zaman));
+            explogPath = fileopen + zaman + "_ExperimentLog.txt";
             if (rateNumeric.Value <= 10000)
             {
                 timer4.Interval = Convert.ToUInt16(10000 / rateNumeric.Value);
@@ -2431,7 +2455,7 @@ namespace UC45_User_Interface
                 double speedsend = 0;
                 if (motorApp.Checked)
                 {
-                    speedsend = 1000000*stepinc / (speedApp * 2);
+                    speedsend = 1000000 * stepinc / (speedApp * 2);
                     if (speedsend > 999999)
                     {
                         speedsend = 500000;
@@ -2439,8 +2463,8 @@ namespace UC45_User_Interface
                 }
                 else
                 {
-                    speedsend = speedApp / (5*kp); // SPEED SEND IS INCREMENT GIVEN AS 200MS STEPS; so divided by 5 to send exact number.
-                    if (speedsend > 500000)
+                    speedsend = 50 * speedApp / (5 * kp); // SPEED SEND IS INCREMENT GIVEN AS 200MS STEPS; so divided by 5 to send exact number.
+                    if (speedsend > 999999)
                     {
                         speedsend = 500000;
                     }
@@ -2452,15 +2476,19 @@ namespace UC45_User_Interface
                 }
                 else
                 {
-                    DialogResult result= MessageBox.Show("Program Error!"+Environment.NewLine+ "Do yo want to start motor controlled, no autoretract, normal oscillation experiment?",
+                    DialogResult result = MessageBox.Show("Program Error!" + Environment.NewLine + "Do yo want to actuator controlled, no autoretract, normal oscillation experiment?",
                         "Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (result == DialogResult.Yes)
                     {
-                        Send($"DOIT1100{Convert.ToString(loadAppThres):D6}|0{ Convert.ToString(speedsend):D6}", "");
+                        Send($"DOIT0000{Convert.ToInt32(loadAppThres):D6}|0{ Convert.ToInt32(speedsend):D6}", "");
+                        File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
+                            "Program Error Occurred! Experiment was continued with actuator controlled-no auto retract- nomal oscillation mode with given steps");
                     }
                     else
                     {
-                        Send($"Z0000000{Convert.ToString(loadAppThres):D6}|0{ Convert.ToString(speedsend):D6}", "");
+                        Send($"Z0000000{Convert.ToInt32(loadAppThres):D6}|0{ Convert.ToInt32(speedsend):D6}", "");
+                        File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
+                          "Program Error Occurred! Experiment was aborted.");
                         emCounter++;
                     }
                 }
@@ -2476,6 +2504,8 @@ namespace UC45_User_Interface
                 syc++;
                 if (comread.Contains("Stop"))
                 {
+                    File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
+  "Communication Error Occurred! Experiment was stopped through MCU.");
                     break;
                 }
             }
@@ -2491,10 +2521,10 @@ namespace UC45_User_Interface
                     if (emCounter % 2 != 0)
                     {
                         apfin = 0;
-                        if ((autoApp.Checked&&i==0)||(retState==1&&autoApp.Checked))
+                        if ((autoApp.Checked && i == 0) || (retState == 1 && autoApp.Checked))
                         {
                             approaching = 1;
-                            if ((btn9 == 1 ||loadExt))
+                            if ((btn9 == 1 || loadExt))
                             {
                                 Tdms_Saver("Step " + (i + 1) + " Approach");
                                 await Task.Delay(timer2.Interval);
@@ -2640,7 +2670,7 @@ namespace UC45_User_Interface
                         }
                         if (Xpos.Count > i + 1)
                         {
-                            if((Convert.ToDouble(Xpos[i + 1]) != 0 || Convert.ToDouble(Ypos[i + 1]) != 0))
+                            if ((Convert.ToDouble(Xpos[i + 1]) != 0 || Convert.ToDouble(Ypos[i + 1]) != 0))
                             {
                                 retStep[i] = 1;
                             }
@@ -2696,21 +2726,29 @@ namespace UC45_User_Interface
                     }
                     else
                     {
+                        File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
+$"Experiment was stopped at Step {i:D2}.");
                         break;
                     }
                 }
-                if(emCounter %2 !=0)
+                if (emCounter % 2 != 0)
                 {
-                    while (expfin==0&& emCounter % 2 != 0)
+                    while (expfin == 0 && emCounter % 2 != 0)
                     {
                         await Task.Delay(20);
-                        syc++;
-                        if (syc == 100)
-                        {
-                            //Send("Repet", "");
-                            syc = 0;
-                        }
                     }
+                    File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
+"Experiment was finished successfully.");
+                }
+            }
+            else
+            {
+                Send("Z0000", "");
+                if (emCounter % 2 != 0)
+                {
+                    MessageBox.Show("Experiment Range Exceeds the Indenter Range!", "Experiment Range Controller",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                    File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
+"Experiment Range Exceeded the Indenter Range! Experiment was stopped.");
                 }
             }
             if (btn9 == 1)
@@ -2780,6 +2818,8 @@ namespace UC45_User_Interface
         int apfin = 0;
         int osfin = 0;
         int infin = 0;
+        bool[] xylimits = {true,true,true,true};  // {X_Minus,X_Positive,Y_Minus,Y_Positive} holds whether xy positioner is in between
+        //movement ranges wrt MCU ext-int (endstop) message || for now it is accepted that xy positioner starts inside the ranges.
         private void serialPort2_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             comread = "";
@@ -2868,6 +2908,14 @@ namespace UC45_User_Interface
                     {
                         appret = 1;
                     }
+                    else if(comread.Contains("Restart UC45"))
+                    {
+                        MessageBox.Show("UC45 Connection Lost! Please Reset CEDRAT's Electronics after take the tip to a secure position.");
+                    }
+                    else if(comread.Contains("Load Problem"))
+                    {
+                        MessageBox.Show("Load Measurement Problem! Please stop the experiment and check the loadcell data.");
+                    }
                     else if (comread.Contains("Not_App") || comread.Contains("OutRan"))
                     {
                         //Not_Approached ; OutRange states..
@@ -2876,6 +2924,59 @@ namespace UC45_User_Interface
                         emCounter = 0;
                         texts = "";
                         textexp.Clear();
+                    }
+                    else if (comread.Contains("OutX"))
+                    {
+                        timer6.Start();
+                        pass = 3;
+                        timer6.Start();
+                        if (comread.Contains("M"))
+                        {
+                            xylimits[0] = false;
+                        }
+                        else if (comread.Contains("P"))
+                        {
+                            xylimits[1] = false;
+                        }
+                    }
+                    else if (comread.Contains("OutY"))
+                    {
+                        timer6.Start();
+                        pass = 3;
+                        if (comread.Contains("M"))
+                        {
+                            xylimits[2] = false;
+                        }
+                        else if (comread.Contains("P"))
+                        {
+                            xylimits[3] = false;
+                        }
+                    }
+                    else if (comread.Contains("InX"))
+                    {
+                        timer6.Start();
+                        pass = 3;
+                        if (comread.Contains("M"))
+                        {
+                            xylimits[0] = true;
+                        }
+                        else if (comread.Contains("P"))
+                        {
+                            xylimits[1] = true;
+                        }
+                    }
+                    else if (comread.Contains("InY"))
+                    {
+                        timer6.Start();
+                        pass = 3;
+                        if (comread.Contains("M"))
+                        {
+                            xylimits[2] = true;
+                        }
+                        else if (comread.Contains("P"))
+                        {
+                            xylimits[3] = true;
+                        }
                     }
                     else if (comread.Contains("UPMOT"))
                     {
@@ -2974,15 +3075,6 @@ namespace UC45_User_Interface
                         catch (Exception ex)
                         {
                             connection = ex.Message;
-                            //if (repsay < 3)
-                            //{
-                            //    Send("Repet", "");
-                            //    repsay++;
-                            //}
-                            //else
-                            //{
-                            //    repsay = 0;
-                            //}
                         }
                     }
                     else if (comread.Contains("PM"))
@@ -3000,7 +3092,14 @@ namespace UC45_User_Interface
                                 }
                                 abq += comread[i].ToString();
                             }
-                            abqi = Convert.ToInt16(abq);
+                            try
+                            {
+                                abqi = Convert.ToInt16(abq);
+                            }
+                            catch
+                            {
+                                abqi = 0;
+                            }
                             if (feed != 1)
                             {
                                 motpos = motpos + abqi * stepinc / 2;
@@ -3085,6 +3184,7 @@ namespace UC45_User_Interface
                             if (deney != -1 && deney != 0)
                             {
                                 File.AppendAllText(fileopen + "_Load.txt", loadd.Last().ToString() + Environment.NewLine);
+                                File.AppendAllText(fileopen + "_Load.txt", loadd.Last().ToString() + Environment.NewLine);
                             }
                             repsay = 0;
                         }
@@ -3121,7 +3221,10 @@ namespace UC45_User_Interface
                         }
                         else
                         {
-                            Send("Z0000", "");
+                            string stopmes = directMes;
+                            char initialch = stopmes[0];
+                            stopmes = stopmes.Replace(initialch, Convert.ToChar("Z"));
+                            Send(stopmes, "");
                         }
                     }
                     else if (comread.Contains("R3"))
@@ -3144,7 +3247,11 @@ namespace UC45_User_Interface
                     }
                     else if ((comread.Contains("R0") || comread.Contains("Received")))
                     {
-                        if (exppass == 1 && plug % 2 == 1)
+                        if(startexp==1 && exppass == 0)
+                        {
+
+                        }
+                        else if (exppass == 1 && plug % 2 == 1)
                         {
                             Send(textexp[expcounter], "");
                             expcounter++;
@@ -3159,7 +3266,8 @@ namespace UC45_User_Interface
                         }
                         else
                         {
-                            Send("Z0000", "");
+                            Send($"Z{0:D49}{0:99}", "");
+                            MessageBox.Show("Unauthorized Experiment Start Detected!");
                         }
                     }
                     else if (comread.Contains("R1"))
@@ -3176,19 +3284,13 @@ namespace UC45_User_Interface
                         else
                         {
                             Send("Z0000000000000000000000000000000000000000", "");
+                            MessageBox.Show("Unauthorized Experiment Start Detected!");
                         }
                     }
                     else if (comread.Contains("StepReady"))
                     {
                         if (exppass == -1 && plug % 2 == 1)
                         {
-                            repsay++;
-                            if (repsay > 5)
-                            {
-                                serialPort2.Write(lastwords);
-                                repsay = 0;
-                                timer6.Stop();
-                            }
                             pass = 1;
                             timer6.Start();
                             tim1say = 0;
@@ -3196,15 +3298,11 @@ namespace UC45_User_Interface
                         }
                         else if (exppass == -2)
                         {
-                            repsay++;
-                            if (repsay == 1)
-                            {
-                                MessageBox.Show("Ready to Go! Click 'Execute' when you ready.");
-                            }
                         }
                         else
                         {
-                            Send("Z0000", "");
+                            Send($"Z0000000000000|0000000", "");
+                            MessageBox.Show("Unauthorized Experiment Start Detected!");
                         }
                     }
                     else if ((comread.Contains("+") || comread.Contains("-")))
@@ -3216,7 +3314,6 @@ namespace UC45_User_Interface
                             receive = comread;
                             comread = "";
                         }
-
                     }
                     else if (comread[nbyt - 1].ToString() == "C")
                     {
@@ -3853,7 +3950,6 @@ namespace UC45_User_Interface
             if (emCounter % 2 == 0)
             {
                 timer2.Stop();
-                plotstop = 1;
             }
         }
         List<int> phychannel = new List<int>();
@@ -4903,7 +4999,7 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                                 }
                                 if (emCounter % 2 != 0)
                                 {
-                                    MessageBox.Show("Distance to surface is lower than 3mm!" + Environment.NewLine +
+                                    MessageBox.Show("Landed to surface succesfully!" + Environment.NewLine +
           " Use auto approach for more controlled landing.", "Auto Land", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     micstepBox.SelectedIndex = 3;
                                     approaching = 0;
@@ -5607,17 +5703,16 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
         bool doit = false;
         private void ExperimentRangeController(List<string> indent, List<string> amp, List<int> retract)
         {
-            int son = -1;
             zexp = 0;
+            if (autoApp.Checked)
+            {
+                zexp = 10;//10um range for search
+            }
             if (indent.Count != 0 && (exptype==0||exptype==2))
             {
                 for (int i = 0; i < indent.Count; i++)
                 {
                     zexp = zexp + Convert.ToDouble(indent[i]);
-                    if (i == indent.Count - 1)
-                    {
-                        son = i;
-                    }
                     if (zexp + Convert.ToDouble(amp[i]) > zrange - zpos&&!motorDrive.Checked)
                     {
                         doit = false;
@@ -5628,9 +5723,16 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                         doit = false;
                         break;
                     }
-                    if (retract[i] == 1 && !autoApp.Checked)
+                    if ((retract[i] == 1))
                     {
-                        zexp = 0;
+                        zexp = 10;
+                    }
+                    else if (indent.Count-1 > i)
+                    {
+                        if(Convert.ToDouble(Xpos[i + 1]) != 0 || Convert.ToDouble(Xpos[i + 1]) != 0)
+                        {
+                            zexp = 10;
+                        }
                     }
                     doit = true;
                 }
@@ -5914,7 +6016,7 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
         private void textBox22_MouseClick(object sender, MouseEventArgs e)
         {
         }
-        decimal divideresult = 0;
+        double divideresult = 0;
 
         private void VappNumeric_ValueChanged(object sender, EventArgs e)
         {
@@ -5922,12 +6024,12 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
             {
                 if (zCount % 2 != 0)
                 {
-                    divideresult = (decimal)(Convert.ToDouble(VappNumeric.Value) / 1000.0);
+                    divideresult = (Convert.ToDouble(VappNumeric.Value) / 1000.0);
                     textBox10.Text = TextFormat(divideresult.ToString(), "Z", 0, (vnull - vmin) *20* kp);
                 }
                 else
                 {
-                    divideresult = (decimal)(Convert.ToDouble(VappNumeric.Value) / 1000000.0);
+                    divideresult = (Convert.ToDouble(VappNumeric.Value) / 1000000.0);
                     textBox1.Text = TextFormat(divideresult.ToString(), "Vapp", vmin, vnull);
                 }
                 labelVapp.Text = textBox1.Text;
@@ -6222,8 +6324,15 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     if (chtype[j] == 1 || chtype[j] == 2)
                     {
                         chart1.Series[kan].YAxisType = AxisType.Secondary;
+                        chart1.Series.Last().Color = Color.FromArgb(255-Convert.ToInt16(255*j/aIChannels.Count()),20, Convert.ToInt16(255 * j / aIChannels.Count()));
+                        chart1.Series.Last().MarkerStyle = MarkerStyle.Diamond;
                         //chart1.ChartAreas[0].AxisY2.Maximum = maxval[j];
                         //chart1.ChartAreas[0].AxisY2.Minimum = minval[j];
+                    }
+                    else
+                    {
+                        chart1.Series.Last().Color = Color.FromArgb(20, Convert.ToInt16(255 * j / aIChannels.Count()), 255- Convert.ToInt16(255 * j / aIChannels.Count()));
+                        chart1.Series.Last().MarkerStyle = MarkerStyle.Circle;
                     }
                     //else
                     //{
@@ -6240,8 +6349,10 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             savecount = 0;
             if (loadExt||loadLive.Checked)
             {
-                chart1.Series.Add("External"+ group + "_" + graphcount);
+                chart1.Series.Add("Load"+ group + "_" + graphcount);
                 chart1.Series.Last().ChartType = SeriesChartType.FastPoint;
+                chart1.Series.Last().Color = Color.Lime;
+                chart1.Series.Last().MarkerStyle = MarkerStyle.Square;
             }
             if (saveExt.Checked)
             {
@@ -6249,6 +6360,8 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             }
             chart1.Series.Add("Position"+ group +"_"+graphcount);
             chart1.Series.Last().ChartType = SeriesChartType.FastPoint;
+            chart1.Series.Last().Color = Color.Black;
+            chart1.Series.Last().MarkerStyle = MarkerStyle.Cross;
             if (deney == 2)
             {
                 CreateGraphPage("Experiment", 1);
@@ -6347,22 +6460,14 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
         {
             emCounter = 1;
             motsteps = motorTrack.Value;
-            motfreq = 1000000*stepinc/ motspeed ;
-            if (motpos - motsteps * stepinc >= 0)
-            {
-                var motorsend = string.Format("{1:D10}{0:D10}", motsteps, Convert.ToInt32(motfreq));
-                Send($"310{spedmode}0", "");
-                texts = motorsend;
-                motorpass = 1;
-                motdir = 1;
-                stopMot.Enabled = true;
-                groupBox19.Enabled = false;
-            }
-            else
-            {
-                MessageBox.Show("Motor range is not enough!", "Motor Range Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-
+            motfreq = 1000000 * stepinc / motspeed;
+            var motorsend = string.Format("{1:D10}{0:D10}", motsteps, Convert.ToInt32(motfreq));
+            Send($"310{spedmode}0", "");
+            texts = motorsend;
+            motorpass = 1;
+            motdir = 1;
+            stopMot.Enabled = true;
+            groupBox19.Enabled = false;
         }
 
         private void downArrow_Click(object sender, EventArgs e)
@@ -6482,7 +6587,9 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             approaching = 0;
             stopMot.Enabled = false;
             groupBox19.Enabled = true;
-            emCounter = 0;
+            loadcell.Enabled = true;
+            loadTare.Enabled = true;
+            loadLive.Enabled = true;
             Send("Z0000", "");
         }
         int motorcon = 0;
@@ -6743,15 +6850,19 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
         {
             emCounter = 1;
             stopMot.Enabled = true;
-            motorApp.Checked = true;
             approaching = 2;
-            connection = "Motor Moving to Home";
+            connection = "Motor is Moving to Home";
             groupBox19.Enabled = false;
             var motorsend = string.Format("{1:D10}{0:D10}", motsteps, Convert.ToInt32(motfreq));
             texts = motorsend;
             motorpass = 1;
             motdir = 0;
+            loadLive.Checked = true;
             Send($"311{spedmode}0", "");
+            loadcell.Enabled = false;
+            loadTare.Enabled = false;
+            loadLive.Enabled = false;
+            timer3.Start();
             //AutoConAsync(-10, 0, 0, false);
         }
         int automot = 0;
@@ -6760,14 +6871,18 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             emCounter = 1;
             stopMot.Enabled = true;
             approaching = 2;
-            motorApp.Checked = true;
-            connection = "Motor Moving to Sample";
+            connection = "Motor is Moving to Sample";
             groupBox19.Enabled = false;
             var motorsend = string.Format("{1:D10}{0:D10}", motsteps, Convert.ToInt32(motfreq));
             texts = motorsend;
             motorpass = 1;
             motdir = 0;
+            loadLive.Checked = true;
             Send($"301{spedmode}0", "");
+            loadcell.Enabled = false;
+            loadTare.Enabled = false;
+            loadLive.Enabled = false;
+            timer3.Start();
             //AutoConAsync(pressure, 0, 0, true);
         }
 
@@ -7168,7 +7283,10 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             {
                 loadcell.Enabled = false;
                 loadTare.Enabled = false;
-                Send("85100", "");
+                if (motorpass != 1)
+                {
+                    Send("85100", "");
+                }
                 timer3.Start();
             }
             else
@@ -7441,11 +7559,14 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     }
                     else if (receive.Contains("CLOSe"))
                     {
-                        MessageBox.Show("Distance to surface is lower than 3mm!" + Environment.NewLine +
+                        MessageBox.Show("Surface has been found succesfully!" + Environment.NewLine +
           " Use auto approach for more controlled landing.", "Auto Land", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         micstepBox.SelectedIndex = 5;
                         approaching = 0;
                         Send("STFIN", "");
+                        loadcell.Enabled = true;
+                        loadTare.Enabled = true;
+                        loadLive.Enabled = true;
                         try
                         {
                             abq = receive.Replace("CLOSe", "");
@@ -7506,6 +7627,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     executeExp.Enabled = true;
                     timer6.Stop();
                     label11.Text = comread;
+                    MessageBox.Show("Ready to Go! Click 'Execute' when you ready.");
                 }
                 else if (pass == 1 && feed == 1)
                 {
@@ -7519,6 +7641,15 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                     feed = 0;
                     Send("FBFIN", "");
+                }
+                else if (pass == 3)
+                {
+                    pass = 0;
+                    leftArrow.Enabled = xylimits[0];
+                    rightArrow.Enabled = xylimits[1];
+                    upArrow.Enabled = xylimits[2];
+                    backArrow.Enabled = xylimits[3];
+                    timer6.Stop();
                 }
                 else if (pass == 1 && (xymotor == 1||jsBox.Checked || deney==1))
                 {
@@ -8677,9 +8808,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.') && (e.KeyChar != '-'))
             {
-
                 e.Handled = true;
-
             }
             else if (e.KeyChar == (char)13)
             {
@@ -8731,6 +8860,79 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
         private void actAppOnly_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void label18_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void forwardArrow_EnabledChanged(object sender, EventArgs e)
+        {
+            if (!forwardArrow.Enabled && groupBox19.Enabled)
+            {
+                MessageBox.Show("There is no more range at forward direction, please turn backward.", "XY Stage Limits", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void backArrow_EnabledChanged(object sender, EventArgs e)
+        {
+            if (!backArrow.Enabled && groupBox19.Enabled)
+            {
+                MessageBox.Show("There is no more range at backward direction, please turn forward.", "XY Stage Limits", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void rightArrow_EnabledChanged(object sender, EventArgs e)
+        {
+            if (!rightArrow.Enabled && groupBox19.Enabled)
+            {
+                MessageBox.Show("There is no more range at rightward direction, please turn leftward.","XY Stage Limits",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void leftArrow_EnabledChanged(object sender, EventArgs e)
+        {
+            if (!leftArrow.Enabled && groupBox19.Enabled)
+            {
+                MessageBox.Show("There is no more range at leftward direction, please turn rightward.", "XY Stage Limits", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void commentSave_Click(object sender, EventArgs e)
+        {
+            if (explogPath == "")
+            {
+                explogPath = pathsave+"\\Log.txt";
+            }
+            File.AppendAllText(explogPath, Environment.NewLine +"Comments: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine + commentsExp.Text);
+        }
+
+        private void tipName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                Properties.Settings.Default["tipName"] = tipName.Text;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void sampleName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == (char)13)
+            {
+                Properties.Settings.Default["sampleName"] = sampleName.Text;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void procedureName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                Properties.Settings.Default["procedureName"] = procedureName.Text;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void giveWhile_SelectedIndexChanged(object sender, EventArgs e)

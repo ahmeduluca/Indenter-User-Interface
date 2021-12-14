@@ -18,8 +18,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -128,6 +128,8 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.label38 = new System.Windows.Forms.Label();
+            this.loadExtraShow = new System.Windows.Forms.TextBox();
             this.selectedHeater = new System.Windows.Forms.ComboBox();
             this.groupBox22 = new System.Windows.Forms.GroupBox();
             this.label109 = new System.Windows.Forms.Label();
@@ -271,6 +273,15 @@
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.textBox20 = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label129 = new System.Windows.Forms.Label();
+            this.procedureName = new System.Windows.Forms.TextBox();
+            this.commentSave = new System.Windows.Forms.Button();
+            this.label128 = new System.Windows.Forms.Label();
+            this.commentsExp = new System.Windows.Forms.TextBox();
+            this.label127 = new System.Windows.Forms.Label();
+            this.sampleName = new System.Windows.Forms.TextBox();
+            this.label51 = new System.Windows.Forms.Label();
+            this.tipName = new System.Windows.Forms.TextBox();
             this.isMcuAdc = new System.Windows.Forms.CheckBox();
             this.actAppOnly = new System.Windows.Forms.CheckBox();
             this.hxSet = new System.Windows.Forms.NumericUpDown();
@@ -400,8 +411,6 @@
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.timer1 = new System.Timers.Timer();
-            this.loadExtraShow = new System.Windows.Forms.TextBox();
-            this.label38 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VappNumeric)).BeginInit();
@@ -1308,6 +1317,7 @@
             this.label18.Size = new System.Drawing.Size(79, 13);
             this.label18.TabIndex = 44;
             this.label18.Text = "Frequency (Hz)";
+            this.label18.Click += new System.EventHandler(this.label18_Click);
             // 
             // label17
             // 
@@ -1430,6 +1440,7 @@
             // 
             // button7
             // 
+            this.button7.Enabled = false;
             this.button7.Location = new System.Drawing.Point(7, 13);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(161, 23);
@@ -1622,6 +1633,24 @@
             this.tabPage5.Size = new System.Drawing.Size(727, 433);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Motor & Heater";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(14, 164);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(57, 13);
+            this.label38.TabIndex = 58;
+            this.label38.Text = "Live Load:";
+            // 
+            // loadExtraShow
+            // 
+            this.loadExtraShow.Enabled = false;
+            this.loadExtraShow.Location = new System.Drawing.Point(72, 161);
+            this.loadExtraShow.Name = "loadExtraShow";
+            this.loadExtraShow.ReadOnly = true;
+            this.loadExtraShow.Size = new System.Drawing.Size(57, 20);
+            this.loadExtraShow.TabIndex = 57;
             // 
             // selectedHeater
             // 
@@ -2193,6 +2222,7 @@
             this.backArrow.Size = new System.Drawing.Size(24, 26);
             this.backArrow.TabIndex = 47;
             this.backArrow.TabStop = false;
+            this.backArrow.EnabledChanged += new System.EventHandler(this.backArrow_EnabledChanged);
             this.backArrow.Click += new System.EventHandler(this.backArrow_Click);
             // 
             // forwardArrow
@@ -2203,6 +2233,7 @@
             this.forwardArrow.Size = new System.Drawing.Size(24, 24);
             this.forwardArrow.TabIndex = 46;
             this.forwardArrow.TabStop = false;
+            this.forwardArrow.EnabledChanged += new System.EventHandler(this.forwardArrow_EnabledChanged);
             this.forwardArrow.Click += new System.EventHandler(this.forwardArrow_Click);
             // 
             // label58
@@ -2222,6 +2253,7 @@
             this.rightArrow.Size = new System.Drawing.Size(31, 24);
             this.rightArrow.TabIndex = 44;
             this.rightArrow.TabStop = false;
+            this.rightArrow.EnabledChanged += new System.EventHandler(this.rightArrow_EnabledChanged);
             this.rightArrow.Click += new System.EventHandler(this.rightArrow_Click);
             // 
             // leftArrow
@@ -2232,6 +2264,7 @@
             this.leftArrow.Size = new System.Drawing.Size(31, 24);
             this.leftArrow.TabIndex = 43;
             this.leftArrow.TabStop = false;
+            this.leftArrow.EnabledChanged += new System.EventHandler(this.leftArrow_EnabledChanged);
             this.leftArrow.Click += new System.EventHandler(this.leftArrow_Click);
             // 
             // goHome
@@ -2933,78 +2966,78 @@
             // 
             // chart1
             // 
-            chartArea2.AlignmentOrientation = ((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations)((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Vertical | System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Horizontal)));
-            chartArea2.AxisX.MajorGrid.Interval = 0D;
-            chartArea2.AxisX.MajorGrid.IntervalOffset = 0D;
-            chartArea2.AxisX.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisX.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisX.MajorTickMark.Interval = 0D;
-            chartArea2.AxisX.MajorTickMark.IntervalOffset = 0D;
-            chartArea2.AxisX.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisX.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisX.MinorTickMark.Enabled = true;
-            chartArea2.AxisX.Title = "Time (s)";
-            chartArea2.AxisX2.LineColor = System.Drawing.Color.Red;
-            chartArea2.AxisX2.MajorGrid.Interval = 0D;
-            chartArea2.AxisX2.MajorGrid.IntervalOffset = 0D;
-            chartArea2.AxisX2.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisX2.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisX2.MajorTickMark.Interval = 0D;
-            chartArea2.AxisX2.MajorTickMark.IntervalOffset = 0D;
-            chartArea2.AxisX2.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisX2.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisX2.MinorTickMark.Enabled = true;
-            chartArea2.AxisX2.Title = "Sampling#";
-            chartArea2.AxisY.MajorGrid.Interval = 0D;
-            chartArea2.AxisY.MajorGrid.IntervalOffset = 0D;
-            chartArea2.AxisY.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisY.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisY.MajorTickMark.Interval = 0D;
-            chartArea2.AxisY.MajorTickMark.IntervalOffset = 0D;
-            chartArea2.AxisY.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisY.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisY.MinorGrid.Enabled = true;
-            chartArea2.AxisY.MinorTickMark.Enabled = true;
-            chartArea2.AxisY.Title = "Measured Value";
-            chartArea2.AxisY2.LineColor = System.Drawing.Color.Red;
-            chartArea2.AxisY2.MajorGrid.Interval = 0D;
-            chartArea2.AxisY2.MajorGrid.IntervalOffset = 0D;
-            chartArea2.AxisY2.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisY2.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisY2.MajorTickMark.Interval = 0D;
-            chartArea2.AxisY2.MajorTickMark.IntervalOffset = 0D;
-            chartArea2.AxisY2.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisY2.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea2.AxisY2.MinorGrid.Enabled = true;
-            chartArea2.AxisY2.MinorTickMark.Enabled = true;
-            chartArea2.AxisY2.Title = "Temperature";
-            chartArea2.BackColor = System.Drawing.Color.Transparent;
-            chartArea2.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            chartArea2.CursorX.Interval = 0.1D;
-            chartArea2.CursorX.IsUserEnabled = true;
-            chartArea2.CursorX.IsUserSelectionEnabled = true;
-            chartArea2.CursorX.SelectionColor = System.Drawing.Color.DimGray;
-            chartArea2.CursorY.Interval = 0.1D;
-            chartArea2.CursorY.IsUserEnabled = true;
-            chartArea2.CursorY.IsUserSelectionEnabled = true;
-            chartArea2.CursorY.SelectionColor = System.Drawing.Color.DimGray;
-            chartArea2.InnerPlotPosition.Auto = false;
-            chartArea2.InnerPlotPosition.Height = 75F;
-            chartArea2.InnerPlotPosition.Width = 85F;
-            chartArea2.InnerPlotPosition.X = 12F;
-            chartArea2.InnerPlotPosition.Y = 10F;
-            chartArea2.Name = "ChartArea1";
-            chartArea2.Position.Auto = false;
-            chartArea2.Position.Height = 90F;
-            chartArea2.Position.Width = 90F;
-            chartArea2.Position.Y = 10F;
-            this.chart1.ChartAreas.Add(chartArea2);
+            chartArea3.AlignmentOrientation = ((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations)((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Vertical | System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Horizontal)));
+            chartArea3.AxisX.MajorGrid.Interval = 0D;
+            chartArea3.AxisX.MajorGrid.IntervalOffset = 0D;
+            chartArea3.AxisX.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisX.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisX.MajorTickMark.Interval = 0D;
+            chartArea3.AxisX.MajorTickMark.IntervalOffset = 0D;
+            chartArea3.AxisX.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisX.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisX.MinorTickMark.Enabled = true;
+            chartArea3.AxisX.Title = "Time (s)";
+            chartArea3.AxisX2.LineColor = System.Drawing.Color.Red;
+            chartArea3.AxisX2.MajorGrid.Interval = 0D;
+            chartArea3.AxisX2.MajorGrid.IntervalOffset = 0D;
+            chartArea3.AxisX2.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisX2.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisX2.MajorTickMark.Interval = 0D;
+            chartArea3.AxisX2.MajorTickMark.IntervalOffset = 0D;
+            chartArea3.AxisX2.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisX2.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisX2.MinorTickMark.Enabled = true;
+            chartArea3.AxisX2.Title = "Sampling#";
+            chartArea3.AxisY.MajorGrid.Interval = 0D;
+            chartArea3.AxisY.MajorGrid.IntervalOffset = 0D;
+            chartArea3.AxisY.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisY.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisY.MajorTickMark.Interval = 0D;
+            chartArea3.AxisY.MajorTickMark.IntervalOffset = 0D;
+            chartArea3.AxisY.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisY.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisY.MinorGrid.Enabled = true;
+            chartArea3.AxisY.MinorTickMark.Enabled = true;
+            chartArea3.AxisY.Title = "Measured Value";
+            chartArea3.AxisY2.LineColor = System.Drawing.Color.Red;
+            chartArea3.AxisY2.MajorGrid.Interval = 0D;
+            chartArea3.AxisY2.MajorGrid.IntervalOffset = 0D;
+            chartArea3.AxisY2.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisY2.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisY2.MajorTickMark.Interval = 0D;
+            chartArea3.AxisY2.MajorTickMark.IntervalOffset = 0D;
+            chartArea3.AxisY2.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisY2.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea3.AxisY2.MinorGrid.Enabled = true;
+            chartArea3.AxisY2.MinorTickMark.Enabled = true;
+            chartArea3.AxisY2.Title = "Temperature";
+            chartArea3.BackColor = System.Drawing.Color.Transparent;
+            chartArea3.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
+            chartArea3.CursorX.Interval = 0.1D;
+            chartArea3.CursorX.IsUserEnabled = true;
+            chartArea3.CursorX.IsUserSelectionEnabled = true;
+            chartArea3.CursorX.SelectionColor = System.Drawing.Color.DimGray;
+            chartArea3.CursorY.Interval = 0.1D;
+            chartArea3.CursorY.IsUserEnabled = true;
+            chartArea3.CursorY.IsUserSelectionEnabled = true;
+            chartArea3.CursorY.SelectionColor = System.Drawing.Color.DimGray;
+            chartArea3.InnerPlotPosition.Auto = false;
+            chartArea3.InnerPlotPosition.Height = 75F;
+            chartArea3.InnerPlotPosition.Width = 85F;
+            chartArea3.InnerPlotPosition.X = 12F;
+            chartArea3.InnerPlotPosition.Y = 10F;
+            chartArea3.Name = "ChartArea1";
+            chartArea3.Position.Auto = false;
+            chartArea3.Position.Height = 90F;
+            chartArea3.Position.Width = 90F;
+            chartArea3.Position.Y = 10F;
+            this.chart1.ChartAreas.Add(chartArea3);
             this.chart1.Cursor = System.Windows.Forms.Cursors.Cross;
-            legend2.AutoFitMinFontSize = 5;
-            legend2.IsDockedInsideChartArea = false;
-            legend2.Name = "Legend1";
-            legend2.TextWrapThreshold = 30;
-            this.chart1.Legends.Add(legend2);
+            legend3.AutoFitMinFontSize = 5;
+            legend3.IsDockedInsideChartArea = false;
+            legend3.Name = "Legend1";
+            legend3.TextWrapThreshold = 30;
+            this.chart1.Legends.Add(legend3);
             this.chart1.Location = new System.Drawing.Point(522, 312);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(199, 115);
@@ -3182,6 +3215,15 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tabPage2.Controls.Add(this.label129);
+            this.tabPage2.Controls.Add(this.procedureName);
+            this.tabPage2.Controls.Add(this.commentSave);
+            this.tabPage2.Controls.Add(this.label128);
+            this.tabPage2.Controls.Add(this.commentsExp);
+            this.tabPage2.Controls.Add(this.label127);
+            this.tabPage2.Controls.Add(this.sampleName);
+            this.tabPage2.Controls.Add(this.label51);
+            this.tabPage2.Controls.Add(this.tipName);
             this.tabPage2.Controls.Add(this.isMcuAdc);
             this.tabPage2.Controls.Add(this.actAppOnly);
             this.tabPage2.Controls.Add(this.hxSet);
@@ -3214,6 +3256,88 @@
             this.tabPage2.Size = new System.Drawing.Size(727, 433);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Settings";
+            // 
+            // label129
+            // 
+            this.label129.AutoSize = true;
+            this.label129.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(162)), true);
+            this.label129.Location = new System.Drawing.Point(194, 203);
+            this.label129.Name = "label129";
+            this.label129.Size = new System.Drawing.Size(59, 13);
+            this.label129.TabIndex = 68;
+            this.label129.Text = "Procedure:";
+            // 
+            // procedureName
+            // 
+            this.procedureName.Location = new System.Drawing.Point(271, 200);
+            this.procedureName.Name = "procedureName";
+            this.procedureName.Size = new System.Drawing.Size(111, 20);
+            this.procedureName.TabIndex = 67;
+            this.procedureName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.procedureName_KeyPress);
+            // 
+            // commentSave
+            // 
+            this.commentSave.Location = new System.Drawing.Point(193, 258);
+            this.commentSave.Name = "commentSave";
+            this.commentSave.Size = new System.Drawing.Size(64, 46);
+            this.commentSave.TabIndex = 66;
+            this.commentSave.Text = "Save Comments";
+            this.commentSave.UseVisualStyleBackColor = true;
+            this.commentSave.Click += new System.EventHandler(this.commentSave_Click);
+            // 
+            // label128
+            // 
+            this.label128.AutoSize = true;
+            this.label128.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(162)), true);
+            this.label128.Location = new System.Drawing.Point(194, 225);
+            this.label128.Name = "label128";
+            this.label128.Size = new System.Drawing.Size(59, 13);
+            this.label128.TabIndex = 65;
+            this.label128.Text = "Comments:";
+            // 
+            // commentsExp
+            // 
+            this.commentsExp.Location = new System.Drawing.Point(259, 225);
+            this.commentsExp.Multiline = true;
+            this.commentsExp.Name = "commentsExp";
+            this.commentsExp.Size = new System.Drawing.Size(140, 93);
+            this.commentsExp.TabIndex = 64;
+            // 
+            // label127
+            // 
+            this.label127.AutoSize = true;
+            this.label127.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(162)), true);
+            this.label127.Location = new System.Drawing.Point(194, 181);
+            this.label127.Name = "label127";
+            this.label127.Size = new System.Drawing.Size(76, 13);
+            this.label127.TabIndex = 63;
+            this.label127.Text = "Sample Name:";
+            // 
+            // sampleName
+            // 
+            this.sampleName.Location = new System.Drawing.Point(271, 178);
+            this.sampleName.Name = "sampleName";
+            this.sampleName.Size = new System.Drawing.Size(111, 20);
+            this.sampleName.TabIndex = 62;
+            this.sampleName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.sampleName_KeyPress);
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(162)), true);
+            this.label51.Location = new System.Drawing.Point(194, 159);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(56, 13);
+            this.label51.TabIndex = 61;
+            this.label51.Text = "Tip Name:";
+            // 
+            // tipName
+            // 
+            this.tipName.Location = new System.Drawing.Point(272, 156);
+            this.tipName.Name = "tipName";
+            this.tipName.Size = new System.Drawing.Size(110, 20);
+            this.tipName.TabIndex = 60;
+            this.tipName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tipName_KeyPress);
             // 
             // isMcuAdc
             // 
@@ -4572,24 +4696,6 @@
             this.timer1.SynchronizingObject = this;
             this.timer1.Elapsed += new System.Timers.ElapsedEventHandler(this.timer1_Elapsed);
             // 
-            // loadExtraShow
-            // 
-            this.loadExtraShow.Enabled = false;
-            this.loadExtraShow.Location = new System.Drawing.Point(72, 161);
-            this.loadExtraShow.Name = "loadExtraShow";
-            this.loadExtraShow.ReadOnly = true;
-            this.loadExtraShow.Size = new System.Drawing.Size(57, 20);
-            this.loadExtraShow.TabIndex = 57;
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(14, 164);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(57, 13);
-            this.label38.TabIndex = 58;
-            this.label38.Text = "Live Load:";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5092,6 +5198,15 @@
         private System.Windows.Forms.CheckBox isMcuAdc;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.TextBox loadExtraShow;
+        private System.Windows.Forms.Label label128;
+        private System.Windows.Forms.TextBox commentsExp;
+        private System.Windows.Forms.Label label127;
+        private System.Windows.Forms.TextBox sampleName;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.TextBox tipName;
+        private System.Windows.Forms.Button commentSave;
+        private System.Windows.Forms.Label label129;
+        private System.Windows.Forms.TextBox procedureName;
     }
 }
 
