@@ -18,8 +18,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -54,6 +54,7 @@
             this.executeExp = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label130 = new System.Windows.Forms.Label();
             this.VappNumeric = new System.Windows.Forms.NumericUpDown();
             this.button10 = new System.Windows.Forms.Button();
             this.checkBox10 = new System.Windows.Forms.CheckBox();
@@ -125,7 +126,6 @@
             this.label36 = new System.Windows.Forms.Label();
             this.autoApp = new System.Windows.Forms.CheckBox();
             this.stopExp = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.label38 = new System.Windows.Forms.Label();
@@ -273,6 +273,8 @@
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.textBox20 = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label131 = new System.Windows.Forms.Label();
+            this.loadCoeffTb = new System.Windows.Forms.TextBox();
             this.label129 = new System.Windows.Forms.Label();
             this.procedureName = new System.Windows.Forms.TextBox();
             this.commentSave = new System.Windows.Forms.Button();
@@ -411,6 +413,7 @@
             this.eventLog1 = new System.Diagnostics.EventLog();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.timer1 = new System.Timers.Timer();
+            this.statusLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VappNumeric)).BeginInit();
@@ -500,7 +503,7 @@
             this.textBox2.Location = new System.Drawing.Point(58, 80);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(74, 20);
-            this.textBox2.TabIndex = 4;
+            this.textBox2.TabIndex = 12;
             this.textBox2.Tag = "";
             this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress);
@@ -519,7 +522,7 @@
             this.textBox3.Location = new System.Drawing.Point(58, 119);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(74, 20);
-            this.textBox3.TabIndex = 6;
+            this.textBox3.TabIndex = 14;
             this.textBox3.Tag = "";
             this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox3_KeyPress);
@@ -538,7 +541,7 @@
             this.textBox4.Location = new System.Drawing.Point(58, 157);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(74, 20);
-            this.textBox4.TabIndex = 8;
+            this.textBox4.TabIndex = 16;
             this.textBox4.Tag = "";
             this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox4_KeyPress);
@@ -564,7 +567,7 @@
             this.comboBox1.Location = new System.Drawing.Point(172, 42);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(102, 21);
-            this.comboBox1.TabIndex = 9;
+            this.comboBox1.TabIndex = 11;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label5
@@ -669,7 +672,7 @@
             this.checkBox2.Location = new System.Drawing.Point(6, 19);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(96, 17);
-            this.checkBox2.TabIndex = 18;
+            this.checkBox2.TabIndex = 9;
             this.checkBox2.Text = "Sensor inverse";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
@@ -679,7 +682,7 @@
             this.textBox6.Location = new System.Drawing.Point(172, 135);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(79, 20);
-            this.textBox6.TabIndex = 16;
+            this.textBox6.TabIndex = 15;
             this.textBox6.Tag = "";
             this.textBox6.TextChanged += new System.EventHandler(this.textBox6_TextChanged);
             this.textBox6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox6_KeyPress);
@@ -726,7 +729,7 @@
             this.textBox7.Location = new System.Drawing.Point(172, 80);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(79, 20);
-            this.textBox7.TabIndex = 14;
+            this.textBox7.TabIndex = 13;
             this.textBox7.Tag = "";
             this.textBox7.TextChanged += new System.EventHandler(this.textBox7_TextChanged);
             this.textBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox7_KeyPress);
@@ -738,7 +741,7 @@
             this.checkBox1.Location = new System.Drawing.Point(135, 189);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(44, 31);
-            this.checkBox1.TabIndex = 17;
+            this.checkBox1.TabIndex = 8;
             this.checkBox1.Text = "Enable";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
@@ -748,7 +751,7 @@
             this.textBox8.Location = new System.Drawing.Point(223, 60);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(61, 20);
-            this.textBox8.TabIndex = 19;
+            this.textBox8.TabIndex = 3;
             this.textBox8.Tag = "";
             this.textBox8.TextChanged += new System.EventHandler(this.textBox8_TextChanged);
             this.textBox8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox8_KeyPress);
@@ -776,7 +779,7 @@
             this.textBox9.Location = new System.Drawing.Point(223, 101);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(61, 20);
-            this.textBox9.TabIndex = 21;
+            this.textBox9.TabIndex = 4;
             this.textBox9.Tag = "";
             this.textBox9.TextChanged += new System.EventHandler(this.textBox9_TextChanged);
             this.textBox9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox9_KeyPress);
@@ -786,7 +789,7 @@
             this.button2.Location = new System.Drawing.Point(182, 404);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(152, 23);
-            this.button2.TabIndex = 22;
+            this.button2.TabIndex = 17;
             this.button2.Text = "Open Define Experiment >>";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -796,7 +799,7 @@
             this.button3.Location = new System.Drawing.Point(28, 370);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(99, 23);
-            this.button3.TabIndex = 24;
+            this.button3.TabIndex = 46;
             this.button3.Text = "Set Experiment";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
@@ -807,7 +810,7 @@
             this.executeExp.Location = new System.Drawing.Point(133, 370);
             this.executeExp.Name = "executeExp";
             this.executeExp.Size = new System.Drawing.Size(89, 23);
-            this.executeExp.TabIndex = 25;
+            this.executeExp.TabIndex = 47;
             this.executeExp.Text = "Execute";
             this.executeExp.UseVisualStyleBackColor = true;
             this.executeExp.Click += new System.EventHandler(this.ExecuteExp_ClickAsync);
@@ -817,13 +820,14 @@
             this.button5.Location = new System.Drawing.Point(230, 370);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(94, 23);
-            this.button5.TabIndex = 26;
+            this.button5.TabIndex = 48;
             this.button5.Text = "Erase Step";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label130);
             this.groupBox2.Controls.Add(this.VappNumeric);
             this.groupBox2.Controls.Add(this.button10);
             this.groupBox2.Controls.Add(this.checkBox10);
@@ -847,9 +851,18 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "APA60S Position Control";
             // 
+            // label130
+            // 
+            this.label130.AutoSize = true;
+            this.label130.Location = new System.Drawing.Point(179, 104);
+            this.label130.Name = "label130";
+            this.label130.Size = new System.Drawing.Size(36, 13);
+            this.label130.TabIndex = 29;
+            this.label130.Text = "Vmin :";
+            // 
             // VappNumeric
             // 
-            this.VappNumeric.Location = new System.Drawing.Point(77, 59);
+            this.VappNumeric.Location = new System.Drawing.Point(75, 59);
             this.VappNumeric.Maximum = new decimal(new int[] {
             7500000,
             0,
@@ -861,8 +874,8 @@
             0,
             -2147483648});
             this.VappNumeric.Name = "VappNumeric";
-            this.VappNumeric.Size = new System.Drawing.Size(16, 20);
-            this.VappNumeric.TabIndex = 32;
+            this.VappNumeric.Size = new System.Drawing.Size(17, 20);
+            this.VappNumeric.TabIndex = 1;
             this.VappNumeric.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left;
             this.VappNumeric.ValueChanged += new System.EventHandler(this.VappNumeric_ValueChanged);
             // 
@@ -871,7 +884,7 @@
             this.button10.Location = new System.Drawing.Point(103, 101);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(54, 23);
-            this.button10.TabIndex = 30;
+            this.button10.TabIndex = 5;
             this.button10.Text = "Set Max";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
@@ -883,7 +896,7 @@
             this.checkBox10.Location = new System.Drawing.Point(24, 16);
             this.checkBox10.Name = "checkBox10";
             this.checkBox10.Size = new System.Drawing.Size(99, 31);
-            this.checkBox10.TabIndex = 29;
+            this.checkBox10.TabIndex = 0;
             this.checkBox10.Text = "Internal / ServoOn";
             this.checkBox10.UseVisualStyleBackColor = true;
             this.checkBox10.CheckedChanged += new System.EventHandler(this.checkBox10_CheckedChanged);
@@ -940,7 +953,7 @@
             this.textBox10.Location = new System.Drawing.Point(97, 137);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(60, 20);
-            this.textBox10.TabIndex = 23;
+            this.textBox10.TabIndex = 7;
             this.textBox10.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox10_MouseClick);
             this.textBox10.TextChanged += new System.EventHandler(this.textBox10_TextChanged);
             this.textBox10.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox10_KeyPress);
@@ -950,7 +963,7 @@
             this.button6.Location = new System.Drawing.Point(10, 101);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(88, 23);
-            this.button6.TabIndex = 22;
+            this.button6.TabIndex = 6;
             this.button6.Text = "Position Control";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
@@ -1002,7 +1015,7 @@
             this.comboBox2.Location = new System.Drawing.Point(39, 38);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(70, 21);
-            this.comboBox2.TabIndex = 31;
+            this.comboBox2.TabIndex = 19;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // label13
@@ -1049,7 +1062,7 @@
             this.giveWhile.Location = new System.Drawing.Point(178, 66);
             this.giveWhile.Name = "giveWhile";
             this.giveWhile.Size = new System.Drawing.Size(120, 49);
-            this.giveWhile.TabIndex = 59;
+            this.giveWhile.TabIndex = 33;
             this.giveWhile.SelectedIndexChanged += new System.EventHandler(this.giveWhile_SelectedIndexChanged);
             // 
             // label110
@@ -1075,7 +1088,7 @@
             this.dtSpeed.Location = new System.Drawing.Point(106, 95);
             this.dtSpeed.Name = "dtSpeed";
             this.dtSpeed.Size = new System.Drawing.Size(54, 20);
-            this.dtSpeed.TabIndex = 56;
+            this.dtSpeed.TabIndex = 32;
             this.dtSpeed.Text = "0.000000";
             this.dtSpeed.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dtSpeed_KeyPress);
             // 
@@ -1084,7 +1097,7 @@
             this.dtRamp.Location = new System.Drawing.Point(39, 95);
             this.dtRamp.Name = "dtRamp";
             this.dtRamp.Size = new System.Drawing.Size(40, 20);
-            this.dtRamp.TabIndex = 53;
+            this.dtRamp.TabIndex = 31;
             this.dtRamp.Text = "0.000";
             this.dtRamp.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dtRamp_KeyPress);
             // 
@@ -1111,7 +1124,7 @@
             this.indXpst.Location = new System.Drawing.Point(248, 4);
             this.indXpst.Name = "indXpst";
             this.indXpst.Size = new System.Drawing.Size(60, 20);
-            this.indXpst.TabIndex = 47;
+            this.indXpst.TabIndex = 29;
             this.indXpst.Text = "0.000000";
             this.indXpst.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.indXpst_KeyPress);
             // 
@@ -1120,7 +1133,7 @@
             this.indYpst.Location = new System.Drawing.Point(248, 26);
             this.indYpst.Name = "indYpst";
             this.indYpst.Size = new System.Drawing.Size(60, 20);
-            this.indYpst.TabIndex = 50;
+            this.indYpst.TabIndex = 30;
             this.indYpst.Text = "0.000000";
             this.indYpst.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.indYpst_KeyPress);
             // 
@@ -1156,7 +1169,7 @@
             this.textBox12.Location = new System.Drawing.Point(86, 31);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(67, 20);
-            this.textBox12.TabIndex = 1;
+            this.textBox12.TabIndex = 27;
             this.textBox12.Text = "0.000000";
             this.textBox12.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox12_MouseClick);
             this.textBox12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox12_KeyPress);
@@ -1166,7 +1179,7 @@
             this.textBox11.Location = new System.Drawing.Point(86, 10);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(67, 20);
-            this.textBox11.TabIndex = 0;
+            this.textBox11.TabIndex = 26;
             this.textBox11.Text = "0.000000";
             this.textBox11.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox11_KeyPress);
             // 
@@ -1175,7 +1188,7 @@
             this.textBox13.Location = new System.Drawing.Point(86, 53);
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(67, 20);
-            this.textBox13.TabIndex = 37;
+            this.textBox13.TabIndex = 28;
             this.textBox13.Text = "0.000000";
             this.textBox13.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox13_MouseClick);
             this.textBox13.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox13_KeyPress);
@@ -1245,7 +1258,7 @@
             this.dtPhase.Location = new System.Drawing.Point(203, 85);
             this.dtPhase.Name = "dtPhase";
             this.dtPhase.Size = new System.Drawing.Size(56, 20);
-            this.dtPhase.TabIndex = 55;
+            this.dtPhase.TabIndex = 42;
             this.dtPhase.Text = "0.000000";
             this.dtPhase.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dtPhase_KeyPress);
             // 
@@ -1254,7 +1267,7 @@
             this.dtF.Location = new System.Drawing.Point(109, 85);
             this.dtF.Name = "dtF";
             this.dtF.Size = new System.Drawing.Size(52, 20);
-            this.dtF.TabIndex = 54;
+            this.dtF.TabIndex = 41;
             this.dtF.Text = "0.000000";
             this.dtF.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dtF_KeyPress);
             // 
@@ -1263,7 +1276,7 @@
             this.dtAmp.Location = new System.Drawing.Point(21, 85);
             this.dtAmp.Name = "dtAmp";
             this.dtAmp.Size = new System.Drawing.Size(51, 20);
-            this.dtAmp.TabIndex = 53;
+            this.dtAmp.TabIndex = 40;
             this.dtAmp.Text = "0.000000";
             this.dtAmp.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dtAmp_KeyPress);
             // 
@@ -1273,7 +1286,7 @@
             this.checkBox3.Location = new System.Drawing.Point(19, 15);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(52, 17);
-            this.checkBox3.TabIndex = 52;
+            this.checkBox3.TabIndex = 34;
             this.checkBox3.Text = "None";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
@@ -1284,7 +1297,7 @@
             this.checkBox11.Location = new System.Drawing.Point(192, 15);
             this.checkBox11.Name = "checkBox11";
             this.checkBox11.Size = new System.Drawing.Size(105, 17);
-            this.checkBox11.TabIndex = 51;
+            this.checkBox11.TabIndex = 36;
             this.checkBox11.Text = "Triangular Wave";
             this.checkBox11.UseVisualStyleBackColor = true;
             this.checkBox11.CheckedChanged += new System.EventHandler(this.checkBox11_CheckedChanged);
@@ -1295,7 +1308,7 @@
             this.checkBox5.Location = new System.Drawing.Point(87, 15);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(92, 17);
-            this.checkBox5.TabIndex = 50;
+            this.checkBox5.TabIndex = 35;
             this.checkBox5.Text = "Square Wave";
             this.checkBox5.UseVisualStyleBackColor = true;
             this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
@@ -1333,7 +1346,7 @@
             this.textBox16.Location = new System.Drawing.Point(202, 47);
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(70, 20);
-            this.textBox16.TabIndex = 42;
+            this.textBox16.TabIndex = 39;
             this.textBox16.Text = "0.000000";
             this.textBox16.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox16_MouseClick);
             this.textBox16.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox16_KeyPress);
@@ -1343,7 +1356,7 @@
             this.textBox15.Location = new System.Drawing.Point(108, 47);
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(69, 20);
-            this.textBox15.TabIndex = 41;
+            this.textBox15.TabIndex = 38;
             this.textBox15.Text = "0.000000";
             this.textBox15.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox15_MouseClick);
             this.textBox15.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox15_KeyPress);
@@ -1353,7 +1366,7 @@
             this.textBox14.Location = new System.Drawing.Point(20, 47);
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(74, 20);
-            this.textBox14.TabIndex = 40;
+            this.textBox14.TabIndex = 37;
             this.textBox14.Text = "0.000000";
             this.textBox14.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox14_MouseClick);
             this.textBox14.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox14_KeyPress);
@@ -1412,7 +1425,7 @@
             this.holdDur.Location = new System.Drawing.Point(127, 352);
             this.holdDur.Name = "holdDur";
             this.holdDur.Size = new System.Drawing.Size(59, 20);
-            this.holdDur.TabIndex = 48;
+            this.holdDur.TabIndex = 45;
             this.holdDur.Text = "0";
             this.holdDur.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.holdDur_KeyPress);
             // 
@@ -1430,7 +1443,7 @@
             this.holdPercent.Location = new System.Drawing.Point(67, 333);
             this.holdPercent.Name = "holdPercent";
             this.holdPercent.Size = new System.Drawing.Size(36, 20);
-            this.holdPercent.TabIndex = 46;
+            this.holdPercent.TabIndex = 43;
             this.holdPercent.Value = new decimal(new int[] {
             90,
             0,
@@ -1444,7 +1457,7 @@
             this.button7.Location = new System.Drawing.Point(7, 13);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(161, 23);
-            this.button7.TabIndex = 40;
+            this.button7.TabIndex = 18;
             this.button7.Text = "Control: Piezo Voltage";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
@@ -1467,7 +1480,7 @@
             this.tempshow.Location = new System.Drawing.Point(247, 78);
             this.tempshow.Name = "tempshow";
             this.tempshow.Size = new System.Drawing.Size(67, 20);
-            this.tempshow.TabIndex = 43;
+            this.tempshow.TabIndex = 25;
             // 
             // label46
             // 
@@ -1502,7 +1515,7 @@
             this.gageShow.Name = "gageShow";
             this.gageShow.ReadOnly = true;
             this.gageShow.Size = new System.Drawing.Size(57, 20);
-            this.gageShow.TabIndex = 41;
+            this.gageShow.TabIndex = 24;
             this.gageShow.TextChanged += new System.EventHandler(this.gageShow_TextChanged);
             // 
             // label39
@@ -1520,7 +1533,7 @@
             this.pressShow.Name = "pressShow";
             this.pressShow.ReadOnly = true;
             this.pressShow.Size = new System.Drawing.Size(57, 20);
-            this.pressShow.TabIndex = 39;
+            this.pressShow.TabIndex = 23;
             // 
             // groupBox6
             // 
@@ -1542,7 +1555,7 @@
             this.appSpeed.Location = new System.Drawing.Point(89, 40);
             this.appSpeed.Name = "appSpeed";
             this.appSpeed.Size = new System.Drawing.Size(67, 20);
-            this.appSpeed.TabIndex = 15;
+            this.appSpeed.TabIndex = 22;
             this.appSpeed.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.appSpeed_KeyPress);
             // 
             // label37
@@ -1559,7 +1572,7 @@
             this.loadThres.Location = new System.Drawing.Point(89, 19);
             this.loadThres.Name = "loadThres";
             this.loadThres.Size = new System.Drawing.Size(66, 20);
-            this.loadThres.TabIndex = 13;
+            this.loadThres.TabIndex = 21;
             this.loadThres.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.loadThres_KeyPress);
             // 
             // label36
@@ -1577,7 +1590,7 @@
             this.autoApp.Location = new System.Drawing.Point(201, 17);
             this.autoApp.Name = "autoApp";
             this.autoApp.Size = new System.Drawing.Size(15, 14);
-            this.autoApp.TabIndex = 0;
+            this.autoApp.TabIndex = 20;
             this.autoApp.UseVisualStyleBackColor = true;
             this.autoApp.CheckedChanged += new System.EventHandler(this.autoApp_CheckedChanged);
             // 
@@ -1586,18 +1599,10 @@
             this.stopExp.Location = new System.Drawing.Point(506, 408);
             this.stopExp.Name = "stopExp";
             this.stopExp.Size = new System.Drawing.Size(57, 23);
-            this.stopExp.TabIndex = 37;
+            this.stopExp.TabIndex = 49;
             this.stopExp.Text = "Stop";
             this.stopExp.UseVisualStyleBackColor = true;
             this.stopExp.Click += new System.EventHandler(this.StopExp_Click);
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(415, 480);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(127, 11);
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar1.TabIndex = 39;
             // 
             // tabControl1
             // 
@@ -1650,11 +1655,12 @@
             this.loadExtraShow.Name = "loadExtraShow";
             this.loadExtraShow.ReadOnly = true;
             this.loadExtraShow.Size = new System.Drawing.Size(57, 20);
-            this.loadExtraShow.TabIndex = 57;
+            this.loadExtraShow.TabIndex = 8;
             // 
             // selectedHeater
             // 
             this.selectedHeater.FormattingEnabled = true;
+            this.selectedHeater.ItemHeight = 13;
             this.selectedHeater.Items.AddRange(new object[] {
             "1",
             "2",
@@ -1662,7 +1668,7 @@
             this.selectedHeater.Location = new System.Drawing.Point(662, 3);
             this.selectedHeater.Name = "selectedHeater";
             this.selectedHeater.Size = new System.Drawing.Size(34, 21);
-            this.selectedHeater.TabIndex = 56;
+            this.selectedHeater.TabIndex = 0;
             this.selectedHeater.SelectedIndexChanged += new System.EventHandler(this.selectedHeater_SelectedIndexChanged);
             // 
             // groupBox22
@@ -1725,7 +1731,7 @@
             this.yStep.Minimum = 1;
             this.yStep.Name = "yStep";
             this.yStep.Size = new System.Drawing.Size(158, 45);
-            this.yStep.TabIndex = 68;
+            this.yStep.TabIndex = 35;
             this.yStep.Value = 1;
             // 
             // label120
@@ -1745,7 +1751,7 @@
             this.xStep.Minimum = 1;
             this.xStep.Name = "xStep";
             this.xStep.Size = new System.Drawing.Size(158, 45);
-            this.xStep.TabIndex = 66;
+            this.xStep.TabIndex = 34;
             this.xStep.Value = 1;
             // 
             // label107
@@ -1780,7 +1786,7 @@
             this.yTour.Location = new System.Drawing.Point(182, 168);
             this.yTour.Name = "yTour";
             this.yTour.Size = new System.Drawing.Size(84, 20);
-            this.yTour.TabIndex = 62;
+            this.yTour.TabIndex = 37;
             this.yTour.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.yTour_KeyPress);
             // 
             // label116
@@ -1797,7 +1803,7 @@
             this.xTour.Location = new System.Drawing.Point(15, 168);
             this.xTour.Name = "xTour";
             this.xTour.Size = new System.Drawing.Size(84, 20);
-            this.xTour.TabIndex = 60;
+            this.xTour.TabIndex = 36;
             this.xTour.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.xTour_KeyPress);
             // 
             // label105
@@ -1817,7 +1823,7 @@
             this.yEncode.Minimum = 1;
             this.yEncode.Name = "yEncode";
             this.yEncode.Size = new System.Drawing.Size(158, 45);
-            this.yEncode.TabIndex = 50;
+            this.yEncode.TabIndex = 33;
             this.yEncode.Value = 1;
             this.yEncode.MouseHover += new System.EventHandler(this.yEncode_MouseHover);
             // 
@@ -1838,7 +1844,7 @@
             this.xEncode.Minimum = 1;
             this.xEncode.Name = "xEncode";
             this.xEncode.Size = new System.Drawing.Size(158, 45);
-            this.xEncode.TabIndex = 48;
+            this.xEncode.TabIndex = 32;
             this.xEncode.Value = 1;
             this.xEncode.MouseHover += new System.EventHandler(this.xEncode_MouseHover);
             // 
@@ -1892,7 +1898,7 @@
             this.heatConstTb.Location = new System.Drawing.Point(303, 177);
             this.heatConstTb.Name = "heatConstTb";
             this.heatConstTb.Size = new System.Drawing.Size(32, 20);
-            this.heatConstTb.TabIndex = 73;
+            this.heatConstTb.TabIndex = 31;
             this.heatConstTb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.heatConstTb_KeyPress);
             // 
             // label125
@@ -1909,7 +1915,7 @@
             this.heatSlopeTb.Location = new System.Drawing.Point(227, 177);
             this.heatSlopeTb.Name = "heatSlopeTb";
             this.heatSlopeTb.Size = new System.Drawing.Size(32, 20);
-            this.heatSlopeTb.TabIndex = 71;
+            this.heatSlopeTb.TabIndex = 30;
             this.heatSlopeTb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.heatSlopeTb_KeyPress);
             // 
             // findHeaterChar
@@ -1917,7 +1923,7 @@
             this.findHeaterChar.Location = new System.Drawing.Point(211, 154);
             this.findHeaterChar.Name = "findHeaterChar";
             this.findHeaterChar.Size = new System.Drawing.Size(126, 23);
-            this.findHeaterChar.TabIndex = 70;
+            this.findHeaterChar.TabIndex = 28;
             this.findHeaterChar.Text = "Find Heater Character";
             this.findHeaterChar.UseVisualStyleBackColor = true;
             this.findHeaterChar.Click += new System.EventHandler(this.findHeaterChar_Click);
@@ -1936,7 +1942,7 @@
             this.bandInterval.Location = new System.Drawing.Point(145, 177);
             this.bandInterval.Name = "bandInterval";
             this.bandInterval.Size = new System.Drawing.Size(50, 20);
-            this.bandInterval.TabIndex = 68;
+            this.bandInterval.TabIndex = 29;
             this.bandInterval.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.bandInterval_KeyPress);
             // 
             // bandControl
@@ -1945,7 +1951,7 @@
             this.bandControl.Location = new System.Drawing.Point(86, 156);
             this.bandControl.Name = "bandControl";
             this.bandControl.Size = new System.Drawing.Size(108, 17);
-            this.bandControl.TabIndex = 67;
+            this.bandControl.TabIndex = 27;
             this.bandControl.Text = "PID Band Control";
             this.bandControl.UseVisualStyleBackColor = true;
             this.bandControl.CheckedChanged += new System.EventHandler(this.bandControl_CheckedChanged);
@@ -1964,7 +1970,7 @@
             this.heatSensDev.Location = new System.Drawing.Point(77, 124);
             this.heatSensDev.Name = "heatSensDev";
             this.heatSensDev.Size = new System.Drawing.Size(50, 20);
-            this.heatSensDev.TabIndex = 65;
+            this.heatSensDev.TabIndex = 24;
             this.heatSensDev.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.heatSensDev_KeyPress);
             // 
             // label122
@@ -1981,7 +1987,7 @@
             this.heaterTimeConst.Location = new System.Drawing.Point(77, 91);
             this.heaterTimeConst.Name = "heaterTimeConst";
             this.heaterTimeConst.Size = new System.Drawing.Size(50, 20);
-            this.heaterTimeConst.TabIndex = 63;
+            this.heaterTimeConst.TabIndex = 22;
             this.heaterTimeConst.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.heaterTimeConst_KeyPress);
             // 
             // stopFeed
@@ -2009,7 +2015,7 @@
             this.feedNi.Location = new System.Drawing.Point(208, 66);
             this.feedNi.Name = "feedNi";
             this.feedNi.Size = new System.Drawing.Size(63, 17);
-            this.feedNi.TabIndex = 11;
+            this.feedNi.TabIndex = 21;
             this.feedNi.Text = "NI PCIe";
             this.feedNi.UseVisualStyleBackColor = true;
             this.feedNi.CheckedChanged += new System.EventHandler(this.feedNi_CheckedChanged);
@@ -2024,7 +2030,7 @@
             0});
             this.heaterDuty.Name = "heaterDuty";
             this.heaterDuty.Size = new System.Drawing.Size(35, 20);
-            this.heaterDuty.TabIndex = 61;
+            this.heaterDuty.TabIndex = 25;
             this.heaterDuty.Value = new decimal(new int[] {
             1,
             0,
@@ -2038,7 +2044,7 @@
             this.feedInternal.Location = new System.Drawing.Point(117, 66);
             this.feedInternal.Name = "feedInternal";
             this.feedInternal.Size = new System.Drawing.Size(94, 17);
-            this.feedInternal.TabIndex = 10;
+            this.feedInternal.TabIndex = 20;
             this.feedInternal.Text = "Internal (MCU)";
             this.feedInternal.UseVisualStyleBackColor = true;
             this.feedInternal.CheckedChanged += new System.EventHandler(this.feedInternal_CheckedChanged);
@@ -2072,7 +2078,7 @@
             this.proGain.Location = new System.Drawing.Point(173, 89);
             this.proGain.Name = "proGain";
             this.proGain.Size = new System.Drawing.Size(35, 20);
-            this.proGain.TabIndex = 59;
+            this.proGain.TabIndex = 23;
             this.proGain.Value = new decimal(new int[] {
             1,
             0,
@@ -2086,7 +2092,7 @@
             this.isSample.Location = new System.Drawing.Point(15, 41);
             this.isSample.Name = "isSample";
             this.isSample.Size = new System.Drawing.Size(96, 17);
-            this.isSample.TabIndex = 8;
+            this.isSample.TabIndex = 19;
             this.isSample.Text = "Sample Heater";
             this.isSample.UseVisualStyleBackColor = true;
             this.isSample.CheckedChanged += new System.EventHandler(this.isSample_CheckedChanged);
@@ -2106,7 +2112,7 @@
             this.heaterFeedList.Location = new System.Drawing.Point(215, 84);
             this.heaterFeedList.Name = "heaterFeedList";
             this.heaterFeedList.Size = new System.Drawing.Size(120, 69);
-            this.heaterFeedList.TabIndex = 57;
+            this.heaterFeedList.TabIndex = 26;
             this.heaterFeedList.SelectedIndexChanged += new System.EventHandler(this.heaterFeedList_SelectedIndexChanged);
             // 
             // sampleTSet
@@ -2114,7 +2120,7 @@
             this.sampleTSet.Location = new System.Drawing.Point(208, 43);
             this.sampleTSet.Name = "sampleTSet";
             this.sampleTSet.Size = new System.Drawing.Size(69, 20);
-            this.sampleTSet.TabIndex = 3;
+            this.sampleTSet.TabIndex = 18;
             this.sampleTSet.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.sampleTSet_KeyPress);
             // 
             // label95
@@ -2132,7 +2138,7 @@
             this.sampleTMeasure.Location = new System.Drawing.Point(208, 17);
             this.sampleTMeasure.Name = "sampleTMeasure";
             this.sampleTMeasure.Size = new System.Drawing.Size(69, 20);
-            this.sampleTMeasure.TabIndex = 1;
+            this.sampleTMeasure.TabIndex = 17;
             // 
             // heatAct
             // 
@@ -2140,7 +2146,7 @@
             this.heatAct.Location = new System.Drawing.Point(6, 18);
             this.heatAct.Name = "heatAct";
             this.heatAct.Size = new System.Drawing.Size(65, 17);
-            this.heatAct.TabIndex = 0;
+            this.heatAct.TabIndex = 16;
             this.heatAct.Text = "Activate";
             this.heatAct.UseVisualStyleBackColor = true;
             this.heatAct.CheckedChanged += new System.EventHandler(this.heatAct_CheckedChanged);
@@ -2151,7 +2157,7 @@
             this.jsBox.Location = new System.Drawing.Point(176, 143);
             this.jsBox.Name = "jsBox";
             this.jsBox.Size = new System.Drawing.Size(100, 17);
-            this.jsBox.TabIndex = 53;
+            this.jsBox.TabIndex = 7;
             this.jsBox.Text = "Enable Joystick";
             this.jsBox.UseVisualStyleBackColor = true;
             this.jsBox.CheckedChanged += new System.EventHandler(this.jsBox_CheckedChanged);
@@ -2184,7 +2190,7 @@
             this.coarsePst.Location = new System.Drawing.Point(55, 93);
             this.coarsePst.Name = "coarsePst";
             this.coarsePst.Size = new System.Drawing.Size(75, 23);
-            this.coarsePst.TabIndex = 51;
+            this.coarsePst.TabIndex = 5;
             this.coarsePst.Text = "Auto Land";
             this.coarsePst.UseVisualStyleBackColor = true;
             this.coarsePst.Click += new System.EventHandler(this.coarsePst_Click);
@@ -2203,7 +2209,7 @@
             this.yPosition.Location = new System.Drawing.Point(239, 32);
             this.yPosition.Name = "yPosition";
             this.yPosition.Size = new System.Drawing.Size(65, 20);
-            this.yPosition.TabIndex = 50;
+            this.yPosition.TabIndex = 3;
             this.yPosition.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.yPosition_KeyPress);
             // 
             // xPosition
@@ -2211,7 +2217,7 @@
             this.xPosition.Location = new System.Drawing.Point(155, 33);
             this.xPosition.Name = "xPosition";
             this.xPosition.Size = new System.Drawing.Size(65, 20);
-            this.xPosition.TabIndex = 48;
+            this.xPosition.TabIndex = 2;
             this.xPosition.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.xPosition_KeyPress);
             // 
             // backArrow
@@ -2272,7 +2278,7 @@
             this.goHome.Location = new System.Drawing.Point(55, 60);
             this.goHome.Name = "goHome";
             this.goHome.Size = new System.Drawing.Size(75, 23);
-            this.goHome.TabIndex = 40;
+            this.goHome.TabIndex = 4;
             this.goHome.Text = "Go Home!";
             this.goHome.UseVisualStyleBackColor = true;
             this.goHome.Click += new System.EventHandler(this.goHome_Click);
@@ -2282,7 +2288,7 @@
             this.motorPos.Location = new System.Drawing.Point(55, 34);
             this.motorPos.Name = "motorPos";
             this.motorPos.Size = new System.Drawing.Size(65, 20);
-            this.motorPos.TabIndex = 38;
+            this.motorPos.TabIndex = 1;
             this.motorPos.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.motorPos_KeyPress);
             // 
             // downArrow
@@ -2362,7 +2368,7 @@
             this.micstepBox.Location = new System.Drawing.Point(54, 163);
             this.micstepBox.Name = "micstepBox";
             this.micstepBox.Size = new System.Drawing.Size(49, 21);
-            this.micstepBox.TabIndex = 50;
+            this.micstepBox.TabIndex = 13;
             this.micstepBox.SelectedIndexChanged += new System.EventHandler(this.micstepBox_SelectedIndexChanged);
             // 
             // label85
@@ -2380,7 +2386,7 @@
             this.stepIncbox.Location = new System.Drawing.Point(55, 39);
             this.stepIncbox.Name = "stepIncbox";
             this.stepIncbox.Size = new System.Drawing.Size(84, 20);
-            this.stepIncbox.TabIndex = 48;
+            this.stepIncbox.TabIndex = 9;
             // 
             // motorTrack
             // 
@@ -2390,7 +2396,7 @@
             this.motorTrack.Minimum = 1;
             this.motorTrack.Name = "motorTrack";
             this.motorTrack.Size = new System.Drawing.Size(158, 45);
-            this.motorTrack.TabIndex = 47;
+            this.motorTrack.TabIndex = 15;
             this.motorTrack.Value = 1;
             this.motorTrack.MouseHover += new System.EventHandler(this.motorTrack_MouseHover);
             // 
@@ -2417,7 +2423,7 @@
             this.motorMax.Location = new System.Drawing.Point(195, 39);
             this.motorMax.Name = "motorMax";
             this.motorMax.Size = new System.Drawing.Size(84, 20);
-            this.motorMax.TabIndex = 37;
+            this.motorMax.TabIndex = 10;
             this.motorMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.motorMax_KeyPress);
             // 
             // label64
@@ -2443,7 +2449,7 @@
             this.stepSpeed.Location = new System.Drawing.Point(54, 203);
             this.stepSpeed.Name = "stepSpeed";
             this.stepSpeed.Size = new System.Drawing.Size(84, 20);
-            this.stepSpeed.TabIndex = 42;
+            this.stepSpeed.TabIndex = 14;
             this.stepSpeed.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.stepSpeed_KeyPress);
             // 
             // label62
@@ -2460,7 +2466,7 @@
             this.stepAng.Location = new System.Drawing.Point(54, 117);
             this.stepAng.Name = "stepAng";
             this.stepAng.Size = new System.Drawing.Size(85, 20);
-            this.stepAng.TabIndex = 38;
+            this.stepAng.TabIndex = 12;
             this.stepAng.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.stepAng_KeyPress);
             // 
             // label61
@@ -2478,7 +2484,7 @@
             this.threadPitch.Location = new System.Drawing.Point(55, 78);
             this.threadPitch.Name = "threadPitch";
             this.threadPitch.Size = new System.Drawing.Size(84, 20);
-            this.threadPitch.TabIndex = 36;
+            this.threadPitch.TabIndex = 11;
             this.threadPitch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.threadPitch_KeyPress);
             // 
             // label60
@@ -2495,7 +2501,7 @@
             this.stopMot.Location = new System.Drawing.Point(71, 137);
             this.stopMot.Name = "stopMot";
             this.stopMot.Size = new System.Drawing.Size(75, 23);
-            this.stopMot.TabIndex = 41;
+            this.stopMot.TabIndex = 6;
             this.stopMot.Text = "Stop";
             this.stopMot.UseVisualStyleBackColor = true;
             this.stopMot.Click += new System.EventHandler(this.stopMot_Click);
@@ -2523,7 +2529,7 @@
             this.loadSet.Location = new System.Drawing.Point(437, 408);
             this.loadSet.Name = "loadSet";
             this.loadSet.Size = new System.Drawing.Size(39, 23);
-            this.loadSet.TabIndex = 39;
+            this.loadSet.TabIndex = 51;
             this.loadSet.Text = "Load";
             this.loadSet.UseVisualStyleBackColor = true;
             this.loadSet.Click += new System.EventHandler(this.loadSet_Click);
@@ -2533,7 +2539,7 @@
             this.saveSet.Location = new System.Drawing.Point(398, 408);
             this.saveSet.Name = "saveSet";
             this.saveSet.Size = new System.Drawing.Size(41, 23);
-            this.saveSet.TabIndex = 38;
+            this.saveSet.TabIndex = 50;
             this.saveSet.Text = "Save";
             this.saveSet.UseVisualStyleBackColor = true;
             this.saveSet.Click += new System.EventHandler(this.saveSet_Click);
@@ -2574,7 +2580,7 @@
             this.loadLive.Location = new System.Drawing.Point(136, 397);
             this.loadLive.Name = "loadLive";
             this.loadLive.Size = new System.Drawing.Size(46, 17);
-            this.loadLive.TabIndex = 74;
+            this.loadLive.TabIndex = 17;
             this.loadLive.Text = "Live";
             this.loadLive.UseVisualStyleBackColor = true;
             this.loadLive.CheckedChanged += new System.EventHandler(this.loadLive_CheckedChanged);
@@ -2584,7 +2590,7 @@
             this.loadTare.Location = new System.Drawing.Point(135, 365);
             this.loadTare.Name = "loadTare";
             this.loadTare.Size = new System.Drawing.Size(45, 23);
-            this.loadTare.TabIndex = 73;
+            this.loadTare.TabIndex = 15;
             this.loadTare.Text = "Tare";
             this.loadTare.UseVisualStyleBackColor = true;
             this.loadTare.Click += new System.EventHandler(this.loadTare_Click);
@@ -2593,14 +2599,13 @@
             // 
             this.vibrationModes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.vibrationModes.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.vibrationModes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.vibrationModes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2});
             this.vibrationModes.Location = new System.Drawing.Point(186, 302);
             this.vibrationModes.Name = "vibrationModes";
             this.vibrationModes.Size = new System.Drawing.Size(203, 41);
-            this.vibrationModes.TabIndex = 72;
+            this.vibrationModes.TabIndex = 32;
             // 
             // Column1
             // 
@@ -2617,11 +2622,11 @@
             // label93
             // 
             this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(117, 399);
+            this.label93.Location = new System.Drawing.Point(113, 399);
             this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(21, 13);
+            this.label93.Size = new System.Drawing.Size(23, 13);
             this.label93.TabIndex = 57;
-            this.label93.Text = "mg";
+            this.label93.Text = "mN";
             // 
             // loadcellData
             // 
@@ -2629,14 +2634,14 @@
             this.loadcellData.Location = new System.Drawing.Point(13, 394);
             this.loadcellData.Name = "loadcellData";
             this.loadcellData.Size = new System.Drawing.Size(100, 20);
-            this.loadcellData.TabIndex = 56;
+            this.loadcellData.TabIndex = 16;
             // 
             // loadcell
             // 
             this.loadcell.Location = new System.Drawing.Point(13, 365);
             this.loadcell.Name = "loadcell";
             this.loadcell.Size = new System.Drawing.Size(117, 23);
-            this.loadcell.TabIndex = 55;
+            this.loadcell.TabIndex = 14;
             this.loadcell.Text = "Loadcell-HX711 Data";
             this.loadcell.UseVisualStyleBackColor = true;
             this.loadcell.Click += new System.EventHandler(this.loadcell_Click);
@@ -2665,7 +2670,7 @@
             this.humTemp.Location = new System.Drawing.Point(86, 339);
             this.humTemp.Name = "humTemp";
             this.humTemp.Size = new System.Drawing.Size(36, 20);
-            this.humTemp.TabIndex = 52;
+            this.humTemp.TabIndex = 13;
             // 
             // relHum
             // 
@@ -2673,14 +2678,14 @@
             this.relHum.Location = new System.Drawing.Point(13, 339);
             this.relHum.Name = "relHum";
             this.relHum.Size = new System.Drawing.Size(39, 20);
-            this.relHum.TabIndex = 51;
+            this.relHum.TabIndex = 12;
             // 
             // getHumid
             // 
             this.getHumid.Location = new System.Drawing.Point(13, 312);
             this.getHumid.Name = "getHumid";
             this.getHumid.Size = new System.Drawing.Size(126, 22);
-            this.getHumid.TabIndex = 50;
+            this.getHumid.TabIndex = 11;
             this.getHumid.Text = "Humidity / Temperature";
             this.getHumid.UseVisualStyleBackColor = true;
             this.getHumid.Click += new System.EventHandler(this.getHumid_Click);
@@ -2727,14 +2732,14 @@
             this.slopeType.Location = new System.Drawing.Point(6, 208);
             this.slopeType.Name = "slopeType";
             this.slopeType.Size = new System.Drawing.Size(144, 30);
-            this.slopeType.TabIndex = 71;
+            this.slopeType.TabIndex = 28;
             // 
             // vibCheck
             // 
             this.vibCheck.Location = new System.Drawing.Point(23, 265);
             this.vibCheck.Name = "vibCheck";
             this.vibCheck.Size = new System.Drawing.Size(113, 23);
-            this.vibCheck.TabIndex = 70;
+            this.vibCheck.TabIndex = 31;
             this.vibCheck.Text = "Vibration Check";
             this.vibCheck.UseVisualStyleBackColor = true;
             this.vibCheck.Click += new System.EventHandler(this.vibCheck_Click);
@@ -2754,7 +2759,7 @@
             this.surfDevY.Location = new System.Drawing.Point(103, 242);
             this.surfDevY.Name = "surfDevY";
             this.surfDevY.Size = new System.Drawing.Size(37, 20);
-            this.surfDevY.TabIndex = 65;
+            this.surfDevY.TabIndex = 30;
             // 
             // label102
             // 
@@ -2780,7 +2785,7 @@
             this.surfDevX.Location = new System.Drawing.Point(38, 242);
             this.surfDevX.Name = "surfDevX";
             this.surfDevX.Size = new System.Drawing.Size(38, 20);
-            this.surfDevX.TabIndex = 64;
+            this.surfDevX.TabIndex = 29;
             // 
             // groundY
             // 
@@ -2788,7 +2793,7 @@
             this.groundY.Location = new System.Drawing.Point(103, 146);
             this.groundY.Name = "groundY";
             this.groundY.Size = new System.Drawing.Size(37, 20);
-            this.groundY.TabIndex = 63;
+            this.groundY.TabIndex = 26;
             // 
             // label100
             // 
@@ -2805,7 +2810,7 @@
             this.groundX.Location = new System.Drawing.Point(38, 146);
             this.groundX.Name = "groundX";
             this.groundX.Size = new System.Drawing.Size(38, 20);
-            this.groundX.TabIndex = 62;
+            this.groundX.TabIndex = 25;
             // 
             // indentY
             // 
@@ -2813,7 +2818,7 @@
             this.indentY.Location = new System.Drawing.Point(103, 93);
             this.indentY.Name = "indentY";
             this.indentY.Size = new System.Drawing.Size(37, 20);
-            this.indentY.TabIndex = 61;
+            this.indentY.TabIndex = 23;
             // 
             // indentX
             // 
@@ -2821,7 +2826,7 @@
             this.indentX.Location = new System.Drawing.Point(38, 93);
             this.indentX.Name = "indentX";
             this.indentX.Size = new System.Drawing.Size(38, 20);
-            this.indentX.TabIndex = 60;
+            this.indentX.TabIndex = 22;
             // 
             // label97
             // 
@@ -2865,7 +2870,7 @@
             this.headY.Location = new System.Drawing.Point(103, 43);
             this.headY.Name = "headY";
             this.headY.Size = new System.Drawing.Size(37, 20);
-            this.headY.TabIndex = 51;
+            this.headY.TabIndex = 20;
             // 
             // headX
             // 
@@ -2873,14 +2878,14 @@
             this.headX.Location = new System.Drawing.Point(38, 43);
             this.headX.Name = "headX";
             this.headX.Size = new System.Drawing.Size(38, 20);
-            this.headX.TabIndex = 50;
+            this.headX.TabIndex = 19;
             // 
             // touchLevel
             // 
             this.touchLevel.Location = new System.Drawing.Point(25, 172);
             this.touchLevel.Name = "touchLevel";
             this.touchLevel.Size = new System.Drawing.Size(113, 34);
-            this.touchLevel.TabIndex = 49;
+            this.touchLevel.TabIndex = 27;
             this.touchLevel.Text = "Sample Surface Deviation";
             this.touchLevel.UseVisualStyleBackColor = true;
             this.touchLevel.Click += new System.EventHandler(this.touchLevel_Click);
@@ -2890,7 +2895,7 @@
             this.basBal.Location = new System.Drawing.Point(55, 119);
             this.basBal.Name = "basBal";
             this.basBal.Size = new System.Drawing.Size(64, 23);
-            this.basBal.TabIndex = 48;
+            this.basBal.TabIndex = 24;
             this.basBal.Text = "Ground";
             this.basBal.UseVisualStyleBackColor = true;
             this.basBal.Click += new System.EventHandler(this.basBal_Click);
@@ -2900,7 +2905,7 @@
             this.movBal.Location = new System.Drawing.Point(55, 69);
             this.movBal.Name = "movBal";
             this.movBal.Size = new System.Drawing.Size(64, 23);
-            this.movBal.TabIndex = 47;
+            this.movBal.TabIndex = 21;
             this.movBal.Text = "Indenter";
             this.movBal.UseVisualStyleBackColor = true;
             this.movBal.Click += new System.EventHandler(this.movBal_Click);
@@ -2910,7 +2915,7 @@
             this.upBal.Location = new System.Drawing.Point(55, 16);
             this.upBal.Name = "upBal";
             this.upBal.Size = new System.Drawing.Size(64, 23);
-            this.upBal.TabIndex = 46;
+            this.upBal.TabIndex = 18;
             this.upBal.Text = "Head";
             this.upBal.UseVisualStyleBackColor = true;
             this.upBal.Click += new System.EventHandler(this.upBal_Click);
@@ -2930,7 +2935,7 @@
             this.extraSG.Name = "extraSG";
             this.extraSG.ReadOnly = true;
             this.extraSG.Size = new System.Drawing.Size(71, 20);
-            this.extraSG.TabIndex = 43;
+            this.extraSG.TabIndex = 10;
             // 
             // label44
             // 
@@ -2946,7 +2951,7 @@
             this.stopCal.Location = new System.Drawing.Point(114, 221);
             this.stopCal.Name = "stopCal";
             this.stopCal.Size = new System.Drawing.Size(57, 23);
-            this.stopCal.TabIndex = 38;
+            this.stopCal.TabIndex = 8;
             this.stopCal.Text = "Stop";
             this.stopCal.UseVisualStyleBackColor = true;
             this.stopCal.Click += new System.EventHandler(this.stopCal_Click);
@@ -2959,85 +2964,85 @@
             this.checkBox13.Location = new System.Drawing.Point(9, 225);
             this.checkBox13.Name = "checkBox13";
             this.checkBox13.Size = new System.Drawing.Size(92, 17);
-            this.checkBox13.TabIndex = 16;
+            this.checkBox13.TabIndex = 6;
             this.checkBox13.Text = "Is Calibration?";
             this.checkBox13.UseVisualStyleBackColor = true;
             this.checkBox13.CheckedChanged += new System.EventHandler(this.checkBox13_CheckedChanged);
             // 
             // chart1
             // 
-            chartArea3.AlignmentOrientation = ((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations)((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Vertical | System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Horizontal)));
-            chartArea3.AxisX.MajorGrid.Interval = 0D;
-            chartArea3.AxisX.MajorGrid.IntervalOffset = 0D;
-            chartArea3.AxisX.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisX.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisX.MajorTickMark.Interval = 0D;
-            chartArea3.AxisX.MajorTickMark.IntervalOffset = 0D;
-            chartArea3.AxisX.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisX.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisX.MinorTickMark.Enabled = true;
-            chartArea3.AxisX.Title = "Time (s)";
-            chartArea3.AxisX2.LineColor = System.Drawing.Color.Red;
-            chartArea3.AxisX2.MajorGrid.Interval = 0D;
-            chartArea3.AxisX2.MajorGrid.IntervalOffset = 0D;
-            chartArea3.AxisX2.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisX2.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisX2.MajorTickMark.Interval = 0D;
-            chartArea3.AxisX2.MajorTickMark.IntervalOffset = 0D;
-            chartArea3.AxisX2.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisX2.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisX2.MinorTickMark.Enabled = true;
-            chartArea3.AxisX2.Title = "Sampling#";
-            chartArea3.AxisY.MajorGrid.Interval = 0D;
-            chartArea3.AxisY.MajorGrid.IntervalOffset = 0D;
-            chartArea3.AxisY.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisY.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisY.MajorTickMark.Interval = 0D;
-            chartArea3.AxisY.MajorTickMark.IntervalOffset = 0D;
-            chartArea3.AxisY.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisY.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisY.MinorGrid.Enabled = true;
-            chartArea3.AxisY.MinorTickMark.Enabled = true;
-            chartArea3.AxisY.Title = "Measured Value";
-            chartArea3.AxisY2.LineColor = System.Drawing.Color.Red;
-            chartArea3.AxisY2.MajorGrid.Interval = 0D;
-            chartArea3.AxisY2.MajorGrid.IntervalOffset = 0D;
-            chartArea3.AxisY2.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisY2.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisY2.MajorTickMark.Interval = 0D;
-            chartArea3.AxisY2.MajorTickMark.IntervalOffset = 0D;
-            chartArea3.AxisY2.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisY2.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
-            chartArea3.AxisY2.MinorGrid.Enabled = true;
-            chartArea3.AxisY2.MinorTickMark.Enabled = true;
-            chartArea3.AxisY2.Title = "Temperature";
-            chartArea3.BackColor = System.Drawing.Color.Transparent;
-            chartArea3.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            chartArea3.CursorX.Interval = 0.1D;
-            chartArea3.CursorX.IsUserEnabled = true;
-            chartArea3.CursorX.IsUserSelectionEnabled = true;
-            chartArea3.CursorX.SelectionColor = System.Drawing.Color.DimGray;
-            chartArea3.CursorY.Interval = 0.1D;
-            chartArea3.CursorY.IsUserEnabled = true;
-            chartArea3.CursorY.IsUserSelectionEnabled = true;
-            chartArea3.CursorY.SelectionColor = System.Drawing.Color.DimGray;
-            chartArea3.InnerPlotPosition.Auto = false;
-            chartArea3.InnerPlotPosition.Height = 75F;
-            chartArea3.InnerPlotPosition.Width = 85F;
-            chartArea3.InnerPlotPosition.X = 12F;
-            chartArea3.InnerPlotPosition.Y = 10F;
-            chartArea3.Name = "ChartArea1";
-            chartArea3.Position.Auto = false;
-            chartArea3.Position.Height = 90F;
-            chartArea3.Position.Width = 90F;
-            chartArea3.Position.Y = 10F;
-            this.chart1.ChartAreas.Add(chartArea3);
+            chartArea1.AlignmentOrientation = ((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations)((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Vertical | System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Horizontal)));
+            chartArea1.AxisX.MajorGrid.Interval = 0D;
+            chartArea1.AxisX.MajorGrid.IntervalOffset = 0D;
+            chartArea1.AxisX.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisX.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisX.MajorTickMark.Interval = 0D;
+            chartArea1.AxisX.MajorTickMark.IntervalOffset = 0D;
+            chartArea1.AxisX.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisX.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisX.MinorTickMark.Enabled = true;
+            chartArea1.AxisX.Title = "Time (s)";
+            chartArea1.AxisX2.LineColor = System.Drawing.Color.Red;
+            chartArea1.AxisX2.MajorGrid.Interval = 0D;
+            chartArea1.AxisX2.MajorGrid.IntervalOffset = 0D;
+            chartArea1.AxisX2.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisX2.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisX2.MajorTickMark.Interval = 0D;
+            chartArea1.AxisX2.MajorTickMark.IntervalOffset = 0D;
+            chartArea1.AxisX2.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisX2.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisX2.MinorTickMark.Enabled = true;
+            chartArea1.AxisX2.Title = "Sampling#";
+            chartArea1.AxisY.MajorGrid.Interval = 0D;
+            chartArea1.AxisY.MajorGrid.IntervalOffset = 0D;
+            chartArea1.AxisY.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisY.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisY.MajorTickMark.Interval = 0D;
+            chartArea1.AxisY.MajorTickMark.IntervalOffset = 0D;
+            chartArea1.AxisY.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisY.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisY.MinorGrid.Enabled = true;
+            chartArea1.AxisY.MinorTickMark.Enabled = true;
+            chartArea1.AxisY.Title = "Measured Value";
+            chartArea1.AxisY2.LineColor = System.Drawing.Color.Red;
+            chartArea1.AxisY2.MajorGrid.Interval = 0D;
+            chartArea1.AxisY2.MajorGrid.IntervalOffset = 0D;
+            chartArea1.AxisY2.MajorGrid.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisY2.MajorGrid.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisY2.MajorTickMark.Interval = 0D;
+            chartArea1.AxisY2.MajorTickMark.IntervalOffset = 0D;
+            chartArea1.AxisY2.MajorTickMark.IntervalOffsetType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisY2.MajorTickMark.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Auto;
+            chartArea1.AxisY2.MinorGrid.Enabled = true;
+            chartArea1.AxisY2.MinorTickMark.Enabled = true;
+            chartArea1.AxisY2.Title = "Temperature";
+            chartArea1.BackColor = System.Drawing.Color.Transparent;
+            chartArea1.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
+            chartArea1.CursorX.Interval = 0.1D;
+            chartArea1.CursorX.IsUserEnabled = true;
+            chartArea1.CursorX.IsUserSelectionEnabled = true;
+            chartArea1.CursorX.SelectionColor = System.Drawing.Color.DimGray;
+            chartArea1.CursorY.Interval = 0.1D;
+            chartArea1.CursorY.IsUserEnabled = true;
+            chartArea1.CursorY.IsUserSelectionEnabled = true;
+            chartArea1.CursorY.SelectionColor = System.Drawing.Color.DimGray;
+            chartArea1.InnerPlotPosition.Auto = false;
+            chartArea1.InnerPlotPosition.Height = 75F;
+            chartArea1.InnerPlotPosition.Width = 85F;
+            chartArea1.InnerPlotPosition.X = 12F;
+            chartArea1.InnerPlotPosition.Y = 10F;
+            chartArea1.Name = "ChartArea1";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 90F;
+            chartArea1.Position.Width = 90F;
+            chartArea1.Position.Y = 10F;
+            this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Cursor = System.Windows.Forms.Cursors.Cross;
-            legend3.AutoFitMinFontSize = 5;
-            legend3.IsDockedInsideChartArea = false;
-            legend3.Name = "Legend1";
-            legend3.TextWrapThreshold = 30;
-            this.chart1.Legends.Add(legend3);
+            legend1.AutoFitMinFontSize = 5;
+            legend1.IsDockedInsideChartArea = false;
+            legend1.Name = "Legend1";
+            legend1.TextWrapThreshold = 30;
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(522, 312);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(199, 115);
@@ -3053,7 +3058,7 @@
             this.textBox23.Location = new System.Drawing.Point(106, 253);
             this.textBox23.Name = "textBox23";
             this.textBox23.Size = new System.Drawing.Size(71, 20);
-            this.textBox23.TabIndex = 12;
+            this.textBox23.TabIndex = 9;
             // 
             // groupBox8
             // 
@@ -3083,7 +3088,7 @@
             this.textBox18.Location = new System.Drawing.Point(97, 143);
             this.textBox18.Name = "textBox18";
             this.textBox18.Size = new System.Drawing.Size(74, 20);
-            this.textBox18.TabIndex = 13;
+            this.textBox18.TabIndex = 3;
             this.textBox18.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox18_KeyPress);
             // 
             // label22
@@ -3102,7 +3107,7 @@
             this.firstDir.Name = "firstDir";
             this.firstDir.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.firstDir.Size = new System.Drawing.Size(83, 17);
-            this.firstDir.TabIndex = 11;
+            this.firstDir.TabIndex = 4;
             this.firstDir.Text = "First Retract";
             this.firstDir.UseVisualStyleBackColor = true;
             // 
@@ -3113,7 +3118,7 @@
             this.returnCheck.Location = new System.Drawing.Point(34, 189);
             this.returnCheck.Name = "returnCheck";
             this.returnCheck.Size = new System.Drawing.Size(58, 17);
-            this.returnCheck.TabIndex = 10;
+            this.returnCheck.TabIndex = 5;
             this.returnCheck.Text = "Return";
             this.returnCheck.UseVisualStyleBackColor = true;
             // 
@@ -3122,7 +3127,7 @@
             this.executeCal.Location = new System.Drawing.Point(96, 178);
             this.executeCal.Name = "executeCal";
             this.executeCal.Size = new System.Drawing.Size(75, 23);
-            this.executeCal.TabIndex = 9;
+            this.executeCal.TabIndex = 7;
             this.executeCal.Text = "Execute";
             this.executeCal.UseVisualStyleBackColor = true;
             this.executeCal.Click += new System.EventHandler(this.button8_ClickAsync);
@@ -3215,6 +3220,8 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.tabPage2.Controls.Add(this.label131);
+            this.tabPage2.Controls.Add(this.loadCoeffTb);
             this.tabPage2.Controls.Add(this.label129);
             this.tabPage2.Controls.Add(this.procedureName);
             this.tabPage2.Controls.Add(this.commentSave);
@@ -3257,6 +3264,23 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Settings";
             // 
+            // label131
+            // 
+            this.label131.AutoSize = true;
+            this.label131.Location = new System.Drawing.Point(8, 117);
+            this.label131.Name = "label131";
+            this.label131.Size = new System.Drawing.Size(105, 26);
+            this.label131.TabIndex = 70;
+            this.label131.Text = "Loadcell Coefficient\r\n(uN/bits)                  :";
+            // 
+            // loadCoeffTb
+            // 
+            this.loadCoeffTb.Location = new System.Drawing.Point(119, 123);
+            this.loadCoeffTb.Name = "loadCoeffTb";
+            this.loadCoeffTb.Size = new System.Drawing.Size(68, 20);
+            this.loadCoeffTb.TabIndex = 69;
+            this.loadCoeffTb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.loadCoeffTb_KeyPress);
+            // 
             // label129
             // 
             this.label129.AutoSize = true;
@@ -3272,7 +3296,7 @@
             this.procedureName.Location = new System.Drawing.Point(271, 200);
             this.procedureName.Name = "procedureName";
             this.procedureName.Size = new System.Drawing.Size(111, 20);
-            this.procedureName.TabIndex = 67;
+            this.procedureName.TabIndex = 22;
             this.procedureName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.procedureName_KeyPress);
             // 
             // commentSave
@@ -3280,7 +3304,7 @@
             this.commentSave.Location = new System.Drawing.Point(193, 258);
             this.commentSave.Name = "commentSave";
             this.commentSave.Size = new System.Drawing.Size(64, 46);
-            this.commentSave.TabIndex = 66;
+            this.commentSave.TabIndex = 24;
             this.commentSave.Text = "Save Comments";
             this.commentSave.UseVisualStyleBackColor = true;
             this.commentSave.Click += new System.EventHandler(this.commentSave_Click);
@@ -3301,7 +3325,7 @@
             this.commentsExp.Multiline = true;
             this.commentsExp.Name = "commentsExp";
             this.commentsExp.Size = new System.Drawing.Size(140, 93);
-            this.commentsExp.TabIndex = 64;
+            this.commentsExp.TabIndex = 23;
             // 
             // label127
             // 
@@ -3318,7 +3342,7 @@
             this.sampleName.Location = new System.Drawing.Point(271, 178);
             this.sampleName.Name = "sampleName";
             this.sampleName.Size = new System.Drawing.Size(111, 20);
-            this.sampleName.TabIndex = 62;
+            this.sampleName.TabIndex = 21;
             this.sampleName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.sampleName_KeyPress);
             // 
             // label51
@@ -3336,17 +3360,17 @@
             this.tipName.Location = new System.Drawing.Point(272, 156);
             this.tipName.Name = "tipName";
             this.tipName.Size = new System.Drawing.Size(110, 20);
-            this.tipName.TabIndex = 60;
+            this.tipName.TabIndex = 20;
             this.tipName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tipName_KeyPress);
             // 
             // isMcuAdc
             // 
             this.isMcuAdc.AutoSize = true;
             this.isMcuAdc.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.isMcuAdc.Location = new System.Drawing.Point(144, 312);
+            this.isMcuAdc.Location = new System.Drawing.Point(148, 311);
             this.isMcuAdc.Name = "isMcuAdc";
             this.isMcuAdc.Size = new System.Drawing.Size(87, 17);
-            this.isMcuAdc.TabIndex = 59;
+            this.isMcuAdc.TabIndex = 15;
             this.isMcuAdc.Text = "or MCU ADC";
             this.isMcuAdc.UseVisualStyleBackColor = true;
             this.isMcuAdc.CheckedChanged += new System.EventHandler(this.isMcuAdc_CheckedChanged);
@@ -3357,7 +3381,7 @@
             this.actAppOnly.Location = new System.Drawing.Point(11, 57);
             this.actAppOnly.Name = "actAppOnly";
             this.actAppOnly.Size = new System.Drawing.Size(112, 17);
-            this.actAppOnly.TabIndex = 58;
+            this.actAppOnly.TabIndex = 9;
             this.actAppOnly.Text = "Use Only Actuator";
             this.actAppOnly.UseVisualStyleBackColor = true;
             this.actAppOnly.CheckedChanged += new System.EventHandler(this.actAppOnly_CheckedChanged);
@@ -3372,7 +3396,7 @@
             0});
             this.hxSet.Name = "hxSet";
             this.hxSet.Size = new System.Drawing.Size(61, 20);
-            this.hxSet.TabIndex = 57;
+            this.hxSet.TabIndex = 16;
             this.hxSet.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.hxSet_KeyPress);
             // 
             // label35
@@ -3403,7 +3427,7 @@
             0});
             this.sensorCon.Name = "sensorCon";
             this.sensorCon.Size = new System.Drawing.Size(61, 20);
-            this.sensorCon.TabIndex = 35;
+            this.sensorCon.TabIndex = 18;
             this.sensorCon.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.sensorCon_KeyPress);
             // 
             // groupBox17
@@ -3419,7 +3443,7 @@
             this.groupBox17.Controls.Add(this.g0);
             this.groupBox17.Controls.Add(this.label43);
             this.groupBox17.Controls.Add(this.g1);
-            this.groupBox17.Location = new System.Drawing.Point(6, 164);
+            this.groupBox17.Location = new System.Drawing.Point(6, 168);
             this.groupBox17.Name = "groupBox17";
             this.groupBox17.Size = new System.Drawing.Size(191, 142);
             this.groupBox17.TabIndex = 52;
@@ -3441,7 +3465,7 @@
             this.useGagePress.Location = new System.Drawing.Point(0, 82);
             this.useGagePress.Name = "useGagePress";
             this.useGagePress.Size = new System.Drawing.Size(189, 17);
-            this.useGagePress.TabIndex = 51;
+            this.useGagePress.TabIndex = 13;
             this.useGagePress.Text = "Use Extracted Pressure from Gage";
             this.useGagePress.UseVisualStyleBackColor = true;
             // 
@@ -3450,7 +3474,7 @@
             this.forceCo.Location = new System.Drawing.Point(100, 99);
             this.forceCo.Name = "forceCo";
             this.forceCo.Size = new System.Drawing.Size(71, 20);
-            this.forceCo.TabIndex = 55;
+            this.forceCo.TabIndex = 6;
             this.forceCo.Text = "1";
             // 
             // label87
@@ -3488,7 +3512,7 @@
             this.gageChan.Location = new System.Drawing.Point(117, 60);
             this.gageChan.Name = "gageChan";
             this.gageChan.Size = new System.Drawing.Size(64, 21);
-            this.gageChan.TabIndex = 37;
+            this.gageChan.TabIndex = 12;
             this.gageChan.SelectedIndexChanged += new System.EventHandler(this.gageChan_SelectedIndexChanged);
             // 
             // label55
@@ -3505,7 +3529,7 @@
             this.g0.Location = new System.Drawing.Point(144, 14);
             this.g0.Name = "g0";
             this.g0.Size = new System.Drawing.Size(24, 20);
-            this.g0.TabIndex = 46;
+            this.g0.TabIndex = 5;
             this.g0.Text = "0";
             this.g0.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.g0_KeyPress);
             // 
@@ -3523,7 +3547,7 @@
             this.g1.Location = new System.Drawing.Point(93, 14);
             this.g1.Name = "g1";
             this.g1.Size = new System.Drawing.Size(24, 20);
-            this.g1.TabIndex = 26;
+            this.g1.TabIndex = 4;
             this.g1.Text = "1";
             this.g1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.g1_KeyPress);
             // 
@@ -3533,7 +3557,7 @@
             this.motorApp.Location = new System.Drawing.Point(11, 24);
             this.motorApp.Name = "motorApp";
             this.motorApp.Size = new System.Drawing.Size(130, 30);
-            this.motorApp.TabIndex = 50;
+            this.motorApp.TabIndex = 8;
             this.motorApp.Text = "Use Only Step Motor\r\n for Approach/Retract";
             this.motorApp.UseVisualStyleBackColor = true;
             this.motorApp.CheckedChanged += new System.EventHandler(this.motorApp_CheckedChanged);
@@ -3542,10 +3566,10 @@
             // 
             this.digiCon.AutoSize = true;
             this.digiCon.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.digiCon.Location = new System.Drawing.Point(0, 348);
+            this.digiCon.Location = new System.Drawing.Point(2, 348);
             this.digiCon.Name = "digiCon";
             this.digiCon.Size = new System.Drawing.Size(180, 17);
-            this.digiCon.TabIndex = 34;
+            this.digiCon.TabIndex = 17;
             this.digiCon.Text = "Coarse Pst Sensor for Auto Land";
             this.digiCon.UseVisualStyleBackColor = true;
             this.digiCon.CheckedChanged += new System.EventHandler(this.digiCon_CheckedChanged);
@@ -3554,10 +3578,10 @@
             // 
             this.controlExt.AutoSize = true;
             this.controlExt.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.controlExt.Location = new System.Drawing.Point(-1, 312);
+            this.controlExt.Location = new System.Drawing.Point(1, 312);
             this.controlExt.Name = "controlExt";
             this.controlExt.Size = new System.Drawing.Size(146, 17);
-            this.controlExt.TabIndex = 33;
+            this.controlExt.TabIndex = 14;
             this.controlExt.Text = "Use Loadcell with HX711";
             this.controlExt.UseVisualStyleBackColor = true;
             this.controlExt.CheckedChanged += new System.EventHandler(this.controlExt_CheckedChanged);
@@ -3568,14 +3592,14 @@
             this.propertyGrid1.Name = "propertyGrid1";
             this.propertyGrid1.SelectedObject = this.chart1;
             this.propertyGrid1.Size = new System.Drawing.Size(305, 413);
-            this.propertyGrid1.TabIndex = 45;
+            this.propertyGrid1.TabIndex = 26;
             // 
             // ChartProps
             // 
             this.ChartProps.Location = new System.Drawing.Point(223, 0);
             this.ChartProps.Name = "ChartProps";
             this.ChartProps.Size = new System.Drawing.Size(134, 23);
-            this.ChartProps.TabIndex = 40;
+            this.ChartProps.TabIndex = 25;
             this.ChartProps.Text = "Chart Properties >>";
             this.ChartProps.UseVisualStyleBackColor = true;
             this.ChartProps.Click += new System.EventHandler(this.ChartProps_Click);
@@ -3596,7 +3620,7 @@
             this.motorDrive.Location = new System.Drawing.Point(11, 4);
             this.motorDrive.Name = "motorDrive";
             this.motorDrive.Size = new System.Drawing.Size(170, 17);
-            this.motorDrive.TabIndex = 38;
+            this.motorDrive.TabIndex = 7;
             this.motorDrive.Text = "Use Step Motor for Experiment";
             this.motorDrive.UseVisualStyleBackColor = true;
             this.motorDrive.CheckedChanged += new System.EventHandler(this.motorDrive_CheckedChanged);
@@ -3624,7 +3648,7 @@
             this.textBox33.Location = new System.Drawing.Point(272, 130);
             this.textBox33.Name = "textBox33";
             this.textBox33.Size = new System.Drawing.Size(84, 20);
-            this.textBox33.TabIndex = 31;
+            this.textBox33.TabIndex = 3;
             this.textBox33.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox33_KeyPress);
             // 
             // textBox32
@@ -3632,27 +3656,27 @@
             this.textBox32.Location = new System.Drawing.Point(271, 91);
             this.textBox32.Name = "textBox32";
             this.textBox32.Size = new System.Drawing.Size(84, 20);
-            this.textBox32.TabIndex = 30;
+            this.textBox32.TabIndex = 2;
             this.textBox32.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox32_KeyPress);
             // 
             // checkBox15
             // 
             this.checkBox15.AutoSize = true;
             this.checkBox15.Enabled = false;
-            this.checkBox15.Location = new System.Drawing.Point(11, 126);
+            this.checkBox15.Location = new System.Drawing.Point(251, 397);
             this.checkBox15.Name = "checkBox15";
             this.checkBox15.Size = new System.Drawing.Size(148, 17);
-            this.checkBox15.TabIndex = 29;
+            this.checkBox15.TabIndex = 10;
             this.checkBox15.Text = "DirectCom (Without MCU)";
             this.checkBox15.UseVisualStyleBackColor = true;
             // 
             // oscDown
             // 
             this.oscDown.AutoSize = true;
-            this.oscDown.Location = new System.Drawing.Point(11, 146);
+            this.oscDown.Location = new System.Drawing.Point(11, 150);
             this.oscDown.Name = "oscDown";
             this.oscDown.Size = new System.Drawing.Size(182, 17);
-            this.oscDown.TabIndex = 28;
+            this.oscDown.TabIndex = 11;
             this.oscDown.Text = "Oscillation only in indent direction";
             this.oscDown.UseVisualStyleBackColor = true;
             // 
@@ -3661,7 +3685,7 @@
             this.button11.Location = new System.Drawing.Point(223, 21);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(134, 35);
-            this.button11.TabIndex = 25;
+            this.button11.TabIndex = 27;
             this.button11.Text = "Choose Directory to Save Files";
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.button11_Click);
@@ -3684,7 +3708,7 @@
             this.tempChan.Location = new System.Drawing.Point(121, 5);
             this.tempChan.Name = "tempChan";
             this.tempChan.Size = new System.Drawing.Size(64, 21);
-            this.tempChan.TabIndex = 26;
+            this.tempChan.TabIndex = 19;
             this.tempChan.SelectedIndexChanged += new System.EventHandler(this.tempChan_SelectedIndexChanged);
             // 
             // label42
@@ -3699,7 +3723,7 @@
             // labelPiezo
             // 
             this.labelPiezo.AutoSize = true;
-            this.labelPiezo.Location = new System.Drawing.Point(96, 107);
+            this.labelPiezo.Location = new System.Drawing.Point(115, 103);
             this.labelPiezo.Name = "labelPiezo";
             this.labelPiezo.Size = new System.Drawing.Size(78, 13);
             this.labelPiezo.TabIndex = 7;
@@ -3708,17 +3732,17 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 87);
+            this.label20.Location = new System.Drawing.Point(7, 75);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(90, 26);
+            this.label20.Size = new System.Drawing.Size(105, 26);
             this.label20.TabIndex = 4;
-            this.label20.Text = "Actuator Piezo \r\nConstant (um/V) :";
+            this.label20.Text = "Actuator Piezo \r\nConstant (um/V)      :";
             // 
             // textBox17
             // 
-            this.textBox17.Location = new System.Drawing.Point(99, 84);
+            this.textBox17.Location = new System.Drawing.Point(119, 80);
             this.textBox17.Name = "textBox17";
-            this.textBox17.Size = new System.Drawing.Size(44, 20);
+            this.textBox17.Size = new System.Drawing.Size(68, 20);
             this.textBox17.TabIndex = 1;
             this.textBox17.TextChanged += new System.EventHandler(this.textBox17_TextChanged);
             this.textBox17.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox17_KeyPress);
@@ -3754,7 +3778,7 @@
             this.isHeaterFeed.Location = new System.Drawing.Point(226, 292);
             this.isHeaterFeed.Name = "isHeaterFeed";
             this.isHeaterFeed.Size = new System.Drawing.Size(74, 17);
-            this.isHeaterFeed.TabIndex = 29;
+            this.isHeaterFeed.TabIndex = 23;
             this.isHeaterFeed.Text = "Feedback";
             this.isHeaterFeed.UseVisualStyleBackColor = true;
             this.isHeaterFeed.CheckedChanged += new System.EventHandler(this.isHeaterFeed_CheckedChanged);
@@ -3764,7 +3788,7 @@
             this.helpNi.Location = new System.Drawing.Point(263, 269);
             this.helpNi.Name = "helpNi";
             this.helpNi.Size = new System.Drawing.Size(57, 23);
-            this.helpNi.TabIndex = 28;
+            this.helpNi.TabIndex = 22;
             this.helpNi.Text = "NI Help";
             this.helpNi.UseVisualStyleBackColor = true;
             this.helpNi.Click += new System.EventHandler(this.helpNi_Click);
@@ -3813,14 +3837,14 @@
             this.excBox.Location = new System.Drawing.Point(85, 49);
             this.excBox.Name = "excBox";
             this.excBox.Size = new System.Drawing.Size(74, 21);
-            this.excBox.TabIndex = 33;
+            this.excBox.TabIndex = 15;
             // 
             // gagePoisson
             // 
             this.gagePoisson.Location = new System.Drawing.Point(99, 207);
             this.gagePoisson.Name = "gagePoisson";
             this.gagePoisson.Size = new System.Drawing.Size(59, 20);
-            this.gagePoisson.TabIndex = 32;
+            this.gagePoisson.TabIndex = 21;
             this.gagePoisson.Text = "0.3";
             this.gagePoisson.TextChanged += new System.EventHandler(this.gagePoisson_TextChanged);
             this.gagePoisson.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.gagePoisson_KeyPress);
@@ -3835,7 +3859,7 @@
             0});
             this.gageWires.Name = "gageWires";
             this.gageWires.Size = new System.Drawing.Size(53, 20);
-            this.gageWires.TabIndex = 31;
+            this.gageWires.TabIndex = 20;
             this.gageWires.Value = new decimal(new int[] {
             1200,
             0,
@@ -3857,7 +3881,7 @@
             -2147483648});
             this.gageVol.Name = "gageVol";
             this.gageVol.Size = new System.Drawing.Size(53, 20);
-            this.gageVol.TabIndex = 30;
+            this.gageVol.TabIndex = 19;
             // 
             // gageFac
             // 
@@ -3874,7 +3898,7 @@
             -2147483648});
             this.gageFac.Name = "gageFac";
             this.gageFac.Size = new System.Drawing.Size(53, 20);
-            this.gageFac.TabIndex = 29;
+            this.gageFac.TabIndex = 18;
             this.gageFac.Value = new decimal(new int[] {
             100,
             0,
@@ -3891,7 +3915,7 @@
             0});
             this.gageNom.Name = "gageNom";
             this.gageNom.Size = new System.Drawing.Size(53, 20);
-            this.gageNom.TabIndex = 28;
+            this.gageNom.TabIndex = 17;
             this.gageNom.Value = new decimal(new int[] {
             100,
             0,
@@ -3913,7 +3937,7 @@
             -2147483648});
             this.gageExc.Name = "gageExc";
             this.gageExc.Size = new System.Drawing.Size(53, 20);
-            this.gageExc.TabIndex = 27;
+            this.gageExc.TabIndex = 16;
             this.gageExc.Value = new decimal(new int[] {
             5000,
             0,
@@ -3986,6 +4010,7 @@
             // bridgeBox
             // 
             this.bridgeBox.FormattingEnabled = true;
+            this.bridgeBox.ItemHeight = 13;
             this.bridgeBox.Items.AddRange(new object[] {
             "Full 1",
             "Full 2",
@@ -3997,7 +4022,7 @@
             this.bridgeBox.Location = new System.Drawing.Point(85, 19);
             this.bridgeBox.Name = "bridgeBox";
             this.bridgeBox.Size = new System.Drawing.Size(74, 21);
-            this.bridgeBox.TabIndex = 4;
+            this.bridgeBox.TabIndex = 14;
             // 
             // label34
             // 
@@ -4019,7 +4044,7 @@
             this.measureType.Location = new System.Drawing.Point(96, 6);
             this.measureType.Name = "measureType";
             this.measureType.Size = new System.Drawing.Size(102, 21);
-            this.measureType.TabIndex = 23;
+            this.measureType.TabIndex = 0;
             this.measureType.SelectedIndexChanged += new System.EventHandler(this.measureType_SelectedIndexChanged);
             // 
             // serialAct
@@ -4028,7 +4053,7 @@
             this.serialAct.Location = new System.Drawing.Point(233, 6);
             this.serialAct.Name = "serialAct";
             this.serialAct.Size = new System.Drawing.Size(121, 17);
-            this.serialAct.TabIndex = 24;
+            this.serialAct.TabIndex = 27;
             this.serialAct.Text = "Activate Serial Com.";
             this.serialAct.UseVisualStyleBackColor = true;
             this.serialAct.CheckedChanged += new System.EventHandler(this.serialAct_CheckedChanged);
@@ -4039,7 +4064,7 @@
             this.button4.Location = new System.Drawing.Point(119, 407);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 22;
+            this.button4.TabIndex = 13;
             this.button4.Text = "Remove";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
@@ -4052,7 +4077,7 @@
             this.tcNo.Location = new System.Drawing.Point(43, 6);
             this.tcNo.Name = "tcNo";
             this.tcNo.Size = new System.Drawing.Size(35, 21);
-            this.tcNo.TabIndex = 18;
+            this.tcNo.TabIndex = 35;
             this.tcNo.SelectedIndexChanged += new System.EventHandler(this.TcNo_SelectedIndexChanged);
             // 
             // groupBox14
@@ -4090,7 +4115,7 @@
             this.extPara.Location = new System.Drawing.Point(14, 272);
             this.extPara.Name = "extPara";
             this.extPara.Size = new System.Drawing.Size(98, 20);
-            this.extPara.TabIndex = 33;
+            this.extPara.TabIndex = 34;
             this.extPara.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.extPara_KeyPress);
             // 
             // tryExtCom
@@ -4098,7 +4123,7 @@
             this.tryExtCom.Location = new System.Drawing.Point(9, 154);
             this.tryExtCom.Name = "tryExtCom";
             this.tryExtCom.Size = new System.Drawing.Size(41, 39);
-            this.tryExtCom.TabIndex = 27;
+            this.tryExtCom.TabIndex = 31;
             this.tryExtCom.Text = "Try\r\nCom";
             this.tryExtCom.UseVisualStyleBackColor = true;
             this.tryExtCom.Click += new System.EventHandler(this.tryExtCom_Click);
@@ -4128,7 +4153,7 @@
             this.baudBox.Location = new System.Drawing.Point(26, 88);
             this.baudBox.Name = "baudBox";
             this.baudBox.Size = new System.Drawing.Size(62, 21);
-            this.baudBox.TabIndex = 28;
+            this.baudBox.TabIndex = 29;
             // 
             // label79
             // 
@@ -4145,7 +4170,7 @@
             this.extResp.Location = new System.Drawing.Point(11, 212);
             this.extResp.Name = "extResp";
             this.extResp.Size = new System.Drawing.Size(100, 20);
-            this.extResp.TabIndex = 30;
+            this.extResp.TabIndex = 32;
             // 
             // label53
             // 
@@ -4161,7 +4186,7 @@
             this.startChars.Location = new System.Drawing.Point(24, 128);
             this.startChars.Name = "startChars";
             this.startChars.Size = new System.Drawing.Size(63, 20);
-            this.startChars.TabIndex = 26;
+            this.startChars.TabIndex = 30;
             this.startChars.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.startChars_KeyPress);
             // 
             // saveExt
@@ -4170,7 +4195,7 @@
             this.saveExt.Location = new System.Drawing.Point(9, 236);
             this.saveExt.Name = "saveExt";
             this.saveExt.Size = new System.Drawing.Size(112, 17);
-            this.saveExt.TabIndex = 25;
+            this.saveExt.TabIndex = 33;
             this.saveExt.Text = "Save as Exp Data";
             this.saveExt.UseVisualStyleBackColor = true;
             this.saveExt.CheckedChanged += new System.EventHandler(this.saveExt_CheckedChanged);
@@ -4181,7 +4206,7 @@
             this.portList.Location = new System.Drawing.Point(24, 46);
             this.portList.Name = "portList";
             this.portList.Size = new System.Drawing.Size(62, 21);
-            this.portList.TabIndex = 0;
+            this.portList.TabIndex = 28;
             // 
             // label52
             // 
@@ -4197,7 +4222,7 @@
             this.button1.Location = new System.Drawing.Point(17, 407);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(89, 23);
-            this.button1.TabIndex = 21;
+            this.button1.TabIndex = 12;
             this.button1.Text = "Use Channel";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -4207,7 +4232,7 @@
             this.button9.Location = new System.Drawing.Point(257, 315);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(75, 53);
-            this.button9.TabIndex = 22;
+            this.button9.TabIndex = 24;
             this.button9.Text = "Set Channels for Experiment";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click);
@@ -4217,7 +4242,7 @@
             this.stopButton.Location = new System.Drawing.Point(298, 377);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(49, 23);
-            this.stopButton.TabIndex = 21;
+            this.stopButton.TabIndex = 26;
             this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = true;
             this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
@@ -4227,7 +4252,7 @@
             this.startButton.Location = new System.Drawing.Point(239, 377);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(56, 23);
-            this.startButton.TabIndex = 20;
+            this.startButton.TabIndex = 25;
             this.startButton.Text = "Test";
             this.startButton.UseVisualStyleBackColor = true;
             this.startButton.Click += new System.EventHandler(this.startButton_Click);
@@ -4237,7 +4262,7 @@
             this.TestBox.Location = new System.Drawing.Point(243, 406);
             this.TestBox.Name = "TestBox";
             this.TestBox.Size = new System.Drawing.Size(100, 20);
-            this.TestBox.TabIndex = 19;
+            this.TestBox.TabIndex = 26;
             // 
             // groupBox11
             // 
@@ -4283,14 +4308,14 @@
             this.cjcChannelTextBox.Location = new System.Drawing.Point(76, 34);
             this.cjcChannelTextBox.Name = "cjcChannelTextBox";
             this.cjcChannelTextBox.Size = new System.Drawing.Size(88, 20);
-            this.cjcChannelTextBox.TabIndex = 17;
+            this.cjcChannelTextBox.TabIndex = 6;
             // 
             // cjcValueNumeric
             // 
             this.cjcValueNumeric.Location = new System.Drawing.Point(76, 53);
             this.cjcValueNumeric.Name = "cjcValueNumeric";
             this.cjcValueNumeric.Size = new System.Drawing.Size(32, 20);
-            this.cjcValueNumeric.TabIndex = 16;
+            this.cjcValueNumeric.TabIndex = 7;
             this.cjcValueNumeric.Value = new decimal(new int[] {
             25,
             0,
@@ -4334,7 +4359,7 @@
             this.cjcSourceComboBox.Location = new System.Drawing.Point(76, 13);
             this.cjcSourceComboBox.Name = "cjcSourceComboBox";
             this.cjcSourceComboBox.Size = new System.Drawing.Size(88, 21);
-            this.cjcSourceComboBox.TabIndex = 10;
+            this.cjcSourceComboBox.TabIndex = 5;
             this.cjcSourceComboBox.SelectedIndexChanged += new System.EventHandler(this.cjcSourceComboBox_SelectedIndexChanged);
             // 
             // thermocoupleTypeComboBox
@@ -4352,7 +4377,7 @@
             this.thermocoupleTypeComboBox.Location = new System.Drawing.Point(77, 15);
             this.thermocoupleTypeComboBox.Name = "thermocoupleTypeComboBox";
             this.thermocoupleTypeComboBox.Size = new System.Drawing.Size(45, 21);
-            this.thermocoupleTypeComboBox.TabIndex = 8;
+            this.thermocoupleTypeComboBox.TabIndex = 4;
             // 
             // label30
             // 
@@ -4389,7 +4414,7 @@
             this.rtdExcType.Location = new System.Drawing.Point(101, 41);
             this.rtdExcType.Name = "rtdExcType";
             this.rtdExcType.Size = new System.Drawing.Size(68, 21);
-            this.rtdExcType.TabIndex = 34;
+            this.rtdExcType.TabIndex = 9;
             // 
             // label77
             // 
@@ -4432,7 +4457,7 @@
             this.rtdRes.Location = new System.Drawing.Point(101, 89);
             this.rtdRes.Name = "rtdRes";
             this.rtdRes.Size = new System.Drawing.Size(50, 20);
-            this.rtdRes.TabIndex = 2;
+            this.rtdRes.TabIndex = 11;
             this.rtdRes.Text = "0";
             this.rtdRes.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.rtdRes_KeyPress);
             // 
@@ -4441,7 +4466,7 @@
             this.rtdExc.Location = new System.Drawing.Point(101, 65);
             this.rtdExc.Name = "rtdExc";
             this.rtdExc.Size = new System.Drawing.Size(50, 20);
-            this.rtdExc.TabIndex = 1;
+            this.rtdExc.TabIndex = 10;
             this.rtdExc.Text = "0";
             this.rtdExc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.rtdExc_KeyPress);
             // 
@@ -4458,7 +4483,7 @@
             this.rtdBox.Location = new System.Drawing.Point(71, 18);
             this.rtdBox.Name = "rtdBox";
             this.rtdBox.Size = new System.Drawing.Size(58, 21);
-            this.rtdBox.TabIndex = 0;
+            this.rtdBox.TabIndex = 8;
             // 
             // groupBox9
             // 
@@ -4492,7 +4517,7 @@
             -2147483648});
             this.minimumValueNumeric.Name = "minimumValueNumeric";
             this.minimumValueNumeric.Size = new System.Drawing.Size(83, 20);
-            this.minimumValueNumeric.TabIndex = 7;
+            this.minimumValueNumeric.TabIndex = 2;
             this.minimumValueNumeric.ValueChanged += new System.EventHandler(this.minimumValueNumeric_ValueChanged);
             // 
             // maximumValueNumeric
@@ -4510,7 +4535,7 @@
             -2147483648});
             this.maximumValueNumeric.Name = "maximumValueNumeric";
             this.maximumValueNumeric.Size = new System.Drawing.Size(82, 20);
-            this.maximumValueNumeric.TabIndex = 6;
+            this.maximumValueNumeric.TabIndex = 1;
             this.maximumValueNumeric.Value = new decimal(new int[] {
             100,
             0,
@@ -4551,12 +4576,13 @@
             0});
             this.rateNumeric.Name = "rateNumeric";
             this.rateNumeric.Size = new System.Drawing.Size(83, 20);
-            this.rateNumeric.TabIndex = 20;
+            this.rateNumeric.TabIndex = 3;
             this.rateNumeric.Value = new decimal(new int[] {
-            100,
+            200,
             0,
             0,
             0});
+            this.rateNumeric.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.rateNumeric_KeyPress);
             // 
             // label26
             // 
@@ -4629,7 +4655,7 @@
             this.timeshow.Enabled = false;
             this.timeshow.Location = new System.Drawing.Point(489, 512);
             this.timeshow.Name = "timeshow";
-            this.timeshow.Size = new System.Drawing.Size(53, 20);
+            this.timeshow.Size = new System.Drawing.Size(67, 20);
             this.timeshow.TabIndex = 41;
             // 
             // label47
@@ -4696,19 +4722,29 @@
             this.timer1.SynchronizingObject = this;
             this.timer1.Elapsed += new System.Timers.ElapsedEventHandler(this.timer1_Elapsed);
             // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.ForeColor = System.Drawing.Color.White;
+            this.statusLabel.Location = new System.Drawing.Point(420, 465);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(140, 13);
+            this.statusLabel.TabIndex = 45;
+            this.statusLabel.Text = "Prepare Experiment Settings";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(753, 544);
+            this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.showData);
             this.Controls.Add(this.tryUc45);
             this.Controls.Add(this.label47);
             this.Controls.Add(this.timeshow);
             this.Controls.Add(this.button12);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.tabControl1);
@@ -4875,7 +4911,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox textBox17;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label labelVapp;
         private System.Windows.Forms.Label labelCutOff2;
         private System.Windows.Forms.Label labelCutOff1;
@@ -5207,6 +5242,10 @@
         private System.Windows.Forms.Button commentSave;
         private System.Windows.Forms.Label label129;
         private System.Windows.Forms.TextBox procedureName;
+        private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.Label label130;
+        private System.Windows.Forms.Label label131;
+        private System.Windows.Forms.TextBox loadCoeffTb;
     }
 }
 

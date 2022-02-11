@@ -550,5 +550,53 @@ namespace UC45_User_Interface.Properties {
                 this["procedureName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string xPoz {
+            get {
+                return ((string)(this["xPoz"]));
+            }
+            set {
+                this["xPoz"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string yPoz {
+            get {
+                return ((string)(this["yPoz"]));
+            }
+            set {
+                this["yPoz"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public string DaqRate {
+            get {
+                return ((string)(this["DaqRate"]));
+            }
+            set {
+                this["DaqRate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string loadCoef {
+            get {
+                return ((string)(this["loadCoef"]));
+            }
+            set {
+                this["loadCoef"] = value;
+            }
+        }
     }
 }

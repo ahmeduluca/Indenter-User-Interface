@@ -134,5 +134,17 @@
     <Setting Name="procedureName" Type="System.String" Scope="User">
       <Value Profile="(Default)">1 Location Depth Sweep</Value>
     </Setting>
+    <Setting Name="xPoz" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="yPoz" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="DaqRate" Type="System.String" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="loadCoef" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

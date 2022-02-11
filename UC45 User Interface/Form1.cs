@@ -168,9 +168,10 @@ namespace UC45_User_Interface
             textBox6.Text = Properties.Settings.Default["cutOff2"].ToString();
             VappNumeric.Value = Convert.ToDecimal(Properties.Settings.Default["Vapp"].ToString()) * 1000000;
             VappNumeric.Increment = Convert.ToDecimal(Properties.Settings.Default["VoltInc"].ToString()) * 1000;
+            VappNumeric.Maximum = Convert.ToDecimal(Properties.Settings.Default["Vmax"].ToString()) * 1000000;
+            VappNumeric.Minimum = Convert.ToDecimal(Properties.Settings.Default["Vmin"].ToString()) * 1000000;
             textBox32.Text = Properties.Settings.Default["VoltInc"].ToString();
             textBox33.Text = Properties.Settings.Default["PosInc"].ToString();
-            //verticalProgressBar1.Value = Convert.ToInt16(200 * (Convert.ToDouble(textBox1.Text) + 1) / 17);
             //gageChan.SelectedIndex = Convert.ToInt16(Properties.Settings.Default["GageChan"]);
             motorPos.Text = Properties.Settings.Default["motpos"].ToString();
             stepAng.Text = Properties.Settings.Default["ang"].ToString();
@@ -194,9 +195,16 @@ namespace UC45_User_Interface
             xinc = Convert.ToDouble(xTour.Text);
             yinc = Convert.ToDouble(yTour.Text);
             selectedHeater.SelectedIndex = 0;
+            xPosition.Text = Properties.Settings.Default["xPoz"].ToString();
+            xkon = Convert.ToDouble(xPosition.Text);
+            yPosition.Text = Properties.Settings.Default["yPoz"].ToString();
+            ykon = Convert.ToDouble(xPosition.Text);
             tipName.Text = Properties.Settings.Default["tipName"].ToString();
             sampleName.Text = Properties.Settings.Default["sampleName"].ToString();
             procedureName.Text = Properties.Settings.Default["procedureName"].ToString();
+            rateNumeric.Value = Convert.ToDecimal(Properties.Settings.Default["DaqRate"].ToString());
+            loadco = Convert.ToDouble(Properties.Settings.Default["loadCoef"].ToString())/1000;
+            loadCoeffTb.Text = Properties.Settings.Default["loadCoef"].ToString();
             if (Properties.Settings.Default["Mode"].ToString() == "1")
             {
                 checkBox10.Checked = true;
@@ -316,7 +324,7 @@ namespace UC45_User_Interface
                 }
                 catch (Exception ex)
                 {
-                    label11.Text = ex.Message;
+                    statusLabel.Text = ex.Message;
                     ondas = "0.000000";
                 }
             }
@@ -330,6 +338,10 @@ namespace UC45_User_Interface
                 {
                     ondas = Properties.Settings.Default[setting].ToString();
                     resulttextform = MessageBox.Show("Out of range! If this message has been shown during experiment, Please press ABORT!", "Limits of System", MessageBoxButtons.AbortRetryIgnore);
+                    if (resulttextform == DialogResult.Abort)
+                    {
+                        emCounter = 0;
+                    }
                 }
                 else
                 {
@@ -478,7 +490,6 @@ namespace UC45_User_Interface
                 {
                     serialPort2.Write("*0000");
                     autopass = 1;
-                    //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                     groupBox1.Enabled = false;
                     groupBox2.Enabled = false;
                     groupBox5.Enabled = false;
@@ -596,9 +607,12 @@ namespace UC45_User_Interface
             {
                 VappNumeric.Increment = (decimal)Convert.ToDouble(Convert.ToDouble(Properties.Settings.Default["VoltInc"].ToString()) * 1000);
                 VappNumeric.Value = (decimal)(Convert.ToDouble(textBox1.Text) * 1000000);
+                VappNumeric.Minimum = Convert.ToDecimal(vmin * 1000 * kp * 20);
+                VappNumeric.Maximum = Convert.ToDecimal(vmax * 1000000);
                 textBox1.Enabled = true;
                 textBox10.Enabled = false;
                 button6.Text = "Position Control";
+                VappNumeric.Location = new Point(75,59);
             }
             else
             {
@@ -607,6 +621,7 @@ namespace UC45_User_Interface
                 textBox1.Enabled = false;
                 textBox10.Enabled = true;
                 button6.Text = "Voltage Control";
+                VappNumeric.Location = new Point(75, 125);
             }
             zCount++;
         }
@@ -624,11 +639,18 @@ namespace UC45_User_Interface
                 textBox8.Text = labelVmax.Text;
                 Send(labelVmax.Text, "M");
                 vmax = Convert.ToDouble(textBox8.Text);
+                if (zCount % 2 == 0)
+                {
+                    VappNumeric.Maximum = (decimal)vmax * 1000000;
+                }
+                else
+                {
+                    VappNumeric.Maximum=Convert.ToDecimal(vmax * 1000*kp*20);
+                }
                 zrange = kp * 20 * (vnull - vmin);
                 Properties.Settings.Default["Vmax"] = textBox8.Text;
                 Properties.Settings.Default.Save();
                 textBox1.Text = TextFormat(textBox1.Text, "Vapp", vmin, vmax);
-                //verticalProgressBar1.Value = Convert.ToInt16(200 * (Convert.ToDouble(textBox1.Text) + 1) / 17);
             }
         }
 
@@ -643,6 +665,14 @@ namespace UC45_User_Interface
                 textBox9.Text = labelVmin.Text;
                 Send(labelVmin.Text, "N");
                 vmin = Convert.ToDouble(textBox9.Text);
+                if (zCount % 2 == 0)
+                {
+                    VappNumeric.Minimum = (decimal)vmin * 1000000;
+                }
+                else
+                {
+                    VappNumeric.Minimum = Convert.ToDecimal(vmin * 1000 * kp * 20);
+                }
                 zrange = kp * 20 * (vnull - vmin);
                 Properties.Settings.Default["Vmin"] = textBox9.Text;
                 Properties.Settings.Default.Save();
@@ -671,7 +701,6 @@ namespace UC45_User_Interface
                     {
                         sendz = textBox1.Text;
                     }
-                    //verticalProgressBar1.Value = Convert.ToInt16(200 * (Convert.ToDouble(textBox1.Text) + 1) / 17);
                     clickinc = 0;
                     Send(TextFormat(sendz, "Vapp", -1, 7.5), "W");
                     Properties.Settings.Default["Z"] = textBox10.Text;
@@ -699,7 +728,6 @@ namespace UC45_User_Interface
                 {
                     labelVapp.Text = TextFormat(textBox1.Text, "Vapp", vmin, vnull);
                     textBox1.Text = labelVapp.Text;
-                    // verticalProgressBar1.Value = Convert.ToInt16(200 * (Convert.ToDouble(textBox1.Text) + 1) / 17);
                     clickinc = 0;
                     Send(labelVapp.Text, "W");
                     labelZ.Text = textBox10.Text;
@@ -1009,6 +1037,7 @@ namespace UC45_User_Interface
         {
         }
         bool tempcon = false;
+        string expprotocol = "";
         private string Experimentlog(string now)
         {
             string format = "";
@@ -1020,7 +1049,7 @@ namespace UC45_User_Interface
 
                 //Tip & Sample Info
                 format = format + "Tip: " + tipName.Text + "  Sample: " + sampleName.Text + "\t Experiment Procedure: " + procedureName.Text + Environment.NewLine;
-
+                format = format + "Experiment Protocol File (If used a saved one): " +expprotocol + Environment.NewLine;
                 //BALANCE &DEVIATION &VIB CHECK
                 format = format + "\nBalance of Indenter: " + Environment.NewLine + "Trapezoid Screw Holder (Head) (phi, theta) :" + balance[0, 0].ToString() + ", "
                     + balance[0, 1].ToString() + Environment.NewLine + "Indenter Holder (Moving Part) (phi, theta): " + balance[1, 0].ToString() + ", " +
@@ -1236,24 +1265,23 @@ namespace UC45_User_Interface
         {
             int dirind = 0;
             textexp = new List<string>();
+            expcounter = 0;
+            exppass = 0;
             int osctype = 0;
             int st = depth.Count;
-            DialogResult result = DialogResult.No;
+            button3.Enabled = false;
+            button5.Enabled = false;
+            saveSet.Enabled = false;
+            loadSet.Enabled = false;
+            groupBox8.Enabled = false;
+            groupBox20.Enabled = false;
+            groupBox2.Enabled = false;
+            groupBox19.Enabled = false;
+            DialogResult result = DialogResult.None;
             result = MessageBox.Show("Are experiment settings ready?", "Set Experiment", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
             if (st > 0 && result == DialogResult.Yes)
             {
-                if (autoApp.Checked && loadExt)
-                {
-                    Send($"401{st:D2}", "");
-                }
-                else if (autoApp.Checked)
-                {
-                    Send($"402{st:D2}", "");
-                }
-                else
-                {
-                    Send($"400{st:D2}", "");
-                }
+                startexp = 2;
                 for (int i = 0; i < depth.Count; i++)
                 {
                     if (box5[i])
@@ -1371,7 +1399,7 @@ namespace UC45_User_Interface
                          "|0" + retStep[i] + "|0" + removalHoldSend + removeHoldPercent);
                     if (textexp[i].Length == 149)
                     {
-                        startexp = 1;
+                        startexp = 2;
                         continue;
                     }
                     else
@@ -1383,15 +1411,36 @@ namespace UC45_User_Interface
                         break;
                     }
                 }
-                if (startexp == 1)
+                if (startexp == 2)
                 {
                     exppass = 1;
+                    startexp = 1;
+                    if (autoApp.Checked && loadExt)
+                    {
+                        Send($"401{st:D2}", "");
+                    }
+                    else if (autoApp.Checked)
+                    {
+                        Send($"402{st:D2}", "");
+                    }
+                    else
+                    {
+                        Send($"400{st:D2}", "");
+                    }
                 }
             }
-            else
+            else if(result==DialogResult.No)
             {
                 startexp = 0;
                 exppass = 0;
+                button3.Enabled = true;
+                button5.Enabled = true;
+                saveSet.Enabled = true;
+                loadSet.Enabled = true;
+                groupBox8.Enabled = true;
+                groupBox20.Enabled = true;
+                groupBox2.Enabled = true;
+                groupBox19.Enabled = true;
             }
         }
         List<string> depth = new List<string>();
@@ -1798,10 +1847,7 @@ namespace UC45_User_Interface
         int numosc;
         private async Task OscillationAsync(string amp, string freq, string inter, bool type, bool check)
         {
-
-            var time = new Stopwatch();
             double w;
-            int progressval = progressBar1.Value;
             if (amp != "" && freq != "" && inter != "")
             {
                 double gen = Convert.ToDouble(amp);
@@ -1824,7 +1870,6 @@ namespace UC45_User_Interface
                     }
                     if (type)
                     {
-                        time.Start();
                         for (int i = 0; i < numosc; i++)
                         {
                             if (emCounter % 2 != 0)
@@ -1837,8 +1882,6 @@ namespace UC45_User_Interface
                                 //textBox10.Update();
                                 //textBox1.Update();
                                 await Task.Delay(t);
-                                timeshow.Text = time.ElapsedMilliseconds.ToString();
-                                time.Restart();
                                 if (checkBox15.Checked)
                                 {
                                     Send(volmin, "W");
@@ -1847,11 +1890,9 @@ namespace UC45_User_Interface
                                 //textBox1.Update();
                                 //textBox10.Update();
                                 await Task.Delay(t);
-                                timeshow.Text = time.ElapsedMilliseconds.ToString();
                             }
                             else
                             {
-                                time.Reset();
                                 break;
                             }
                         }
@@ -1861,14 +1902,10 @@ namespace UC45_User_Interface
                     {
                         string step = (5 / w).ToString();
                         returnCheck.Checked = true;
-                        time.Start();
                         for (int i = 0; i < numosc; i++)
                         {
                             await CalibrationAsync(amp, step, "");
-                            timeshow.Text = time.ElapsedMilliseconds.ToString();
-                            time.Restart();
                         }
-                        time.Stop();
                     }
 
                     string lp = TextFormat(Convert.ToString(lastpos), "Vapp", -1, 7.5);
@@ -2000,6 +2037,16 @@ namespace UC45_User_Interface
             stopCal.Enabled = true;
             calib_but = true;
             groupBox8.Enabled = false;
+            stopExp.Enabled = false;
+            groupBox5.Enabled = false;
+            executeExp.Enabled = false;
+            button3.Enabled = false;
+            button5.Enabled = false;
+            saveSet.Enabled = false;
+            loadSet.Enabled = false;
+            groupBox20.Enabled = false;
+            groupBox2.Enabled = false;
+            groupBox19.Enabled = false;
             tim2i = 0;
             graphcount++;
             try
@@ -2138,6 +2185,7 @@ namespace UC45_User_Interface
                     }
                     if (btn9 == 1 || loadExt)
                     {
+                        loadstart = 0;
                         Tdms_Saver("Calibration");
                         await Task.Delay(timer2.Interval);
                     }
@@ -2154,13 +2202,13 @@ namespace UC45_User_Interface
                     File.WriteAllText(fileopen + zaman + "_ExperimentLog.txt", Experimentlog(zaman));
                     explogPath = fileopen + zaman + "_ExperimentLog.txt";
                     fileopen = pathtemp + "\\Calibration";
+                    statusLabel.Text = "Calibration Started!";
                     while (expfin == 0 && emCounter % 2 != 0)
                     {
-                        await Task.Delay(10);
+                        await Task.Delay(50);
                         if (motorDrive.Checked)
                         {
                             motorPos.Text = Convert.ToString(motpos / 1000000);
-                            //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                         }
                         else
                         {
@@ -2177,7 +2225,12 @@ namespace UC45_User_Interface
                 }
                 if (emCounter % 2 != 0)
                 {
+                    statusLabel.Text = "Calibration Finished Successfully!";
                     Send("CLFIN", "");
+                }
+                else
+                {
+                    statusLabel.Text = "Calibration Stopped!";
                 }
                 if (btn9 == 1)
                 {
@@ -2202,6 +2255,16 @@ namespace UC45_User_Interface
             groupBox8.Enabled = true;
             stopCal.Enabled = false;
             calib_but = false;
+            stopExp.Enabled = false;
+            groupBox5.Enabled = true;
+            button3.Enabled = true;
+            button5.Enabled = true;
+            saveSet.Enabled = true;
+            loadSet.Enabled = true;
+            groupBox8.Enabled = true;
+            groupBox20.Enabled = true;
+            groupBox2.Enabled = true;
+            groupBox19.Enabled = true;
         }
 
         private void checkBox10_CheckedChanged(object sender, EventArgs e)
@@ -2365,6 +2428,7 @@ namespace UC45_User_Interface
                     comboBox2.Items[i] = i;
                 }
                 comboBox2.SelectedIndex = s - 1;
+                expprotocol = "";
             }
         }
         string initialpos = "";
@@ -2379,6 +2443,7 @@ namespace UC45_User_Interface
         int expfin = 0;
         int appret = 0;
         string explogPath = "";
+        Stopwatch time = new Stopwatch();
         private async void ExecuteExp_ClickAsync(object sender, EventArgs e)
         {
             if (deney == 3)
@@ -2386,7 +2451,6 @@ namespace UC45_User_Interface
                 showData.PerformClick();
             }
             timer3.Stop();
-            var time = new Stopwatch();
             groupBox5.Enabled = false;
             stopExp.Enabled = true;
             string zaman = "\\" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss");
@@ -2395,7 +2459,6 @@ namespace UC45_User_Interface
             fin = false;
             emCounter = 1;
             approaching = 0;
-            progressBar1.Value = 0;
             vapp.RemoveRange(0, vapp.Count);
             loadd.RemoveRange(0, loadd.Count);
             volcal1.RemoveRange(0, volcal1.Count);
@@ -2472,6 +2535,10 @@ namespace UC45_User_Interface
                 triv = triv + string.Format("{0:000000}|0{1:000000}", loadAppThres, speedsend);
                 if (triv.Length == 22)
                 {
+                    while (sending==true||portreading==1)
+                    {
+                        await Task.Delay(20);
+                    }
                     Send(triv, "");
                 }
                 else
@@ -2480,12 +2547,20 @@ namespace UC45_User_Interface
                         "Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                     if (result == DialogResult.Yes)
                     {
+                        while (sending == true || portreading == 1)
+                        {
+                            await Task.Delay(20);
+                        }
                         Send($"DOIT0000{Convert.ToInt32(loadAppThres):D6}|0{ Convert.ToInt32(speedsend):D6}", "");
                         File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
                             "Program Error Occurred! Experiment was continued with actuator controlled-no auto retract- nomal oscillation mode with given steps");
                     }
                     else
                     {
+                        while (sending == true || portreading == 1)
+                        {
+                            await Task.Delay(20);
+                        }
                         Send($"Z0000000{Convert.ToInt32(loadAppThres):D6}|0{ Convert.ToInt32(speedsend):D6}", "");
                         File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
                           "Program Error Occurred! Experiment was aborted.");
@@ -2513,20 +2588,29 @@ namespace UC45_User_Interface
             initialpos = textBox1.Text;
             if (doit)
             {
-                await Task.Delay(20);
+                exppass = 0;
+                while (sending == true || portreading == 1)
+                {
+                    await Task.Delay(20);
+                }
                 Send("START", "");
                 time.Start();
+                loadstart = 0;
+                statusLabel.Text = "Experiment has been started!";
                 for (int i = 0; i < depth.Count; i++)
                 {
                     if (emCounter % 2 != 0)
                     {
-                        apfin = 0;
+                        apfin = -1;
                         if ((autoApp.Checked && i == 0) || (retState == 1 && autoApp.Checked))
                         {
+                            statusLabel.Text = "Step " + (i + 1) + " Approach Started";
                             approaching = 1;
                             if ((btn9 == 1 || loadExt))
                             {
+                                File.AppendAllText(explogPath, Environment.NewLine+$"Approach {i + 1} started at {time.Elapsed.Duration()}"+Environment.NewLine);
                                 Tdms_Saver("Step " + (i + 1) + " Approach");
+                                loadstart = 0;
                                 await Task.Delay(timer2.Interval);
                                 timer2.Start();
                             }
@@ -2537,20 +2621,19 @@ namespace UC45_User_Interface
                             }
                             else
                             {
-                                while (apfin == 0 && emCounter % 2 != 0)
+                                while (apfin == -1 && emCounter % 2 != 0)
                                 {
-                                    await Task.Delay(10);
+                                    await Task.Delay(20);
                                     try
                                     {
-                                        motorPos.Text = Convert.ToString(motpos / 1000000);
                                         textBox1.Text = Convert.ToString(vol);
+                                        motorPos.Text = Convert.ToString(motpos / 1000000);
                                     }
                                     catch (Exception ex)
                                     {
-                                        label11.Text = ex.Message;
-                                        connection = comread;
                                     }
                                 }
+                                statusLabel.Text = "Step " + (i + 1) + " Approach Finished";
                                 if (runningTask != null)
                                 {
                                     timer2.Stop();
@@ -2560,7 +2643,12 @@ namespace UC45_User_Interface
                                 }
                                 if (emCounter % 2 != 0)
                                 {
+                                    while (sending == true || portreading == 1)
+                                    {
+                                        await Task.Delay(20);
+                                    }
                                     Send("APFIN", "");
+                                    apfin = 1;
                                 }
                             }
                             timer3.Stop();
@@ -2569,12 +2657,15 @@ namespace UC45_User_Interface
                         }
                         if (((depth[i] != "0.000000" && depth[i] != "0") || (duration[i] != "0.000000" && duration[i] != "0")) && (btn9 == 1 || loadExt))
                         {
+                            File.AppendAllText(explogPath, Environment.NewLine+$"Indentation {i + 1} started at {time.Elapsed.Duration()}" + Environment.NewLine);
                             Tdms_Saver("Step " + (i + 1) + " Indentation");
+                            loadstart = 0;
                             await Task.Delay(timer2.Interval);
                             fileopen = pathtemp + "\\Step" + (i + 1) + "_Indentation";
                             timer2.Start();
+                            statusLabel.Text = "Step " + (i + 1) + " Indentation Started!";
                         }
-                        infin = 0;
+                        infin = -1;
                         if (checkBox15.Checked)
                         {
                             await Task.Delay(timer2.Interval);
@@ -2582,15 +2673,14 @@ namespace UC45_User_Interface
                         }
                         else
                         {
-                            while (infin == 0 && emCounter % 2 != 0)
+                            while (infin == -1 && emCounter % 2 != 0)
                             {
-                                await Task.Delay(10);
+                                await Task.Delay(20);
                                 try
                                 {
                                     if (motorDrive.Checked)
                                     {
                                         motorPos.Text = Convert.ToString(motpos / 1000000);
-                                        //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                                     }
                                     else if (!motorDrive.Checked)
                                     {
@@ -2599,10 +2689,9 @@ namespace UC45_User_Interface
                                 }
                                 catch (Exception ex)
                                 {
-                                    label11.Text = ex.Message;
-                                    connection = comread;
                                 }
                             }
+                            statusLabel.Text = "Step " + (i + 1) + " Indentation Finished!";
                             if (runningTask != null)
                             {
                                 timer2.Stop();
@@ -2612,7 +2701,19 @@ namespace UC45_User_Interface
                             }
                             if (emCounter % 2 != 0)
                             {
+                                while (sending == true || portreading == 1)
+                                {
+                                    await Task.Delay(20);
+                                }
                                 Send("INFIN", "");
+                                infin = 1;
+                            }
+                            else
+                            {
+                                File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
+        $"Experiment was stopped at Step {i:D2}.");
+                                statusLabel.Text = $"Experiment stopped at Step {i:D2}.";
+                                break;
                             }
                             Properties.Settings.Default["motpos"] = motorPos.Text;
                             Properties.Settings.Default["Vapp"] = textBox1.Text;
@@ -2620,27 +2721,29 @@ namespace UC45_User_Interface
                         }
                         if ((btn9 == 1 || loadExt) && amplitude[i] != "0.000000" && amplitude[i] != "0" && emCounter % 2 != 0)
                         {
+                            File.AppendAllText(explogPath, Environment.NewLine + $"Oscillation {i + 1} started at {time.Elapsed.Duration()}" + Environment.NewLine);
                             Tdms_Saver("Step " + (i + 1) + " Oscillation");
+                            loadstart = 0;
                             await Task.Delay(timer2.Interval);
                             timer2.Start();
                             fileopen = pathtemp + "\\Step" + (i + 1) + "_Oscillation";
+                            statusLabel.Text = "Step " + (i + 1) + " Oscillation Started!";
                         }
-                        osfin = 0;
+                        osfin = -1;
                         if (checkBox15.Checked)
                         {
                             await OscillationAsync(amplitude[i], frequency[i], interval[i], box5[i], box11[i]);
                         }
                         else
                         {
-                            while (osfin == 0 && emCounter % 2 != 0)
+                            while (osfin == -1 && emCounter % 2 != 0)
                             {
-                                await Task.Delay(10);
+                                await Task.Delay(20);
                                 try
                                 {
                                     if (motorDrive.Checked)
                                     {
                                         motorPos.Text = Convert.ToString(motpos / 1000000);
-                                        //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                                     }
                                     else if (!motorDrive.Checked)
                                     {
@@ -2649,10 +2752,9 @@ namespace UC45_User_Interface
                                 }
                                 catch (Exception ex)
                                 {
-                                    label11.Text = ex.Message;
-                                    connection = comread;
                                 }
                             }
+                            statusLabel.Text = "Step " + (i + 1) + " Oscillation Finished!";
                             if (runningTask != null)
                             {
                                 timer2.Stop();
@@ -2662,7 +2764,19 @@ namespace UC45_User_Interface
                             }
                             if (emCounter % 2 != 0)
                             {
+                                while (sending == true || portreading == 1)
+                                {
+                                    await Task.Delay(20);
+                                }
                                 Send("OSFIN", "");
+                                osfin = 1;
+                            }
+                            else
+                            {
+                                File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
+        $"Experiment was stopped at Step {i:D2}.");
+                                statusLabel.Text = $"Experiment stopped at Step {i:D2}.";
+                                break;
                             }
                             Properties.Settings.Default["Vapp"] = textBox1.Text;
                             Properties.Settings.Default["motpos"] = motorPos.Text;
@@ -2678,34 +2792,36 @@ namespace UC45_User_Interface
                         if (retStep[i] == 1)
                         {
                             retState = 1;
+                            statusLabel.Text = "Step " + (i + 1) + " Retraction Started!";
                             if ((btn9 == 1 || loadExt))
                             {
+                                File.AppendAllText(explogPath, Environment.NewLine+$"Retraction {i + 1} started at {time.Elapsed.Duration()}" + Environment.NewLine);
                                 Tdms_Saver("Step " + (i + 1) + " Retract");
+                                loadstart = 0;
                                 await Task.Delay(timer2.Interval);
                                 timer2.Start();
                             }
                             fileopen = pathtemp + "\\Step" + (i + 1) + "_Retract";
-                            refin = 0;
+                            refin = -1;
                             if (checkBox15.Checked)
                             {
                                 await AutoConAsync(pressure, tempthres, tempthres, !forward);
                             }
                             else
                             {
-                                while (refin == 0 && emCounter % 2 != 0)
+                                while (refin == -1 && emCounter % 2 != 0)
                                 {
-                                    await Task.Delay(10);
+                                    await Task.Delay(20);
                                     try
                                     {
-                                        motorPos.Text = Convert.ToString(motpos / 1000000);
                                         textBox1.Text = Convert.ToString(vol);
+                                        motorPos.Text = Convert.ToString(motpos / 1000000);
                                     }
                                     catch (Exception ex)
                                     {
-                                        label11.Text = ex.Message;
-                                        connection = comread;
                                     }
                                 }
+                                statusLabel.Text = "Step " + (i + 1) + " Retraction Finished!";
                                 if (runningTask != null)
                                 {
                                     timer2.Stop();
@@ -2715,34 +2831,51 @@ namespace UC45_User_Interface
                                 }
                                 if (emCounter % 2 != 0)
                                 {
+                                    while (sending == true || portreading == 1)
+                                    {
+                                        await Task.Delay(20);
+                                    }
                                     Send("REFIN", "");
-
+                                    refin = 1;
+                                }
+                                else
+                                {
+                                    File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
+            $"Experiment was stopped at Step {i:D2}.");
+                                    statusLabel.Text = $"Experiment stopped at Step {i:D2}.";
+                                    break;
                                 }
                             }
                         }
                         Properties.Settings.Default["Vapp"] = textBox1.Text;
                         Properties.Settings.Default["motpos"] = motorPos.Text;
                         Properties.Settings.Default.Save();
+                        refin = 0;
                     }
                     else
                     {
                         File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
 $"Experiment was stopped at Step {i:D2}.");
+                        statusLabel.Text = $"Experiment stopped at Step {i:D2}.";
                         break;
                     }
                 }
+                expfin = 0;
                 if (emCounter % 2 != 0)
                 {
                     while (expfin == 0 && emCounter % 2 != 0)
                     {
                         await Task.Delay(20);
                     }
+                    Send("EXFIN", "");
                     File.AppendAllText(explogPath, "Experiment Error Log: " + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + Environment.NewLine +
 "Experiment was finished successfully.");
+                    statusLabel.Text = "Experiment has been finished successfully!";
                 }
             }
             else
             {
+                exppass = 0;
                 Send("Z0000", "");
                 if (emCounter % 2 != 0)
                 {
@@ -2762,7 +2895,6 @@ $"Experiment was stopped at Step {i:D2}.");
             timer4.Stop();
             timer4i = 0;
             timer5i = 0;
-            progressBar1.Value = 100;
             depth.RemoveRange(0, depth.Count);
             speed.RemoveRange(0, speed.Count);
             duration.RemoveRange(0, duration.Count);
@@ -2801,7 +2933,17 @@ $"Experiment was stopped at Step {i:D2}.");
             stopExp.Enabled = false;
             executeExp.Enabled = false;
             chart1.Enabled = true;
-            progressBar1.Value = 0;
+            expprotocol = "";
+            time.Reset();
+            button3.Enabled = true;
+            button5.Enabled = true;
+            saveSet.Enabled = true;
+            loadSet.Enabled = true;
+            groupBox8.Enabled = true;
+            groupBox20.Enabled = true;
+            groupBox2.Enabled = true;
+            groupBox19.Enabled = true;
+            expfin = 0;
         }
         double holdposition = 0;
         int expresscon = -1;
@@ -2818,10 +2960,13 @@ $"Experiment was stopped at Step {i:D2}.");
         int apfin = 0;
         int osfin = 0;
         int infin = 0;
+        int portreading = 0;
+        int loadstart = 0;
         bool[] xylimits = {true,true,true,true};  // {X_Minus,X_Positive,Y_Minus,Y_Positive} holds whether xy positioner is in between
         //movement ranges wrt MCU ext-int (endstop) message || for now it is accepted that xy positioner starts inside the ranges.
         private void serialPort2_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            portreading = 1;
             comread = "";
             int nbyt = 0;
             char[] buffer = null;
@@ -2833,7 +2978,6 @@ $"Experiment was stopped at Step {i:D2}.");
                     nbyt = serialPort2.BytesToRead;
                     buffer = new char[nbyt];
                     serialPort2.Read(buffer, 0, nbyt);
-                    //comread = serialPort2.ReadLine();
                     if (buffer[0] == 0x24)
                     {
                         for (int i = 1; i < nbyt; i++)
@@ -2861,6 +3005,47 @@ $"Experiment was stopped at Step {i:D2}.");
                             connection = ex.Message;
                         }
                     }
+                    else if (comread.Contains("ComErr"))
+                    {
+                        if (comread.Contains("Stopped"))
+                        {
+                            timer1.Stop();
+                            texts = "";
+                            directpass = 0;
+                            calpass = 0;
+                            motorpass = 0;
+                            textexp.Clear();
+                            comread = "";
+                            approaching = 0;
+                            repsay = 0;
+                            automot = 0;
+                            rhcom = 0;
+                            hxcom = 0;
+                            hxsend = "";
+                            heatSender = "";
+                            forceSend = "";
+                            xymotor = 0;
+                            pass = 0;
+                            autopass = 0;
+                            exppass = 0;
+                            jspass = 0;
+                            motorpass = 0;
+                            deney = 0;
+                            feed = 0;
+                            balancing = 0;
+                            datacomp = 0;
+                            isConnected = false;
+                            connection = "Communication Error! Try to reconnect or reset.";
+                            timer6.Start();
+                        }
+                        else
+                        {
+                            connection = "Wait for completion of communication.";
+                            Send(lastwords, "");
+                            timer6.Start();
+                            repsay = 1;
+                        }
+                    }
                     else if (comread.Contains("AGAIN"))
                     {
                         try
@@ -2877,50 +3062,79 @@ $"Experiment was stopped at Step {i:D2}.");
                     }
                     else if (jsBox.Checked && comread.Contains("MSP"))
                     {
-                        spedmode = Convert.ToInt16(comread[3].ToString());
+                        try
+                        {
+                            spedmode = Convert.ToInt16(comread[3].ToString());
+                        }
+                        catch
+                        {
+                        }
                         jspass = 1;
                         timer6.Start();
                     }
                     else if (comread.Contains("Finished") || comread.Contains("Retfin") || comread.Contains("Complete"))
                     {
-                        if (comread.Contains("Osc"))
+                        if (comread.Contains("Osc") && osfin==-1)
                         {
-                            osfin = 1;
+                            osfin = 0;
                         }
-                        else if (comread.Contains("Ind"))
+                        else if (comread.Contains("Osc")&&osfin==1)
                         {
-                            infin = 1;
+                            Send("OSFIN","");
                         }
-                        else if (comread.Contains("Ret"))
+                        else if (comread.Contains("Ind") && infin==-1)
                         {
-                            refin = 1;
+                            infin = 0;
                         }
-                        else if (comread.Contains("App"))
+                        else if(comread.Contains("Ind")&&infin==1)
                         {
-                            apfin = 1;
+                            Send("INFIN", "");
                         }
-                        else if (comread.Contains("Exp")|| comread.Contains("Cal"))
+                        else if (comread.Contains("Ret") && refin==-1)
+                        {
+                            refin = 0;
+                        }
+                        else if (comread.Contains("Ret")&&refin==1)
+                        {
+                            Send("REFIN", "");
+                        }
+                        else if (comread.Contains("App") && apfin==-1)
+                        {
+                            apfin = 0;
+                        }
+                        else if (comread.Contains("App")&&apfin==1)
+                        {
+                            Send("APFIN","");
+                        }
+                        else if ((comread.Contains("Exp") || comread.Contains("Cal"))&&expfin==0)
                         {
                             expfin = 1;
+                        }
+                        else if (comread.Contains("Cal"))
+                        {
+                            Send("CLFIN","");
+                        }
+                        else if (comread.Contains("Exp"))
+                        {
+                            Send("EXFIN", "");
                         }
                     }
                     else if (comread.Contains("APP") || comread.Contains("Exe") || comread.Contains("?"))
                     {
                         appret = 1;
                     }
-                    else if(comread.Contains("Restart UC45"))
+                    else if (comread.Contains("Restart UC45"))
                     {
                         MessageBox.Show("UC45 Connection Lost! Please Reset CEDRAT's Electronics after take the tip to a secure position.");
                     }
-                    else if(comread.Contains("Load Problem"))
+                    else if (comread.Contains("Load Problem"))
                     {
                         MessageBox.Show("Load Measurement Problem! Please stop the experiment and check the loadcell data.");
                     }
                     else if (comread.Contains("Not_App") || comread.Contains("OutRan"))
                     {
                         //Not_Approached ; OutRange states..
-                        groupBox5.Enabled = true;
-                        executeExp.Enabled = false;
+                        MessageBox.Show("Can Not be Approached");
                         emCounter = 0;
                         texts = "";
                         textexp.Clear();
@@ -3024,99 +3238,14 @@ $"Experiment was stopped at Step {i:D2}.");
                     }
                     else if (comread[nbyt - 1].ToString() == "E")
                     {
-                        try
+                        abq = "";
+                        comsay = 0;
+                        if (comread.Contains("LM"))
                         {
-                            abq = "";
-                            comsay = 0;
-                            if (comread.Contains("LM"))
-                            {
-                                for (int i = 0; i < nbyt; i++)
-                                {
-                                    comsay++;
-                                    if (comread[i].ToString() == "L")
-                                    {
-                                        break;
-                                    }
-                                    abq += comread[i].ToString();
-                                }
-                                loadd.Add(Convert.ToDouble(abq));
-                                if (maxload < loadd.Last())
-                                {
-                                    maxload = loadd.Last();
-                                }
-                                if (deney != -1 && deney != 0)
-                                {
-                                    File.AppendAllText(fileopen + "_Load.txt", loadd.Last().ToString() + Environment.NewLine);
-                                }
-                                comsay++;
-                            }
-                            abq = "";
-                            for (int i = comsay; i < nbyt; i++)
-                            {
-
-                                if (comread[i].ToString() == "E")
-                                {
-                                    break;
-                                }
-                                abq += comread[i].ToString();
-                            }
-                            vol = Convert.ToDouble(abq);
-                            if (nbyt >= 7)
-                            {
-                                receive = Convert.ToString(vol);
-                                if (deney != -1 && deney != 0)
-                                {
-                                    File.AppendAllText(fileopen + "_Actuator_Voltage.txt", receive + Environment.NewLine);
-                                }
-                            }
-                            comsay = 0;
-                            repsay = 0;
-                        }
-                        catch (Exception ex)
-                        {
-                            connection = ex.Message;
-                        }
-                    }
-                    else if (comread.Contains("PM"))
-                    {
-                        try
-                        {
-                            abq = "";
-                            comsay = 0;
                             for (int i = 0; i < nbyt; i++)
                             {
                                 comsay++;
-                                if (comread[i].ToString() == "P")
-                                {
-                                    break;
-                                }
-                                abq += comread[i].ToString();
-                            }
-                            try
-                            {
-                                abqi = Convert.ToInt16(abq);
-                            }
-                            catch
-                            {
-                                abqi = 0;
-                            }
-                            if (feed != 1)
-                            {
-                                motpos = motpos + abqi * stepinc / 2;
-                                abqi = 0;
-                            }
-                            if (deney != 2 || deney != 1)
-                            {
-                                receive = abq;
-                            }
-                            else
-                            {
-                                File.AppendAllText(fileopen + "_Motor_Position.txt", abq + Environment.NewLine);
-                            }
-                            abq = "";
-                            if (comread.Contains("LM"))
-                            {
-                                for (int i = comsay + 2; i < nbyt; i++)
+                                try
                                 {
                                     if (comread[i].ToString() == "L")
                                     {
@@ -3124,82 +3253,223 @@ $"Experiment was stopped at Step {i:D2}.");
                                     }
                                     abq += comread[i].ToString();
                                 }
-                                loadd.Add(Convert.ToDouble(abq));
-                                if (maxload < loadd.Last())
+                                catch
                                 {
-                                    maxload = loadd.Last();
-                                }
-                                if (deney != -1 && deney != 0)
-                                {
-                                    File.AppendAllText(fileopen + "_Load.txt", loadd.Last().ToString() + Environment.NewLine);
+
                                 }
                             }
-                            if (feed == 1 || autopass == 1)
+                            try
                             {
-                                pass = 1;
-                                timer6.Start();
+                                loadd.Add(Convert.ToDouble(abq)*loadco);
                             }
-                            if (jsBox.Checked)
+                            catch
                             {
-                                pass = 1;
-                                autopass = 1;
-                                timer6.Start();
+                                connection = "Load Reading Problem!";
                             }
-                            abq = "";
-                            repsay = 0;
-                        }
-                        catch (Exception ex)
-                        {
-                            connection = ex.Message;
-                            //if (repsay < 3)
-                            //{
-                            //    Send("Repet", "");
-                            //    repsay++;
-                            //}
-                            //else
-                            //{
-                            //    repsay = 0;
-                            //}
-                        }
-                    }
-                    else if (comread.Contains("LM"))
-                    {
-                        abq = "";
-                        for (int i = 0; i < nbyt; i++)
-                        {
-                            if (comread[i].ToString() == "L")
-                            {
-                                break;
-                            }
-                            abq += comread[i].ToString();
-                        }
-                        try
-                        {
-                            receives = abq;
-                            loadd.Add(Convert.ToDouble(abq));
                             if (maxload < loadd.Last())
                             {
                                 maxload = loadd.Last();
                             }
                             if (deney != -1 && deney != 0)
                             {
-                                File.AppendAllText(fileopen + "_Load.txt", loadd.Last().ToString() + Environment.NewLine);
-                                File.AppendAllText(fileopen + "_Load.txt", loadd.Last().ToString() + Environment.NewLine);
+                                File.AppendAllText(fileopen + "_Load.txt", time.ElapsedMilliseconds.ToString()+"\t"+loadd.Last().ToString() + Environment.NewLine);
+                                if (loadstart == 0)
+                                {
+                                    loadstart = 1;
+                                    try
+                                    {
+                                        File.AppendAllText(explogPath, "Load Measurement Started at (ms): " + time.ElapsedMilliseconds.ToString()+Environment.NewLine);
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
                             }
-                            repsay = 0;
+                            comsay++;
+                        }
+                        abq = "";
+                        for (int i = comsay; i < nbyt; i++)
+                        {
+                            try
+                            {
+                                if (comread[i].ToString() == "E")
+                                {
+                                    break;
+                                }
+                                abq += comread[i].ToString();
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                        try
+                        {
+                            vol = Convert.ToDouble(abq);
+                            if (nbyt >= 7)
+                            {
+                                receive = Convert.ToString(vol);
+                                if (deney != -1 && deney != 0)
+                                {
+                                    File.AppendAllText(fileopen + "_Actuator_Voltage.txt", time.ElapsedMilliseconds.ToString() + "\t" + receive + Environment.NewLine);
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            connection = "Actuator Voltage Reading Problem!";
+                        }
+                        comsay = 0;
+                    }
+                    else if (comread.Contains("PM"))
+                    {
+                        abq = "";
+                        comsay = 0;
+                        for (int i = 0; i < nbyt; i++)
+                        {
+                            comsay++;
+                            try
+                            {
+                                if (comread[i].ToString() == "P")
+                                {
+                                    break;
+                                }
+                                abq += comread[i].ToString();
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                        try
+                        {
+                            abqi = Convert.ToInt16(abq);
+                        }
+                        catch
+                        {
+                            abqi = 0;
+                            connection = "Motor Position Reading Problem!";
+                        }
+                        if (feed != 1)
+                        {
+                            motpos = motpos + abqi * stepinc / 2;
+                            abqi = 0;
+                        }
+                        if (deney != 2 && deney != 1)
+                        {
+                            receive = abq;
+                        }
+                        else
+                        {
+                            File.AppendAllText(fileopen + "_Motor_Position.txt", time.ElapsedMilliseconds.ToString() +"\t"+Convert.ToString(motpos/1000) + Environment.NewLine);
+                        }
+                        abq = "";
+                        if (comread.Contains("LM"))
+                        {
+                            for (int i = comsay + 2; i < nbyt; i++)
+                            {
+                                try
+                                {
+                                    if (comread[i].ToString() == "L")
+                                    {
+                                        break;
+                                    }
+                                    abq += comread[i].ToString();
+                                }
+                                catch
+                                {
+
+                                }
+                            }
+                            try
+                            {
+                                loadd.Add(Convert.ToDouble(abq)*loadco);
+                            }
+                            catch
+                            {
+                                connection = "Load Reading Problem!";
+                            }
+                            if (maxload < loadd.Last())
+                            {
+                                maxload = loadd.Last();
+                            }
+                            if (deney != -1 && deney != 0)
+                            {
+                                File.AppendAllText(fileopen + "_Load.txt", time.ElapsedMilliseconds.ToString() + "\t"+loadd.Last().ToString() + Environment.NewLine);
+                                if (loadstart == 0)
+                                {
+                                    loadstart = 1;
+                                    try
+                                    {
+                                        File.AppendAllText(explogPath, "Load Measurement Started at (ms): " + time.ElapsedMilliseconds.ToString()+Environment.NewLine);
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                            }
+                        }
+                        if (feed == 1 || autopass == 1)
+                        {
+                            pass = 1;
+                            timer6.Start();
+                        }
+                        if (jsBox.Checked)
+                        {
+                            pass = 1;
+                            autopass = 1;
+                            timer6.Start();
+                        }
+                        abq = "";
+                    }
+                    else if (comread.Contains("LM"))
+                    {
+                        abq = "";
+                        for (int i = 0; i < nbyt; i++)
+                        {
+                            try
+                            {
+                                if (comread[i].ToString() == "L")
+                                {
+                                    break;
+                                }
+                                abq += comread[i].ToString();
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                        try
+                        {
+                            receives = abq;
+                            loadd.Add(Convert.ToDouble(abq)*loadco);
+                            if (maxload < loadd.Last())
+                            {
+                                maxload = loadd.Last();
+                            }
+                            if (deney != -1 && deney != 0)
+                            {
+                                File.AppendAllText(fileopen + "_Load.txt", time.ElapsedMilliseconds.ToString() + "\t"+loadd.Last().ToString() + Environment.NewLine);
+                                if (loadstart == 0)
+                                {
+                                    loadstart = 1;
+                                    try
+                                    {
+                                        File.AppendAllText(explogPath, "Load Measurement Started at (ms): " + time.ElapsedMilliseconds.ToString()+Environment.NewLine);
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                            }
                         }
                         catch (Exception ex)
                         {
                             connection = ex.Message;
-                            //if (repsay < 5)
-                            //{
-                            //    Send("Repet", "");
-                            //    repsay++;
-                            //}
-                            //else
-                            //{
-                            //    repsay = 0;
-                            //}
                         }
                         abq = "";
                         if (hxcom == 1)
@@ -3242,14 +3512,37 @@ $"Experiment was stopped at Step {i:D2}.");
 
                         else
                         {
-                            Send("Z0000", "");
+                            Send($"Z{0:D19}", "");
                         }
                     }
-                    else if ((comread.Contains("R0") || comread.Contains("Received")))
+                    else if ((comread.Contains("R0") || comread.Contains($"{expcounter}._Step_Received")))
                     {
-                        if(startexp==1 && exppass == 0)
+                        if (exppass == 0 && startexp>0)
                         {
-
+                            if (startexp == 1)
+                            {
+                                exppass = 1;
+                            }
+                        }
+                        else if (exppass == -1)
+                        {
+                            repsay++;
+                            if (repsay == 5)
+                            {
+                                DialogResult result = DialogResult.None;
+                                result = MessageBox.Show("A communication error occurred while sending experiment settings. The process may proceed still but, stopping the experiment is suggested.", "MCU Communication Error!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                                if (result == DialogResult.Ignore || result == DialogResult.Retry)
+                                {
+                                    exppass = -1;
+                                    expcounter = 0;
+                                }
+                                else if (result == DialogResult.Abort)
+                                {
+                                    exppass = 0;
+                                    expcounter = 0;
+                                    Send($"Z{0:D49}{0:D99}", "");
+                                }
+                            }
                         }
                         else if (exppass == 1 && plug % 2 == 1)
                         {
@@ -3257,18 +3550,31 @@ $"Experiment was stopped at Step {i:D2}.");
                             expcounter++;
                             if (expcounter == depth.Count)
                             {
-                                expcounter = 0;
                                 exppass = -1;
-                                textexp.Clear();
+                                repsay = 0;
                             }
                             tim1say = 0;
                             comread = "";
                         }
                         else
                         {
-                            Send($"Z{0:D49}{0:99}", "");
+                            expcounter = 0;
+                            Send($"Z{0:D49}{0:D99}", "");
                             MessageBox.Show("Unauthorized Experiment Start Detected!");
                         }
+                    }
+                    else if (comread.Contains($"{expcounter-1}._Step_Received"))
+                    {
+                        expcounter--;
+                    }
+                    else if (comread.Contains($"{expcounter + 1}._Step_Received"))
+                    {
+                        exppass = 0;
+                        startexp = 0;
+                        button3.Enabled = true;
+                        expcounter = 0;
+                        Send($"Z{0:D49}{0:D99}", "");
+                        MessageBox.Show("Unauthorized Experiment Start Detected!");
                     }
                     else if (comread.Contains("R1"))
                     {
@@ -3283,7 +3589,7 @@ $"Experiment was stopped at Step {i:D2}.");
                         }
                         else
                         {
-                            Send("Z0000000000000000000000000000000000000000", "");
+                            Send($"Z{0:D40}", "");
                             MessageBox.Show("Unauthorized Experiment Start Detected!");
                         }
                     }
@@ -3298,16 +3604,17 @@ $"Experiment was stopped at Step {i:D2}.");
                         }
                         else if (exppass == -2)
                         {
+                            Send($"Await{0:D17}","");
                         }
                         else
                         {
-                            Send($"Z0000000000000|0000000", "");
+                            Send($"Z{0:D21}", "");
                             MessageBox.Show("Unauthorized Experiment Start Detected!");
                         }
                     }
                     else if ((comread.Contains("+") || comread.Contains("-")))
                     {
-                        if (xymotor == 1 || jsBox.Checked||deney==1)
+                        if (xymotor == 1 || jsBox.Checked || deney == 1)
                         {
                             pass = 1;
                             timer6.Start();
@@ -3488,18 +3795,31 @@ $"Experiment was stopped at Step {i:D2}.");
                     else if (comread.Contains("PROCESS"))
                     {
                         timer1.Stop();
-                        receive = comread;
                         texts = "";
                         directpass = 0;
-                        exppass = 0;
                         calpass = 0;
                         motorpass = 0;
-                        connection = comread;
+                        textexp.Clear();
                         comread = "";
                         approaching = 0;
-                        textexp.Clear();
                         repsay = 0;
-                        timer6.Start();
+                        automot = 0;
+                        rhcom = 0;
+                        hxcom = 0;
+                        hxsend = "";
+                        heatSender = "";
+                        forceSend = "";
+                        xymotor = 0;
+                        pass = 0;
+                        autopass = 0;
+                        exppass = 0;
+                        jspass = 0;
+                        motorpass = 0;
+                        deney = 0;
+                        feed = 0;
+                        balancing = 0;
+                        datacomp = 0;
+                        Send("Z0000", "");
                     }
                     else
                     {
@@ -3509,6 +3829,7 @@ $"Experiment was stopped at Step {i:D2}.");
                     }
                 }
             }
+            portreading = 0;
         }
         double humid = 0;
         double tmed = 0;
@@ -3519,8 +3840,7 @@ $"Experiment was stopped at Step {i:D2}.");
         public List<double> loadd = new List<double>();
         private async Task CalibrationAsync(string caldepth, string calstep, string calinter)
         {
-            var elapsed = new Stopwatch();
-            int time = 100;
+            int timecal = 100;
             double stepdepth = 0;
             double stepvolt = 0;
             int stepnum = 0;
@@ -3539,10 +3859,9 @@ $"Experiment was stopped at Step {i:D2}.");
             {
                 if (Convert.ToDouble(calinter) >= 0.1)
                 {
-                    time = Convert.ToInt32(Convert.ToDouble(calinter) * 1000);
+                    timecal = Convert.ToInt32(Convert.ToDouble(calinter) * 1000);
                 }
             }
-            elapsed.Start();
             for (int i = 0; i < 2 * stepnum; i++)
             {
                 if (i < stepnum)
@@ -3551,9 +3870,7 @@ $"Experiment was stopped at Step {i:D2}.");
                     {
                         stepvolt = Math.Round(firstpt - stepdepth * (i + 1), 7);
                         Send(TextFormat(stepvolt.ToString(), "", -1, 7.5), "W");
-                        await Task.Delay(time);
-                        timeshow.Text = elapsed.ElapsedMilliseconds.ToString();
-                        elapsed.Restart();
+                        await Task.Delay(timecal);
                         textBox1.Text = stepvolt.ToString();
                         //textBox1.Update();
                         //textBox10.Update();
@@ -3562,7 +3879,6 @@ $"Experiment was stopped at Step {i:D2}.");
                     }
                     else
                     {
-                        elapsed.Reset();
                         break;
                     }
                 }
@@ -3575,9 +3891,7 @@ $"Experiment was stopped at Step {i:D2}.");
                         {
                             Send(TextFormat(stepvolt.ToString(), "", -1, 7.5), "W");
                         }
-                        await Task.Delay(time);
-                        timeshow.Text = elapsed.ElapsedMilliseconds.ToString();
-                        elapsed.Restart();
+                        await Task.Delay(timecal);
                         textBox1.Text = stepvolt.ToString();
                         //textBox1.Update();
                         //textBox10.Update();
@@ -3586,13 +3900,11 @@ $"Experiment was stopped at Step {i:D2}.");
                     }
                     else
                     {
-                        elapsed.Reset();
                         break;
                     }
                 }
                 else
                 {
-                    elapsed.Reset();
                     break;
                 }
 
@@ -3901,6 +4213,7 @@ $"Experiment was stopped at Step {i:D2}.");
             }
             if (deney != -1 && deney!=0)
             {
+                timeshow.Text = $"{time.Elapsed.Duration()}";
                 if (motorDrive.Checked)
                 {
                     try
@@ -5009,13 +5322,12 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                                         abqi = Convert.ToInt16(abq);
                                         motpos = motpos + abqi * stepinc / 2;
                                         motorPos.Text = Convert.ToString(motpos / 1000000);
-                                        // verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                                         comread = "";
                                         abqi = 0;
                                     }
                                     catch (Exception ex)
                                     {
-                                        label11.Text = ex.Message;
+                                        label11.Text = "Motor Position Reading Error!";
                                     }
                                 }
                                 else
@@ -5023,7 +5335,6 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                                     try
                                     {
                                         motorPos.Text = Convert.ToString(motpos / 1000000);
-                                        // verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                                     }
                                     catch (Exception ex)
                                     {
@@ -5196,18 +5507,14 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                                 {
                                     motorPos.Text = "0.0";
                                     motpos = 0;
-                                    //verticalProgressBar2.Value = 100;
                                     break;
                                 }
                                 try
                                 {
                                     motorPos.Text = Convert.ToString(motpos / 1000000);
-                                    //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                                 }
                                 catch (Exception ex)
                                 {
-                                    label11.Text = ex.Message;
-                                    connection = comread;
                                 }
                                 loadnow = loadd.Last();
                                 if (loadnow <= holdposition)
@@ -5277,18 +5584,15 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                                         {
                                             motorPos.Text = "0.0";
                                             motpos = 0;
-                                            //verticalProgressBar2.Value = 100;
                                             break;
                                         }
                                         try
                                         {
                                             motorPos.Text = Convert.ToString(motpos / 1000000);
-                                            // verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                                             comread = "";
                                         }
                                         catch (Exception ex)
                                         {
-                                            connection = ex.Message;
                                         }
                                         loadnow = loadd.Last();
                                         await Task.Delay(10);
@@ -5320,7 +5624,6 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                                         try
                                         {
                                             motorPos.Text = Convert.ToString(motpos / 1000000);
-                                            // verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                                         }
                                         catch (Exception ex)
                                         {
@@ -5381,7 +5684,6 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                                 motorPos.Text = "0.0";
                                 motpos = 0;
                                 Send("STFIN", "");
-                                //verticalProgressBar2.Value = 100;
                             }
                             else
                             {
@@ -5389,12 +5691,10 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                                 try
                                 {
                                     motorPos.Text = Convert.ToString(motpos / 1000000);
-                                    // verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                                 }
                                 catch (Exception ex)
                                 {
                                     connection = ex.Message;
-                                    //connection = comread;
                                 }
                             }
                             
@@ -5562,10 +5862,25 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
             stopExp.Enabled = false;
             groupBox5.Enabled = true;
             executeExp.Enabled = false;
+            button3.Enabled = true;
+            button5.Enabled = true;
+            saveSet.Enabled = true;
+            loadSet.Enabled = true;
+            groupBox8.Enabled =true;
+            groupBox20.Enabled =true;
+            groupBox2.Enabled =true;
+            groupBox19.Enabled=true;
             emCounter = 0;
             texts = "";
             textexp.Clear();
-            Send("Z0000", "");
+            if (exppass == -2)
+            {
+                Send($"Z{0:D21}", "");
+            }
+            else
+            {
+                Send("Z0000", "");
+            }
         }
 
         private void button7_Click_2(object sender, EventArgs e)
@@ -6039,7 +6354,6 @@ gagefac[i] / 1000000, gageinit[i] / 1000.0, gageres[i], gagepois[i], gagewire[i]
                 Properties.Settings.Default["Z"] = textBox10.Text;
                 Properties.Settings.Default.Save();
                 //VappNumeric.Enabled = false;
-                //verticalProgressBar1.Value = Convert.ToInt16(200 * (Convert.ToDouble(textBox1.Text) + 1) / 17);
             }
             clickinc = 1;
         }
@@ -6570,7 +6884,6 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                 motmax = Convert.ToDouble(motorMax.Text) * 1000000;
                 Properties.Settings.Default["motormax"] = motorMax.Text;
                 Properties.Settings.Default.Save();
-                //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
             }
         }
 
@@ -6978,6 +7291,17 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             Send("Z0000", "");
             groupBox8.Enabled = true;
             stopCal.Enabled = false;
+            stopExp.Enabled = false;
+            groupBox5.Enabled = true;
+            executeExp.Enabled = false;
+            button3.Enabled = true;
+            button5.Enabled = true;
+            saveSet.Enabled = true;
+            loadSet.Enabled = true;
+            groupBox8.Enabled = true;
+            groupBox20.Enabled = true;
+            groupBox2.Enabled = true;
+            groupBox19.Enabled = true;
         }
         private void tabControl1_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -7257,7 +7581,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             {
                 isMcuAdc.Checked = false;
                 Send("85310", "");
-                hxsend = string.Format("T{0:00000}", hxSet.Value);
+                hxsend = string.Format("T{0:00000}", Convert.ToInt32(Convert.ToDouble(hxSet.Value) / loadco));
             }
             if (controlExt.Checked || isMcuAdc.Checked)
             {
@@ -7343,6 +7667,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
         {
             try
             {
+                expprotocol = saveFileDialog1.FileName;
                     StreamWriter writer = new StreamWriter(saveFileDialog1.FileName,false);
                     for (int j = 0; j < depth.Count(); j++)
                     {
@@ -7401,6 +7726,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                 }
                 comboBox2.SelectedIndex = 0;
                 string cizgi = "";
+                expprotocol = openFileDialog1.FileName;
                 StreamReader reader = new StreamReader(openFileDialog1.FileName);
                 int i = 0;
                 while (cizgi != null)
@@ -7544,15 +7870,22 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     jspass = 0;
                     micstepBox.SelectedIndex = spedmode;
                 }
+                else if (repsay == 1)
+                {
+                    repsay = 0;
+                    timer6.Stop();
+                }
                 else if(approaching==2&& pass == 1)
                 {
                     pass = 0;
                     if (receive == "UPMOT")
                     {
                         Send("STFIN", "");
-                        connection = "";
                         receive = "";
                         MessageBox.Show("Motor at Home Position!", "Auto Land", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        loadcell.Enabled = true;
+                        loadTare.Enabled = true;
+                        loadLive.Enabled = true;
                         motorPos.Text = "0.0";
                         motpos = 0;
                         approaching = 0;
@@ -7579,8 +7912,12 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                         }
                         catch (Exception ex)
                         {
-                            label11.Text = ex.Message;
+                            statusLabel.Text = "Motor Position Reading Error!";
                         }
+                    }
+                    else
+                    {
+                        motorPos.Text = Convert.ToString(motpos / 1000000);
                     }
                     timer6.Stop();
                 }
@@ -7591,10 +7928,16 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     stopMot.Enabled = true;
                     if (approaching == 0)
                     {
-                        motorPos.Text = Convert.ToString(motpos / 1000000);
+                        try
+                        {
+                            motorPos.Text = Convert.ToString(motpos / 1000000);
+                        }
+                        catch
+                        {
+                            connection = "Motor Position Reading Problem!";
+                        }
                         Properties.Settings.Default["motpos"] = motorPos.Text;
                         Properties.Settings.Default.Save();
-                        //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                         timer6.Stop();
                         groupBox19.Enabled = true;
                         Send("STFIN", "");
@@ -7605,7 +7948,6 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                             motorPos.Text = "0.0";
                             Properties.Settings.Default["motpos"] = motorPos.Text;
                             Properties.Settings.Default.Save();
-                            //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                             timer6.Stop();
                             groupBox19.Enabled = true;
                             autopass = 0;
@@ -7615,7 +7957,6 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     {
                         autopass = 0;
                         comread = "";
-                        connection = "";
                         timer6.Stop();
                     }
 
@@ -7625,20 +7966,27 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     repsay = 0;
                     exppass = -2;
                     executeExp.Enabled = true;
+                    stopExp.Enabled = true;
                     timer6.Stop();
-                    label11.Text = comread;
-                    MessageBox.Show("Ready to Go! Click 'Execute' when you ready.");
+                    pass = 0;
+                    MessageBox.Show("Ready to Go! Click 'Execute' when you ready. Click 'Stop' to abort properly.");
                 }
                 else if (pass == 1 && feed == 1)
                 {
                     timer6.Stop();
                     pass = 0;
-                    motpos = abqi * stepinc*(Math.Pow(2,spedmode-5));
-                    motorPos.Text = Convert.ToString(motpos / 1000000);
+                    try
+                    {
+                        motpos = abqi * stepinc * (Math.Pow(2, spedmode - 5));
+                        motorPos.Text = Convert.ToString(motpos / 1000000);
+                    }
+                    catch
+                    {
+
+                    }
                     abqi = 0;
                     Properties.Settings.Default["motpos"] = motorPos.Text;
                     Properties.Settings.Default.Save();
-                    //verticalProgressBar2.Value = 100 - Convert.ToInt16(motpos * 100 / motmax);
                     feed = 0;
                     Send("FBFIN", "");
                 }
@@ -7657,34 +8005,59 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     string reccon="";
                     for(int i=0; i < receive.Count(); i++)
                     {
-                        if (receive[i] == '+')
+                        try
                         {
-                            if (Convert.ToDouble(reccon) - 32767 < 0)
+                            if (receive[i] == '+')
                             {
-                                label11.Text = "XY Direction Error!";
+                                if (Convert.ToDouble(reccon) - 32767 < 0)
+                                {
+                                    statusLabel.Text = "XY Direction Error!";
+                                }
+                                break;
                             }
-                            break;
+                            else if (receive[i] == '-')
+                            {
+                                if (Convert.ToDouble(reccon) - 32767 > 0)
+                                {
+                                    statusLabel.Text = "XY Direction Error!";
+                                }
+                                break;
+                            }
                         }
-                        else if (receive[i] == '-')
+                        catch
                         {
-                            if (Convert.ToDouble(reccon) - 32767 > 0)
-                            {
-                                label11.Text = "XY Direction Error!";
-                            }
-                            break;
+
                         }
                         reccon = reccon+receive[i];
                     }
                     if (receive.Contains("X"))
                     {
-                        xkon = xkon + ((xinc*(Convert.ToDouble(reccon) - 32767)))/1000;
-                        xPosition.Text = xkon.ToString();
+                        try
+                        {
+                            xkon = xkon + ((xinc * (Convert.ToDouble(reccon) - 32767))) / 1000;
+                            xPosition.Text = xkon.ToString();
+                            Properties.Settings.Default["xPoz"] = xkon.ToString();
+                        }
+                        catch
+                        {
+
+                        }
+
                     }
                     else if (receive.Contains("Y"))
                     {
-                        ykon = ykon + ((yinc * (Convert.ToDouble(reccon) - 32767)))/1000;
-                        yPosition.Text = ykon.ToString();
+                        try
+                        {
+                            ykon = ykon + ((yinc * (Convert.ToDouble(reccon) - 32767))) / 1000;
+                            yPosition.Text = ykon.ToString();
+                        }
+                        catch
+                        {
+
+                        }
+                        Properties.Settings.Default["yPoz"] = ykon.ToString();
                     }
+                    Properties.Settings.Default.Save();
                     timer6.Stop();
                     xymotor = 0;
                 }
@@ -7699,8 +8072,9 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                 else if (pass == 1 && hxcom == 1)
                 {
                     pass = 0;
-                    pressShow.Text = receives;
-                    loadcellData.Text = receives;
+                    double dummy= Convert.ToDouble(receives) * loadco;
+                    pressShow.Text = dummy.ToString();
+                    loadcellData.Text = dummy.ToString();
                     Send("HXFIN", "");
                     hxcom = 0;
                     timer6.Stop();
@@ -7773,38 +8147,25 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     tim1say = 0;
                     timer6.Stop();
                 }
-                else if (receive == "PROCESS")
-                {
-                    groupBox8.Enabled = true;
-                    stopCal.Enabled = false;
-                    stopExp.Enabled = false;
-                    groupBox5.Enabled = true;
-                    executeExp.Enabled = false;
-                    button3.Enabled = true;
-                    timer6.Stop();
-                }
-                else if (directpass == 1 || exppass == 1 || calpass==1 || motorpass == 1)
+                else if ((directpass == 1 || exppass == 1  || calpass==1 || motorpass == 1)&&repsay<1)
                 {
                     microsayac++;
                     if (microsayac == 12 && rep > 5)
                     {
-                        exppass = 0;
                         directpass = 0;
                         calpass = 0;
-                        expcounter = 0;
                         motorpass = 0;
                         approaching = 0;
                         label11.Text = "MCU CONNECTION MAY BE LOST!";
                         rep = 0;
                         microsayac = 0;
                         texts = "";
-                        textexp.Clear();
                         tim1say = 0;
+                        exppass = 0;
                         timer6.Stop();
                     }
                     else if (microsayac == 12 && plug % 2 == 1)
                     {
-                        //Send("Repet", "");
                         microsayac = 0;
                         rep++;
                     }
@@ -7979,6 +8340,8 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     dTfreq.Insert(comboBox2.SelectedIndex - 1, "0");
                     dTlag.Insert(comboBox2.SelectedIndex - 1, "0");
                     retStep.Insert(comboBox2.SelectedIndex - 1, 0);
+                    holdAt.Insert(comboBox2.SelectedIndex - 1, 0);
+                    retHold.Insert(comboBox2.SelectedIndex - 1, "0");
                 }
                 if (dTemp.Count <= comboBox2.SelectedIndex && comboBox2.SelectedIndex + 2 > comboBox2.Items.Count)
                 {
@@ -8021,6 +8384,8 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     dTfreq.Insert(comboBox2.SelectedIndex - 1, "0");
                     dTlag.Insert(comboBox2.SelectedIndex - 1, "0");
                     retStep.Insert(comboBox2.SelectedIndex - 1, 0);
+                    holdAt.Insert(comboBox2.SelectedIndex - 1, 0);
+                    retHold.Insert(comboBox2.SelectedIndex - 1, "0");
                 }
                 if (dTspeed.Count <= comboBox2.SelectedIndex && comboBox2.SelectedIndex + 2 > comboBox2.Items.Count)
                 {
@@ -8127,7 +8492,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             }
             else if (e.KeyChar == (char)13)
             {
-                dTlag.Insert(comboBox2.SelectedIndex - 1, dtF.Text);
+                dTlag.Insert(comboBox2.SelectedIndex - 1, dtPhase.Text);
                 if (dTlag.Count > comboBox2.SelectedIndex)
                 {
                     dTlag.RemoveAt(comboBox2.SelectedIndex);
@@ -8194,6 +8559,8 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                     dTamp.Insert(comboBox2.SelectedIndex - 1, "0");
                     dTfreq.Insert(comboBox2.SelectedIndex - 1, "0");
                     dTwhen.Insert(comboBox2.SelectedIndex - 1, 0);
+                    holdAt.Insert(comboBox2.SelectedIndex - 1, 0);
+                    retHold.Insert(comboBox2.SelectedIndex - 1, "0");
                 }
                 if (retStep.Count <= comboBox2.SelectedIndex && comboBox2.SelectedIndex + 2 > comboBox2.Items.Count)
                 {
@@ -8441,12 +8808,12 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                                 if (duty[i] > 50)
                                 {
                                     duty[i] = 50;
-                                    label11.Text = "Duty is at Max!";
+                                    statusLabel.Text = "Duty is at Max!";
                                 }
                                 else if (duty[i] < 1)
                                 {
                                     duty[i] = 1;
-                                    label11.Text = "Duty is at Min!";
+                                    statusLabel.Text = "Duty is at Min!";
                                 }
                                 if (duty[i] != tempduty)
                                 {
@@ -8695,7 +9062,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             }
             else if (e.KeyChar == (char)13)
             {
-                loadAppThres = Convert.ToDouble(loadThres.Text);
+                loadAppThres = Convert.ToDouble(loadThres.Text)/loadco;
             }
         }
 
@@ -8719,7 +9086,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                 {
                     retHold.RemoveAt(comboBox2.SelectedIndex);
                 }
-                if (depth.Count < dTamp.Count)
+                if (depth.Count < retHold.Count)
                 {
                     depth.Insert(comboBox2.SelectedIndex - 1, "0");
                     dTemp.Insert(comboBox2.SelectedIndex - 1, "0");
@@ -8762,7 +9129,7 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                 {
                     holdAt.RemoveAt(comboBox2.SelectedIndex);
                 }
-                if (depth.Count < dTamp.Count)
+                if (depth.Count < holdAt.Count)
                 {
                     depth.Insert(comboBox2.SelectedIndex - 1, "0");
                     dTemp.Insert(comboBox2.SelectedIndex - 1, "0");
@@ -8827,12 +9194,13 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
                 if (controlExt.Checked)
                 {
                     Send("85310", "");
+                    hxsend = string.Format("T{0:00000}", Convert.ToInt32(Convert.ToDouble(hxSet.Value) / loadco));
                 }
                 else if (isMcuAdc.Checked)
                 {
                     Send("85320", "");
+                    hxsend = string.Format("T{0:00000}", hxSet.Value);
                 }
-                hxsend =string.Format("T{0:00000}", hxSet.Value);
             }
         }
 
@@ -8932,6 +9300,44 @@ SampleClockActiveEdge.Rising, SampleQuantityMode.ContinuousSamples, 1000);
             {
                 Properties.Settings.Default["procedureName"] = procedureName.Text;
                 Properties.Settings.Default.Save();
+            }
+        }
+
+        private void rateNumeric_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                Properties.Settings.Default["DaqRate"] = rateNumeric.Value.ToString();
+                Properties.Settings.Default.Save();
+            }
+        }
+        double loadco = 1;
+        private void loadCoeffTb_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                try
+                {
+                    loadco = Convert.ToDouble(loadCoeffTb.Text)/1000;
+                    if (loadco > 0)
+                    {
+                        Properties.Settings.Default["loadCoef"] = loadCoeffTb.Text;
+                        Properties.Settings.Default.Save();
+                    }
+                    else
+                    {
+                        loadco = Convert.ToDouble(Properties.Settings.Default["loadCoef"].ToString());
+                        MessageBox.Show("Invalid value for loadcell conversion coefficient. Please set a value higher than zero.");
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("Invalid value for loadcell conversion coefficient. Please set a value higher than zero.");
+                }
+            }
+            else if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
+            {
+                e.Handled = true;
             }
         }
 
